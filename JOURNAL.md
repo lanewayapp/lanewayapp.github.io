@@ -1,3 +1,161 @@
+# The Map Became the Page - Wednesday Aug 26
+
+*Written 10:14 PM, read off the clock. The repo was not on this machine at the
+start of the session and had to be cloned.*
+
+## Timeline
+
+**"Lets work on the Laneway landing page."** The site is a separate repo from
+the product and was not checked out here, so the first step was finding it:
+`barongartner/laneway-site`, serving from the `lanewayapp` org. Cloned, read
+this file and `CLAUDE.md` before touching anything, as the README asks.
+
+**The first attempt was thrown away.** The brief was read as "make index look
+like the dev log", so index was rewritten in the dev log's flat specimen
+language. The owner stopped it and asked for a full revert. Nothing was
+committed, `git checkout -- index.html` put the export back, and the session
+restarted from the real brief. Worth recording because the cost was real and
+the lesson is that "in the style of the other page" was not what was wanted.
+
+**A Figma Make link was reviewed, not built from.** An Instagram carousel for
+Laneway, six slides, already generated. It could only be read, not exported,
+without signing in, and signing in on the owner's behalf was declined. One
+finding is durable and is why it is written here: **the carousel's amber is
+`#E79D3C`, the app and the site use `#E89E2E`.** Two ambers on two surfaces of
+the same brand. Not fixed, because that repo is not this one.
+
+**Then the real work, over several passes.** Each pass was a correction from
+the owner rather than a plan agreed up front: keep the animations but raise the
+typography, colour, motion and background; then no pills and no navy in dark
+mode; then a strict radius system; then make the scroll animation belong to a
+map product; then Geist; then remove everything that reads as AI generated.
+
+## What the page is now
+
+**The index is hand written again.** It had been a Claude Design export: the
+entire page lived inside a base64 manifest and was assembled at load by a
+bundler script, which is why the file was 586KB and unreadable in a diff. It is
+now 753 lines of plain HTML, CSS and one script, and a change to it can be
+reviewed.
+
+**The map is the page, and it is drawn here.** One SVG map with a real camera.
+No tile server, because `CLAUDE.md` forbids third party requests at runtime and
+the page has to render offline; a hand drawn schematic keeps that promise and
+the "the renderer is ours" precedent set by `devlog.html`. On load the camera
+flies from a wide view down to Terminal 1, and the map details in by layer
+keyed to zoom rather than to elapsed time, which is how a real map behaves.
+Scrolling then owns the camera across four stages of the anchor case: it draws
+the 2 h 4 min perimeter walk every other app returns, dismisses it, draws the
+four legs Laneway returns one at a time, and verifies them. Hovering a leg in
+the panel lights that segment on the map.
+
+**The camera carries momentum.** Scroll sets a target and the camera eases
+toward it at 0.13 per frame, so it arrives slightly late instead of tracking
+the wheel exactly. Only transform, opacity and stroke-dashoffset are written,
+and one rect is read per frame.
+
+## Two things were deleted because this journal said they were wrong
+
+**The device mock is gone.** The standing open item said it invents an
+interface, and `CLAUDE.md` says screenshots must be of the app as it actually
+is. It also carried "4 legs, 38 min", a total nothing on the page supported.
+Removing it was the largest single subtraction and it also removed the
+floating-device-with-a-90px-shadow that made the page read as a template. The
+map now tells the same story without inventing a screen. **The open item about
+having no screenshots stands, and is now the only thing standing between this
+page and showing the product.**
+
+**The dev log's type specimen plate is gone.** The cropped wordmark with cap
+height, x-height and baseline guides, and the line reading "Weight 800 /
+tracking -0.055em". It was typography about typography and told a reader of an
+engineering log nothing. Both of its open items, the deliberate crop and the
+labels colliding with the wordmark on a phone, are closed by deletion rather
+than by adjustment.
+
+## Typography
+
+**Geist and Geist Mono, self hosted.** SIL Open Font License 1.1, from Vercel's
+own `geist` npm package v1.7.2, licence committed at `fonts/OFL.txt`. Served
+from `fonts/` and never from a CDN, so the no-third-party rule still holds.
+Both are variable, 100 to 900, so the weights on the page are real instances
+rather than synthesised bold.
+
+**They are subset to ASCII, and that is load bearing.** 17KB and 12KB instead
+of 68KB and 70KB. The subset is safe only because the non-ASCII check in
+`CLAUDE.md` already forbids every character it drops. **If that rule is ever
+relaxed, these files must be regenerated or the new characters render as
+tofu.** These are also the first binary assets in this repo.
+
+**Sohne was asked for and not used.** It is Klim retail, it is not free, and no
+copy was going to be taken from an unofficial mirror. If a licence is bought,
+the `@font-face` blocks are already shaped to take the files.
+
+## The subtraction pass
+
+Measured against the live DOM rather than the source, because the source can
+lie about what actually computes:
+
+- Three font weights, 400, 500 and 700, on both pages. There had been six.
+- One radius value, 4px. No pills anywhere; `999px` survives only on the
+  phone's Dynamic Island, which is a real capsule, and that element is gone now
+  with the mock.
+- No shadows, no gradients, anywhere on either page.
+- Two actions on the whole page. There had been four.
+- Six text colours, three of which are the verifier's own verdicts.
+
+The verdict cards became a ledger, which is the shape a verifier's output
+actually takes. The `Done` and `Planned` badges came off all nine status rows
+because the column heading already says which column it is. The closing plate
+became one line and one link. Section composition was varied on purpose so the
+page stops repeating `eyebrow, heading, paragraph, three cards`.
+
+**Dark mode is neutral grey on both pages.** The navy that came from
+`Theme.swift` is gone from the site. The app still uses it, so the two are no
+longer the same object; that is a deliberate divergence, not drift, and it is
+recorded here so it is not silently "fixed" later.
+
+## Changed
+
+- `index.html`, rewritten. The bundled export is gone.
+- `devlog.html`, palette, type, specimen plate removed, weights normalised.
+- `fonts/geist-var.woff2`, `fonts/geist-mono-var.woff2`, `fonts/OFL.txt`, new.
+- Both pages, `[id]{scroll-margin-top}`. See below.
+
+## Checked, not assumed
+
+No console errors on either page. No horizontal overflow at 375 or at desktop.
+The journey shortens from 420vh to 340vh on a phone and the ledger and the
+pipeline each collapse to one column. All fourteen dev log entries and all four
+metrics still render from `devlog.md`, so the markdown pipeline is untouched.
+The non-ASCII check passes. Zero third party requests at runtime, confirmed
+from the performance timeline rather than by reading the source.
+
+Two bugs were found by measuring and then fixed: the journey counter was
+anchored to a bottom aligned column and rendered in the middle of the panel
+copy, and the map's SVG overflowed the viewport by 11px horizontally.
+
+**The sticky header anchor problem is closed.** It had been open across several
+entries. `[id]{scroll-margin-top}` on both pages; a jump to `#verification` now
+lands at 72px against a 56px header instead of underneath it.
+
+## Open
+
+- **Still no screenshots, and now nothing standing in for them.** The mock is
+  gone, which is correct, but it means the page shows a diagram of a route and
+  never the app. `ios/Laneway.xcodeproj` exists in the product repo and a real
+  capture would settle this properly.
+- **The map is a schematic and should be read as one.** It shows the real
+  topology of the anchor case, T1, T3, the LINK between them and an off airport
+  depot, but the geometry is drawn by hand and is not survey accurate. It is
+  labelled as a diagram in the source comments; it is not labelled as one on the
+  page, and a reader could take it for a real map.
+- **The metrics band is still hand synced.** 137 tests and 0.19.0 are still
+  hard coded here and still go stale the moment the engine moves.
+- **The two ambers.** `#E89E2E` here and in the app, `#E79D3C` in the Figma
+  carousel. One of them should win before anything is posted publicly.
+- Unchanged: no dark mode issues remain, but the site and the app now differ
+  deliberately in dark mode and only this entry records why.
+
 # Dev Log Entries Now Share One Measure - Wednesday Aug 19
 
 *Written 12:03 PM, read off the clock.*

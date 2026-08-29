@@ -55,6 +55,34 @@ so it cannot play the animation at all right now. The smoothing constant is
 0.09 in `frame()`, and it is the one number to tune if the owner wants the
 scroll heavier or lighter.
 
+**Follow up, 10:52 AM: the owner felt the smoothing and called it "way
+better", and it was pushed as is.** The constant stays 0.09.
+
+## Night went navy again (10:52 AM)
+
+The owner's next call: "make the background classic laneway blue". The
+Aug 26 entry recorded dark mode going neutral grey as a deliberate
+divergence from the app, written down "so it is not silently fixed later".
+This is the loud fix: an owner instruction, reversing that decision on
+both pages.
+
+Which blue is the classic one was checked, not assumed. `#172133` is the
+brand tile behind the wordmark, the favicon square on both pages, and the
+ink colour of every site version before the map rebuild; the app's own dark
+background in `Theme.swift` is `#0D1421`, which at a glance still reads as
+black. So the background is the brand ink `#172133`, and the rest of the
+dark set comes from `Theme.swift`'s night colours: ink `#EDF0F5`, muted
+`#9EA8BA`, the map's land `#1A2436` which is the app's night surface. The
+warm white alpha channels (hairlines, roads, guides) were cooled from
+`242,241,238` to `237,240,245` to match. The dev log's card is `#232D41`,
+a step lighter in the same family because a card needs more separation
+than the map surface does. Both pages' dark `theme-color` metas moved to
+`#172133`. Light mode is untouched: paper, black ink, as before.
+
+Checked in the pane before pushing: index in dark and light, the dev log in
+dark with all entries and the metrics band still rendering from
+`devlog.md`, and no console errors on either page.
+
 ---
 
 # The Map Became the Page - Wednesday Aug 26

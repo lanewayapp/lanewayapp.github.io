@@ -6,7 +6,7 @@
 <title>Laneway - the legs no map has indexed</title>
 <meta name="description" content="Verified, multi-modal trip plans including the shuttles, terminal walks and connectors no mapping app has in its graph. Every fact carries a source. In development for iOS.">
 <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0A0A0A" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#172133" media="(prefers-color-scheme: dark)">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Laneway - the legs no map has indexed">
 <meta property="og:description" content="Verified, multi-modal trip plans including the shuttles, terminal walks and connectors no mapping app has in its graph.">
@@ -56,20 +56,24 @@
   --built:rgba(10,10,10,.055);
   --route:#C9871E;
 }
+/* Night is the Laneway navy again, owner call Saturday Aug 29, reversing the
+   neutral grey recorded on Aug 26. The background is the brand ink #172133,
+   the tile behind the wordmark; ink, muted and the map surface come from
+   Theme.swift's night set. */
 @media (prefers-color-scheme:dark){
   :root{
-    --bg:#0A0A0A;
-    --ink:#F2F1EE;
-    --muted:#928D86;
-    --hair:rgba(242,241,238,.14);
+    --bg:#172133;
+    --ink:#EDF0F5;
+    --muted:#9EA8BA;
+    --hair:rgba(237,240,245,.14);
     --accent:#E8A33C;
     --verified:#3FBE7C;
     --contradicted:#E9695A;
 
-    --land:#0E0E0E;
-    --road:rgba(242,241,238,.24);
-    --road-minor:rgba(242,241,238,.10);
-    --built:rgba(242,241,238,.05);
+    --land:#1A2436;
+    --road:rgba(237,240,245,.24);
+    --road-minor:rgba(237,240,245,.10);
+    --built:rgba(237,240,245,.05);
     --route:#E8A33C;
   }
 }

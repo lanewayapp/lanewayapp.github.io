@@ -1,3 +1,62 @@
+# The Wheel Stopped Showing - Saturday Aug 29
+
+*Written 10:31 AM.*
+
+## What was reported
+
+Two problems from the owner, watching the page scroll in dark mode: the black
+scrim behind the hero hard stops at its bottom edge as the page scrolls down,
+and the journey animation tracks the wheel so directly that the unevenness of
+a finger flick is visible in the route drawing and the panel fades.
+
+## The hard stop
+
+`.hero::before` was a rectangle, `top:0;bottom:0`, so its bottom edge was a
+hard horizontal line sliding up across the map. It now overhangs the hero by
+160px and a `mask-image` fades its last 300px to transparent, so the map is
+revealed through a soft edge. The fade spans the hero's bottom padding plus
+the overhang, so it never reaches the call to action row. `devlog.html` was
+checked and has no gradient to match.
+
+## The jitter
+
+Only the camera had momentum; the route drawing, node reveals, panel fades
+and progress rail were all bound raw to scroll position, so every wobble of
+the fingers landed on screen unfiltered. Scroll now only sets a destination:
+one low-pass filter closes 9% of the remaining gap per 60Hz frame, and
+everything in the journey reads that filtered progress. The camera keeps its
+own 13% easing on top, so it still arrives last, the way the Aug 26 entry
+wanted it.
+
+Simulated rather than described: input wobble of plus or minus 0.004 progress
+passes through at 4.8%, the output stays monotonic through a flick whose raw
+input reverses direction on alternating frames, and when the finger stops the
+animation glides the rest of the way home in just under a second.
+
+Three details that matter:
+
+- **Both easings are now frame-rate corrected.** The old camera closed 13% per
+  frame at any refresh rate, so a 120Hz display eased twice as fast as tuned.
+  Both constants now apply as `1 - pow(keep, dt * 60)`.
+- **The end-of-journey atlas fade stays on raw scroll.** The map must be fully
+  out exactly when the solid sections arrive, however hard the flick. Smoothing
+  that one value would let the solid section's top edge slide over a
+  still-visible map, which is the same hard stop in a new place.
+- **The filter seeds from the real scroll position on its first frame**, so a
+  reload half way down the page does not sweep the whole choreography up from
+  zero.
+
+## Verified how, and what is not verified
+
+The script parses, the filter maths was simulated, and the non-ASCII check
+passes. The feel has not been confirmed on a trackpad: the browser pane on
+this machine reported itself hidden and fired zero animation frames in 1.5s,
+so it cannot play the animation at all right now. The smoothing constant is
+0.09 in `frame()`, and it is the one number to tune if the owner wants the
+scroll heavier or lighter.
+
+---
+
 # The Map Became the Page - Wednesday Aug 26
 
 *Written 10:14 PM, read off the clock. The repo was not on this machine at the

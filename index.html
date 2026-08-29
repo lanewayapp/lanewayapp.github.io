@@ -138,12 +138,16 @@ main{position:relative;z-index:1}
 
 /* ---------------- hero ---------------- */
 .hero{padding:clamp(72px,11vw,150px) 0 clamp(72px,12vw,160px);position:relative}
-/* The map runs under the words. A flat scrim from the reading edge, not a blob. */
+/* The map runs under the words. A flat scrim from the reading edge, not a
+   blob. It overhangs the hero's bottom edge and a mask fades the last 300px,
+   so scrolling reveals the map through a soft edge instead of a hard stop. */
 .hero::before{
   content:"";position:absolute;z-index:-1;pointer-events:none;
-  top:0;bottom:0;left:-50vw;right:32%;
+  top:0;bottom:-160px;left:-50vw;right:32%;
   background:linear-gradient(to right,
     var(--bg) 62%, color-mix(in srgb,var(--bg) 80%,transparent) 84%, transparent 100%);
+  -webkit-mask-image:linear-gradient(to bottom,#000 calc(100% - 300px),transparent);
+  mask-image:linear-gradient(to bottom,#000 calc(100% - 300px),transparent);
 }
 .hero-inner{position:relative;max-width:52ch}
 .hero .mono{display:block;margin-bottom:22px}
@@ -551,8 +555,13 @@ footer .right{margin-left:auto;display:flex;gap:20px}
    the route every other app returns, replaces it with the four
    Laneway returns, and verifies them one at a time.
 
-   Camera keys are interpolated, then the camera eases toward
-   that target each frame so it carries momentum instead of
+   Nothing on the page tracks the wheel directly. Raw scroll
+   only sets a destination; a low-pass filter closes a fixed
+   fraction of the gap each frame, and the route drawing, the
+   panel fades and the camera keys all read that filtered
+   progress, so an uneven flick of the fingers becomes one
+   continuous movement. The camera then eases toward its keyed
+   target on top of that, so it carries momentum instead of
    teleporting. Only transform, opacity and stroke-dashoffset
    are written; one rect is read per frame.
    ============================================================ */
@@ -665,7 +674,12 @@ footer .right{margin-left:auto;display:flex;gap:20px}
   var WIN = [[0.00, 0.24], [0.24, 0.50], [0.50, 0.76], [0.76, 1.00]];
   var NO = ["01", "02", "03", "04"];
 
-  function frame() {
+  // Smoothed journey progress. -1 means not seeded yet, so a reload half way
+  // down the page starts from the real scroll position instead of sweeping
+  // the whole choreography up from zero.
+  var sp = -1;
+
+  function frame(dt) {
     if (bar) {
       var max = document.documentElement.scrollHeight - window.innerHeight;
       bar.style.width = (max > 0 ? (window.scrollY / max) * 100 : 0) + "%";
@@ -676,25 +690,32 @@ footer .right{margin-left:auto;display:flex;gap:20px}
     var raw = -r.top / total;
     var p = clamp(raw, 0, 1);
 
+    // The filter: close 9% of the remaining gap per 60Hz frame, corrected by
+    // dt so a 120Hz display eases at the same speed. Snap when the gap is
+    // under half a pixel of scroll so the tail does not run forever.
+    if (sp < 0) sp = p;
+    sp += (p - sp) * (1 - Math.pow(0.91, dt * 60));
+    if (Math.abs(p - sp) < 0.0004) sp = p;
+
     if (introDone) {
-      var k = raw < 0 ? HOME : keyAt(p);
+      var k = raw < 0 ? HOME : keyAt(sp);
       target.cx = k.cx; target.cy = k.cy; target.z = k.z;
     }
 
-    var badIn = seg(p, 0.14, 0.32), badOut = seg(p, 0.44, 0.52);
+    var badIn = seg(sp, 0.14, 0.32), badOut = seg(sp, 0.44, 0.52);
     rBad.style.strokeDashoffset = (1 - badIn).toFixed(4);
     rBad.style.opacity = (badIn * (1 - badOut)).toFixed(3);
 
     var START = 0.50, SPAN = 0.06;
     for (var i = 0; i < 4; i++) {
-      var t = seg(p, START + i * SPAN, START + (i + 1) * SPAN);
+      var t = seg(sp, START + i * SPAN, START + (i + 1) * SPAN);
       legs[i].style.strokeDashoffset = (1 - t).toFixed(4);
       legs[i].style.opacity = t > 0 ? "1" : "0";
     }
 
-    var verify = seg(p, 0.78, 0.96);
+    var verify = seg(sp, 0.78, 0.96);
     for (var n = 0; n < nodes.length; n++) {
-      var appear = n === 0 ? 1 : seg(p, START + (n - 1) * SPAN, START + n * SPAN + 0.02);
+      var appear = n === 0 ? 1 : seg(sp, START + (n - 1) * SPAN, START + n * SPAN + 0.02);
       nodes[n].style.opacity = clamp(appear, 0, 1).toFixed(3);
       var vt = clamp(verify * 5 - n, 0, 1);
       nodes[n].classList.toggle("ok", vt > 0.5 && n !== 3);
@@ -710,17 +731,19 @@ footer .right{margin-left:auto;display:flex;gap:20px}
     var active = 0;
     for (var q = 0; q < panels.length; q++) {
       var w = WIN[q];
-      var vis = clamp(seg(p, w[0] - 0.03, w[0] + 0.03) - seg(p, w[1] - 0.03, w[1] + 0.03), 0, 1);
+      var vis = clamp(seg(sp, w[0] - 0.03, w[0] + 0.03) - seg(sp, w[1] - 0.03, w[1] + 0.03), 0, 1);
       panels[q].style.opacity = vis.toFixed(3);
       panels[q].style.pointerEvents = vis > 0.6 ? "auto" : "none";
-      if (p >= w[0] && p < w[1]) active = q;
+      if (sp >= w[0] && sp < w[1]) active = q;
     }
     hudNo.textContent = NO[active];
-    hudRail.style.transform = "scaleX(" + p.toFixed(4) + ")";
+    hudRail.style.transform = "scaleX(" + sp.toFixed(4) + ")";
+    // The end fade stays on raw scroll, so the map is fully out exactly when
+    // the solid sections arrive, however hard the flick that got there.
     atlas.style.opacity = (1 - seg(p, 0.95, 1)).toFixed(3);
 
     if (introDone) {
-      var e = reduced ? 1 : 0.13;             // momentum
+      var e = 1 - Math.pow(0.87, dt * 60);    // momentum, 13% per 60Hz frame
       now.cx += (target.cx - now.cx) * e;
       now.cy += (target.cy - now.cy) * e;
       now.z += (target.z - now.z) * e;
@@ -745,8 +768,11 @@ footer .right{margin-left:auto;display:flex;gap:20px}
     narrow = window.matchMedia("(max-width:820px)").matches;
     pending = true;
   });
-  (function tick() {
-    if (pending || introDone) { pending = false; frame(); }
+  var lastT = 0;
+  (function tick(t) {
+    var dt = t && lastT ? Math.min((t - lastT) / 1000, 0.1) : 1 / 60;
+    if (t) lastT = t;
+    if (pending || introDone) { pending = false; frame(dt); }
     requestAnimationFrame(tick);
   })();
 })();

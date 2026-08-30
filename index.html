@@ -105,7 +105,11 @@ a{color:inherit}
 .atlas .road{fill:none;stroke:var(--road);stroke-width:2.2;vector-effect:non-scaling-stroke;stroke-linecap:round}
 .atlas .road.minor{stroke:var(--road-minor);stroke-width:1.3}
 .atlas .runway{fill:none;stroke:var(--road-minor);stroke-width:8;vector-effect:non-scaling-stroke}
-.atlas .built{fill:var(--built)}
+/* Footprints carry a hairline so a close camera reads them as drawn map
+   shapes, not as a torn overlay; the big apron block also halves its fill
+   for the same reason and lets the outline and dashes do the work. */
+.atlas .built{fill:var(--built);stroke:var(--road-minor);stroke-width:1;vector-effect:non-scaling-stroke}
+#ctxBuilt .built{fill-opacity:.55}
 .atlas .apron{fill:none;stroke:var(--road-minor);stroke-width:1.1;vector-effect:non-scaling-stroke;stroke-dasharray:5 5}
 .atlas .lbl{
   fill:var(--muted);font-family:"Geist Mono",ui-monospace,Menlo,monospace;
@@ -150,8 +154,14 @@ main{position:relative;z-index:1}
   top:0;bottom:-160px;left:-50vw;right:32%;
   background:linear-gradient(to right,
     var(--bg) 62%, color-mix(in srgb,var(--bg) 80%,transparent) 84%, transparent 100%);
-  -webkit-mask-image:linear-gradient(to bottom,#000 calc(100% - 300px),transparent);
-  mask-image:linear-gradient(to bottom,#000 calc(100% - 300px),transparent);
+  -webkit-mask-image:linear-gradient(to bottom,
+    #000 calc(100% - 300px), rgba(0,0,0,.92) calc(100% - 240px),
+    rgba(0,0,0,.7) calc(100% - 180px), rgba(0,0,0,.42) calc(100% - 120px),
+    rgba(0,0,0,.18) calc(100% - 60px), transparent 100%);
+  mask-image:linear-gradient(to bottom,
+    #000 calc(100% - 300px), rgba(0,0,0,.92) calc(100% - 240px),
+    rgba(0,0,0,.7) calc(100% - 180px), rgba(0,0,0,.42) calc(100% - 120px),
+    rgba(0,0,0,.18) calc(100% - 60px), transparent 100%);
 }
 .hero-inner{position:relative;max-width:52ch}
 .hero .mono{display:block;margin-bottom:22px}
@@ -171,9 +181,17 @@ main{position:relative;z-index:1}
 /* ---------------- the journey ---------------- */
 .journey{position:relative;height:420vh}
 .journey-sticky{position:sticky;top:0;height:100vh;display:flex;align-items:flex-end;pointer-events:none}
+/* Eased stops: a two-segment gradient has a visible corner where its slope
+   changes, and on the navy that corner reads as a hard line. */
 .journey-sticky::before{
   content:"";position:absolute;inset:auto 0 0 0;height:56%;pointer-events:none;
-  background:linear-gradient(to top,var(--bg) 6%, color-mix(in srgb,var(--bg) 74%,transparent) 44%, transparent 100%);
+  background:linear-gradient(to top,
+    var(--bg) 8%,
+    color-mix(in srgb,var(--bg) 92%,transparent) 26%,
+    color-mix(in srgb,var(--bg) 74%,transparent) 44%,
+    color-mix(in srgb,var(--bg) 48%,transparent) 62%,
+    color-mix(in srgb,var(--bg) 22%,transparent) 80%,
+    transparent 100%);
 }
 .journey-sticky .wrap{width:100%;padding-bottom:clamp(32px,7vh,72px);position:relative}
 /* Pinned to the top of the viewport, not to the bottom-aligned column. */

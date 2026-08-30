@@ -83,6 +83,36 @@ Checked in the pane before pushing: index in dark and light, the dev log in
 dark with all entries and the metrics band still rendering from
 `devlog.md`, and no console errors on either page.
 
+## The slab was the apron (6:32 PM)
+
+The owner screenshotted the live site mid-journey: "still hard gradient
+stop". The screenshot said which element it was, because the pale slab
+covering most of the map had rows of dashes inside it, and only one thing
+on the map has dashes: the `ctxBuilt` apron rectangle. At journey zoom the
+520x300 apron block fills the viewport, and a flat 5% white fill with
+naked edges over the navy reads as a torn gradient overlay, not as map
+shading. It was there on the neutral grey too; the navy raised it past
+noticeable.
+
+Three changes, verified by injecting the exact camera state into the local
+page and screenshotting before and after, because the hidden pane still
+cannot run the animation:
+
+- **Footprint shapes now carry a hairline outline** (`--road-minor`,
+  non-scaling), so a close camera reads them as drawn map shapes. The
+  apron block also halves its fill (`fill-opacity:.55`) and lets the
+  outline and the dashes do the work.
+- **The journey scrim's gradient got eased stops.** A two-segment gradient
+  has a corner where its slope changes, and a corner in a luminance ramp
+  shows as a line. Six stops now approximate a smooth curve.
+- **The hero scrim's mask fade got the same treatment**, five stops in
+  place of one linear segment.
+
+The camera-state injection trick is worth keeping: compute `keyAt(p)` and
+`detail(z)` by hand for the scroll position in question, set the transform
+and layer opacities directly, and the static render matches what a
+scrolling reader sees at that moment.
+
 ---
 
 # The Map Became the Page - Wednesday Aug 26

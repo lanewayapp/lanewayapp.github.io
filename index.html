@@ -58,8 +58,12 @@
 }
 /* Night is the Laneway navy again, owner call Saturday Aug 29, reversing the
    neutral grey recorded on Aug 26. The background is the brand ink #172133,
-   the tile behind the wordmark; ink, muted and the map surface come from
-   Theme.swift's night set. */
+   the tile behind the wordmark; ink and muted come from Theme.swift's night
+   set. The land is IDENTICAL to the background on purpose: the scrims fade
+   the page colour over the map, and a 300px fade between two navys a few RGB
+   units apart quantises into a handful of 100px bands whose edges read as
+   hard lines. With land equal to bg the scrims fade only the drawn details,
+   which cannot band. Do not "fix" the land back to a surface tint. */
 @media (prefers-color-scheme:dark){
   :root{
     --bg:#172133;
@@ -70,7 +74,7 @@
     --verified:#3FBE7C;
     --contradicted:#E9695A;
 
-    --land:#1A2436;
+    --land:#172133;
     --road:rgba(237,240,245,.24);
     --road-minor:rgba(237,240,245,.10);
     --built:rgba(237,240,245,.05);

@@ -113,6 +113,40 @@ The camera-state injection trick is worth keeping: compute `keyAt(p)` and
 and layer opacities directly, and the static render matches what a
 scrolling reader sees at that moment.
 
+## The apron fix was a miss; the real cause was quantisation (7:17 PM)
+
+The owner's verdict on the apron-and-easing push was blunt and correct:
+the hard stop was still there. The mistake in method is worth recording:
+two fixes were shipped from a hidden pane that cannot animate, on theories
+built from screenshots, without once watching the page render.
+
+Third attempt was measured in the owner's real Chrome via the extension:
+loaded the live page, scrolled to the seam, read the computed styles (the
+mask was applied; no parse failure) and zoomed a screenshot of the band.
+The close-up showed the actual phenomenon: not a slope corner, not the
+apron, but **giant quantisation bands**. The scrims fade the page colour
+over the land, and bg `#172133` to land `#1A2436` is three RGB units
+apart. A 300px ramp between colours three units apart can only render
+three or four discrete steps, each around 100px tall, and every step edge
+is a visible line that crawls as the scrim scrolls over the pinned map.
+The neutral grey build had the identical defect (`#0A0A0A` over
+`#0E0E0E`, four units), which is what the owner's first complaint was.
+Adding easing stops to such a ramp does nothing: the corners were never
+the problem, the bit depth was.
+
+The fix is one token: dark `--land` now equals `--bg`. With identical
+endpoints the scrims fade only the drawn details, which are high contrast
+and cannot band, and empty areas have no ramp at all. Verified in the
+owner's Chrome at the same scroll position and zoom region: flat navy
+where the stripes were. The apron outline and halved fill from the
+previous push stay because they read better up close, but they were not
+the cure. A warning comment sits on the dark token block so the land is
+not given a surface tint back in the name of tidiness.
+
+Lesson, plainly: the pane being unable to animate was known and the
+shipping went ahead anyway, twice. When the render cannot be watched,
+the claim "verified" is not available.
+
 ---
 
 # The Map Became the Page - Wednesday Aug 26

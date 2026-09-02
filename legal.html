@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Laneway legal</title>
+<meta name="description" content="The Laneway terms of service, privacy policy, and end user licence agreement, written to be read.">
+<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#172133" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Laneway legal">
+<meta property="og:description" content="Terms of service, privacy policy, and licence, written to be read.">
+<meta property="og:url" content="https://lanewayapp.github.io/legal.html">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23172133'/><path d='M9 25 Q9 13 16 13 Q23 13 23 7' stroke='%23E89E2E' stroke-width='3.2' fill='none' stroke-linecap='round'/><circle cx='9' cy='25' r='2.6' fill='%23E89E2E'/></svg>">
+<link rel="preload" href="fonts/geist-var.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+/* Geist and Geist Mono, Vercel and basement.studio, SIL Open Font License 1.1.
+   Same files index.html uses, served from this repo, never a CDN. Variable
+   100-900, subset to the ASCII range the house style enforces. See
+   fonts/OFL.txt. */
+@font-face{
+  font-family:"Geist";
+  src:url("fonts/geist-var.woff2") format("woff2-variations"),
+      url("fonts/geist-var.woff2") format("woff2");
+  font-weight:100 900;font-style:normal;font-display:swap;
+}
+@font-face{
+  font-family:"Geist Mono";
+  src:url("fonts/geist-mono-var.woff2") format("woff2-variations"),
+      url("fonts/geist-mono-var.woff2") format("woff2");
+  font-weight:100 900;font-style:normal;font-display:swap;
+}
+
+/* Same specimen shell as devlog.html, kept self-contained so each page is one
+   file with no build step and nothing to fetch. Palette from the app's
+   Theme.swift. Flat: hairlines, no radius, no shadow. The documents are the
+   content, so the page is set like the log: one measure, three weights. */
+:root{
+  --paper:#FFFFFF;
+  --card:#F5F4F2;
+  --ink:#0A0A0A;
+  --subtle:#65605A;
+  --rail:rgba(10,10,10,.14);
+  --accent:#E89E2E;
+  --accent-deep:#B4761A;
+  --verified:#1E7A48;
+  --contradicted:#B23A2A;
+}
+/* Night is the Laneway navy, same set as index.html and devlog.html:
+   background is the brand ink #172133, ink and subtle from Theme.swift's
+   night set. */
+@media (prefers-color-scheme:dark){
+  :root{
+    --paper:#172133;
+    --card:#232D41;
+    --ink:#EDF0F5;
+    --subtle:#9EA8BA;
+    --rail:rgba(237,240,245,.14);
+    --accent-deep:#EFAC3F;
+    --verified:#3FBE7C;
+    --contradicted:#E9695A;
+  }
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+/* The header is sticky, so anything an in-page link targets has to clear it
+   or the heading lands underneath. */
+[id]{scroll-margin-top:calc(52px + 18px)}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:"Geist",-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;line-height:1.55;overflow-x:hidden;
+}
+.mono{font-family:"Geist Mono",ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  font-size:11px;letter-spacing:.13em;text-transform:uppercase}
+a{color:inherit}
+.wrap{max-width:1120px;margin:0 auto;padding:0 clamp(18px,4vw,32px)}
+
+header.top{
+  position:sticky;top:0;z-index:50;
+  background:var(--paper);
+  border-bottom:1px solid var(--ink);
+}
+.top .wrap{display:flex;align-items:center;gap:16px;height:52px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:700;letter-spacing:.16em;font-size:13px}
+.brand svg{flex:none}
+.top nav{margin-left:auto;display:flex;gap:clamp(14px,3vw,26px);align-items:center}
+.top nav a{color:var(--subtle);text-decoration:none;transition:color .15s}
+.top nav a:hover,.top nav a:focus-visible{color:var(--ink)}
+.top nav a[aria-current]{color:var(--ink)}
+
+/* ---------- masthead ---------- */
+
+.masthead{padding-top:clamp(48px,8vw,96px);padding-bottom:clamp(30px,5vw,52px)}
+.masthead .mono{display:block;margin-bottom:20px}
+.masthead h1{font-size:clamp(28px,4.2vw,44px);line-height:1.1;letter-spacing:-.025em;margin:0;font-weight:700;max-width:22ch}
+.masthead p{color:var(--subtle);max-width:56ch;font-size:16px;margin:18px 0 0}
+.masthead .toc{display:flex;flex-wrap:wrap;gap:clamp(14px,3vw,26px);margin-top:26px}
+.masthead .toc a{color:var(--accent-deep);text-decoration:none}
+.masthead .toc a:hover,.masthead .toc a:focus-visible{color:var(--ink)}
+
+/* ---------- the documents ---------- */
+
+.doc{
+  display:grid;grid-template-columns:minmax(150px,1fr) minmax(0,760px);
+  gap:clamp(16px,3vw,38px);
+  padding:clamp(28px,4.4vw,52px) 0;
+  border-top:1px solid var(--ink);
+}
+.doc .side{position:sticky;top:74px;align-self:start}
+.doc .side .which{
+  display:block;font-family:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;
+  color:var(--accent-deep);
+}
+.doc .side .eff{display:block;color:var(--subtle);margin-top:9px;font-size:14px}
+
+.doc h2{font-size:clamp(22px,3vw,30px);line-height:1.16;margin:0;font-weight:700}
+.doc .lede{color:var(--subtle);font-size:16px;margin:14px 0 0;max-width:62ch}
+.doc h3{font-size:16px;font-weight:700;letter-spacing:-.01em;margin:30px 0 0}
+.doc p{color:var(--subtle);font-size:15.5px;line-height:1.6;margin:10px 0 0;max-width:66ch}
+.doc ul{margin:10px 0 0;padding-left:20px;max-width:66ch}
+.doc li{color:var(--subtle);font-size:15.5px;line-height:1.6;margin-top:6px}
+.doc strong{color:var(--ink);font-weight:500}
+.doc .todo{color:var(--contradicted)}
+
+footer{border-top:1px solid var(--ink);padding:22px 0 40px;color:var(--subtle)}
+footer .wrap{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+footer a{color:var(--subtle);text-decoration:none}
+footer a:hover,footer a:focus-visible{color:var(--ink)}
+footer .right{margin-left:auto;display:flex;gap:18px}
+
+:focus-visible{outline:2px solid var(--accent-deep);outline-offset:2px}
+
+@media (max-width:820px){
+  .doc{grid-template-columns:minmax(0,1fr);gap:14px}
+  .doc .side{position:static;display:flex;align-items:baseline;gap:12px}
+  .doc .side .eff{margin-top:0}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="./">
+      <svg width="20" height="20" viewBox="0 0 32 32" aria-hidden="true">
+        <rect width="32" height="32" rx="7" fill="currentColor"/>
+        <path d="M9 25 Q9 13 16 13 Q23 13 23 7" stroke="#E89E2E" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+        <circle cx="9" cy="25" r="2.6" fill="#E89E2E"/>
+      </svg>
+      LANEWAY
+    </a>
+    <nav class="mono">
+      <a href="./">Overview</a>
+      <a href="devlog.html">Dev log</a>
+      <a href="legal.html" aria-current="page">Legal</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<div class="wrap masthead">
+  <span class="mono">The paperwork</span>
+  <h1>Terms, privacy, and the licence, written to be read.</h1>
+  <p>
+    Laneway's product rule is that it never presents a fact it cannot back up.
+    These documents are written under the same rule: they describe what the
+    software actually does, not what a template says software like it might do.
+  </p>
+  <nav class="toc mono" aria-label="Documents on this page">
+    <a href="#terms">Terms of service</a>
+    <a href="#privacy">Privacy policy</a>
+    <a href="#eula">Licence</a>
+  </nav>
+</div>
+
+<div class="wrap">
+
+<!-- ================= terms ================= -->
+
+<section class="doc" id="terms">
+  <div class="side">
+    <span class="which">Terms of Service</span>
+    <span class="eff">Effective Wednesday Sep 2, 2026</span>
+  </div>
+  <div>
+    <h2>The agreement for using the service.</h2>
+    <p class="lede">
+      If a sentence here promises something the product does not do, that is a
+      bug in the terms, and you should tell us.
+    </p>
+
+    <h3>1. Who these terms are between</h3>
+    <p>
+      Laneway ("we", "us") is a trip planning and navigation service operated
+      by an independent developer based in Alberta, Canada. "You" are the
+      person using the Laneway app or the Laneway service. By using either,
+      you agree to these terms. The app itself is licensed to you under the
+      <a href="#eula">End User Licence Agreement</a>; your data is handled as
+      described in the <a href="#privacy">Privacy Policy</a>.
+    </p>
+
+    <h3>2. What Laneway is</h3>
+    <p>
+      Laneway plans multi-modal trips, including the legs that ordinary
+      mapping apps cannot see, and navigates you along them. Plans are
+      produced with the help of AI models and then checked against sources:
+      official transit feeds, operator pages, and other published data. Every
+      factual claim in a plan carries its source and the time it was fetched.
+    </p>
+
+    <h3>3. What verified means, and what it does not</h3>
+    <p>
+      When Laneway marks something <strong>verified</strong>, that means the
+      claim was traced to a quoted span of a named source at a stated time.
+      It does not mean the claim is guaranteed to be true when you travel.
+      Schedules change, shuttles stop running, feeds go stale, and sources
+      are sometimes wrong. Anything Laneway could not verify is marked
+      <strong>unverified</strong> rather than hidden, and an unverified leg
+      is exactly what it says: a best guess you should confirm yourself,
+      with the operator if it matters.
+    </p>
+
+    <h3>4. Travel decisions are yours</h3>
+    <p>Laneway is information, not authority.</p>
+    <ul>
+      <li>Follow posted signage, staff instructions, and local law when they
+        disagree with the app. They win, every time.</li>
+      <li>Do not interact with the app while driving or cycling beyond what
+        the law and common sense allow. Set up the trip before you move.</li>
+      <li>For anything with a real cost of failure, such as a last train, a
+        border crossing, a flight connection, or a medical need, confirm the
+        critical leg with the operator before relying on it.</li>
+      <li>You are responsible for your own safety and for the decision to
+        take any route the app proposes.</li>
+    </ul>
+
+    <h3>5. Your account</h3>
+    <p>
+      The app creates an account for your device on first use, with nothing
+      to fill in. You may optionally attach Sign in with Apple to it; nothing
+      in the app is locked behind signing in. You are responsible for keeping
+      your device secure. You can sign out a device from Settings, which
+      revokes that device's session without touching your others. To have
+      your account and its server records deleted, contact us (section 16).
+    </p>
+
+    <h3>6. Fair use and metering</h3>
+    <p>
+      Planning costs us real money per trip, so plans are metered per
+      account, with limits designed so a normal traveller never notices
+      them. We may throttle or refuse requests that look automated or
+      abusive. You agree not to probe, scrape, overload, or reverse engineer
+      the service, not to resell access to it, and not to bypass metering,
+      including by creating accounts in bulk.
+    </p>
+
+    <h3>7. Fees</h3>
+    <p>
+      Laneway is free today. If paid features ever arrive, they will be
+      clearly priced, you will never be charged without agreeing first, and
+      these terms will be updated before any charge exists.
+    </p>
+
+    <h3>8. What you send us</h3>
+    <p>
+      Trip requests are yours. You give us permission to process them,
+      including through the third-party services in section 9, for the
+      purpose of producing and improving your plans. We do not use your
+      requests for advertising and we do not sell them, as the Privacy
+      Policy spells out.
+    </p>
+
+    <h3>9. Third-party services and sources</h3>
+    <p>
+      Plans are built from third-party data: transit agency feeds, operator
+      websites, and routing and geocoding services from Apple, Google, and
+      others. AI processing is provided by Anthropic. We are not affiliated
+      with any transit agency or operator, and their services are governed
+      by their own terms. We do not control their data and cannot promise it
+      is correct.
+    </p>
+
+    <h3>10. Availability</h3>
+    <p>
+      We aim to keep the service up, but it is provided without any uptime
+      guarantee. It may be interrupted, changed, or discontinued. Saved
+      trips are designed to remain readable on your device without
+      connectivity.
+    </p>
+
+    <h3>11. Ending things</h3>
+    <p>
+      You can stop using Laneway at any time; deleting the app removes
+      everything it stored on your phone. We may suspend or close accounts
+      that break section 6, abuse the service, or expose others to risk. If
+      we discontinue the service entirely, we will say so rather than
+      letting it quietly rot.
+    </p>
+
+    <h3>12. No warranty</h3>
+    <p>
+      The service is provided as is and as available, without warranties of
+      any kind beyond those that cannot be excluded under the law of your
+      province. Section 3 is the honest description of what verification can
+      and cannot promise, and no other statement enlarges it.
+    </p>
+
+    <h3>13. Limits on liability</h3>
+    <p>
+      To the extent permitted by law, our total liability for any claim
+      arising out of the service is limited to the greater of 50 Canadian
+      dollars and the amount you paid us in the twelve months before the
+      claim. We are not liable for indirect or consequential losses,
+      including a missed connection, missed flight, or costs of alternate
+      travel. Some provinces do not allow some of these limits; where the
+      law gives you a right these terms cannot take away, you keep that
+      right.
+    </p>
+
+    <h3>14. Governing law</h3>
+    <p>
+      These terms are governed by the laws of Alberta and the federal laws
+      of Canada that apply there. Disputes belong to the courts of Alberta,
+      unless consumer protection law in your province gives you the right to
+      something else, in which case you keep it.
+    </p>
+
+    <h3>15. Changes to these terms</h3>
+    <p>
+      When these terms change, the effective date at the top changes with
+      them and the app will point at the new version. Continuing to use
+      Laneway after a change means you accept it. We will not quietly reduce
+      your rights in a way that matters without saying so plainly.
+    </p>
+
+    <h3>16. Contact</h3>
+    <p class="todo">
+      [CONTACT EMAIL - a public contact address has not been chosen yet;
+      this page should not go live until one exists.]
+    </p>
+  </div>
+</section>
+
+<!-- ================= privacy ================= -->
+
+<section class="doc" id="privacy">
+  <div class="side">
+    <span class="which">Privacy Policy</span>
+    <span class="eff">Effective Wednesday Sep 2, 2026</span>
+  </div>
+  <div>
+    <h2>What is collected, what is not, and where it goes.</h2>
+
+    <h3>1. The short version</h3>
+    <ul>
+      <li>Your places, saved trips, and preferences live on your phone.</li>
+      <li>When you plan a trip, the request is sent to a Laneway server and
+        processed with the help of the third-party services named below.</li>
+      <li>Accounts are anonymous by default. Sign in with Apple is
+        optional.</li>
+      <li>No ads, no analytics SDKs, no tracking across apps, and your data
+        is never sold.</li>
+    </ul>
+
+    <h3>2. What stays on your phone</h3>
+    <p>
+      The app stores on the device, and only on the device: your Home and
+      Work addresses, saved trips, recent destinations, mode preferences,
+      and app settings. Saved trips are indexed with Spotlight so you can
+      search them; that index also stays on the phone. Deleting the app
+      deletes all of it.
+    </p>
+
+    <h3>3. What is sent when you plan a trip</h3>
+    <p>
+      A plan request contains what a plan needs: the origin and destination
+      as you described them, the time window, your mode preferences and
+      constraints, and, when you use your current location as a starting
+      point, that location's coordinates. While navigating, guidance runs on
+      the device; your live position is not streamed to the server.
+    </p>
+
+    <h3>4. What the server keeps</h3>
+    <ul>
+      <li>Your account: a random identifier and its creation time.</li>
+      <li>Sessions: one per signed-in device, stored as a cryptographic hash
+        of the token, never the token itself.</li>
+      <li>Usage records: when a plan was made, what it cost to produce, and
+        which trip it belonged to. This is how fair-use metering works.</li>
+      <li>Trip results, for the time it takes you to fetch them.</li>
+      <li>Ordinary server logs, kept briefly for debugging and abuse
+        prevention.</li>
+    </ul>
+
+    <h3>5. Sign in with Apple</h3>
+    <p>
+      If you choose to sign in, Apple gives us a stable anonymous identifier
+      for your Apple account, and, if you agree to share it, an email
+      address, which may be Apple's private relay address rather than your
+      real one. We store both. They are used to let you reclaim your account
+      on a new phone, and for nothing else today. If you never sign in, we
+      never have them.
+    </p>
+
+    <h3>6. Services that process your requests</h3>
+    <ul>
+      <li><strong>Anthropic</strong> processes the text of your trip request
+        to draft and check the plan.</li>
+      <li><strong>Google</strong> routing services compute road and transit
+        legs, when enabled.</li>
+      <li><strong>Apple</strong> services on your device handle maps,
+        geocoding, and address suggestions; those queries go to Apple from
+        your phone under Apple's privacy terms.</li>
+    </ul>
+    <p>Each processes only what a plan needs, under its own terms.</p>
+
+    <h3>7. Cached public data</h3>
+    <p>
+      The server caches public data it fetched to verify plans: transit feed
+      summaries and copies of public web pages. This cache is about the
+      world, not about you; it holds no personal data.
+    </p>
+
+    <h3>8. What we do not do</h3>
+    <p>
+      No advertising, no third-party analytics, no data brokers, no selling
+      or renting personal information, no tracking you across other apps or
+      websites, and no reading anything on your phone beyond what the app
+      needs to plan and navigate.
+    </p>
+
+    <h3>9. How long things are kept</h3>
+    <p>
+      Cached public data expires on its own schedule, from hours to days.
+      Usage records are kept while your account exists, because they are
+      what the metering stands on. Server logs rotate out on the order of
+      weeks. When your account is deleted, its records go with it.
+    </p>
+
+    <h3>10. Security</h3>
+    <p>
+      Session tokens are stored only as hashes. Connections to a Laneway
+      server over the public internet are encrypted with HTTPS. When the app
+      finds a Laneway engine on your own local network, that traffic stays
+      inside your network and is not encrypted in transit; that mode exists
+      for running your own engine at home.
+    </p>
+
+    <h3>11. Children</h3>
+    <p>
+      Laneway is not directed at children under 13, and we do not knowingly
+      collect their information.
+    </p>
+
+    <h3>12. Your rights</h3>
+    <p>
+      Canadian privacy law, PIPEDA, applies. You can ask what we hold about
+      you, ask for corrections, withdraw consent, and ask for deletion, by
+      contacting us (section 14). You can also complain to the Office of the
+      Privacy Commissioner of Canada.
+    </p>
+
+    <h3>13. Changes</h3>
+    <p>
+      When this policy changes, the date at the top changes, and the app
+      will point at the new version. A change that collects more than this
+      version describes will be called out plainly, not slipped in.
+    </p>
+
+    <h3>14. Contact</h3>
+    <p class="todo">
+      [CONTACT EMAIL - a public contact address has not been chosen yet;
+      this page should not go live until one exists.]
+    </p>
+  </div>
+</section>
+
+<!-- ================= eula ================= -->
+
+<section class="doc" id="eula">
+  <div class="side">
+    <span class="which">End User Licence Agreement</span>
+    <span class="eff">Effective Wednesday Sep 2, 2026</span>
+  </div>
+  <div>
+    <h2>The licence for the app itself.</h2>
+    <p class="lede">
+      This agreement covers the Laneway app: the software installed on your
+      device. Use of the Laneway service through the app is governed by the
+      <a href="#terms">Terms of Service</a>, and your data by the
+      <a href="#privacy">Privacy Policy</a>.
+    </p>
+
+    <h3>1. The licence</h3>
+    <p>
+      We grant you a personal, non-exclusive, non-transferable licence to
+      install and use the Laneway app on Apple devices you own or control,
+      for your own travel. The app is licensed to you, not sold.
+    </p>
+
+    <h3>2. What you may not do</h3>
+    <p>
+      You may not copy the app except as normal use and backup require,
+      distribute it, rent it, sell it, or sublicense it; modify it or make
+      derivative works of it; or reverse engineer, decompile, or disassemble
+      it except to the extent the law allows despite this clause. You may
+      not use the app to break the Terms of Service, and you may not remove
+      or falsify any notice in it.
+    </p>
+
+    <h3>3. Ownership</h3>
+    <p>
+      The app, its design, and everything in it that is not yours or a third
+      party's remain ours. Third-party data reached through the app, such as
+      transit feeds and map data, belongs to its own providers under their
+      own terms.
+    </p>
+
+    <h3>4. The service behind the app</h3>
+    <p>
+      The app depends on the Laneway service to plan trips. The service is
+      provided under the Terms of Service, including its honest description
+      of what verification means, its travel safety terms, and its limits on
+      liability, all of which apply to your use of the app.
+    </p>
+
+    <h3>5. Updates</h3>
+    <p>
+      We may provide updates that change or remove features. An update may
+      be required for the app to keep working with the service. This
+      agreement covers updates unless they arrive with their own terms.
+    </p>
+
+    <h3>6. Termination</h3>
+    <p>
+      This licence ends automatically if you materially breach it. You can
+      end it any time by deleting the app. Sections 3, 7, and 8 survive.
+    </p>
+
+    <h3>7. No warranty</h3>
+    <p>
+      The app is provided as is and as available, without warranties of any
+      kind beyond those that cannot be excluded under the law of your
+      province. We do not promise it is error free or uninterrupted.
+    </p>
+
+    <h3>8. Limits on liability</h3>
+    <p>
+      The limitation of liability in the Terms of Service applies to the app
+      as well and is not enlarged by this agreement. Where the law gives you
+      a right this agreement cannot take away, you keep that right.
+    </p>
+
+    <h3>9. Compliance with law</h3>
+    <p>
+      You are responsible for using the app lawfully where you are,
+      including traffic law while travelling.
+    </p>
+
+    <h3>10. If you got the app through Apple</h3>
+    <p>
+      When the app is distributed through Apple's App Store, the following
+      also applies. This agreement is between you and us, not Apple, and
+      Apple is not responsible for the app or its content. Apple has no
+      obligation to provide maintenance or support for the app. In case of
+      the app's failure to conform to an applicable warranty, you may notify
+      Apple and Apple will refund the purchase price if any; to the maximum
+      extent permitted by law, Apple has no other warranty obligation for
+      the app. Apple is not responsible for addressing any claim by you or a
+      third party relating to the app, including product liability claims,
+      claims that the app fails to conform to a legal or regulatory
+      requirement, consumer protection claims, and intellectual property
+      claims. You represent that you are not located in a country subject to
+      a Government of Canada or United States embargo and are not on any
+      government list of prohibited or restricted parties. Apple and its
+      subsidiaries are third-party beneficiaries of this agreement and may
+      enforce it against you.
+    </p>
+
+    <h3>11. Governing law</h3>
+    <p>
+      This agreement is governed by the laws of Alberta and the federal laws
+      of Canada that apply there, subject to any consumer protection law of
+      your province that applies regardless.
+    </p>
+
+    <h3>12. Contact</h3>
+    <p class="todo">
+      [CONTACT EMAIL - a public contact address has not been chosen yet;
+      this page should not go live until one exists.]
+    </p>
+  </div>
+</section>
+
+</div>
+
+</main>
+
+<footer>
+  <div class="wrap mono">
+    <span>Laneway. Built in the open, shipped when it is trustworthy.</span>
+    <span class="right">
+      <a href="./">Overview</a>
+      <a href="devlog.html">Dev log</a>
+      <a href="https://github.com/barongartner">GitHub</a>
+    </span>
+  </div>
+</footer>
+
+</body>
+</html>

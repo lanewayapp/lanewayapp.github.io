@@ -1,3 +1,38 @@
+# The Paperwork Page - Wednesday Sep 2
+
+*Written 11:27 AM.*
+
+## What was asked
+
+The owner asked for "a tos and user agreement and eula and all other stuff"
+as part of a wider Laneway session running in the product repo (its issue
+#112 tracks the documents; the user agreement and the terms of service are
+one document, so the set is three: terms, privacy policy, EULA).
+
+## What was done
+
+- `legal.html`: a third page carrying all three documents with `#terms`,
+  `#privacy`, and `#eula` anchors, so the App Store's privacy policy URL
+  field can point at one page. Same specimen shell as `devlog.html`,
+  self-contained, no build step, Geist from this repo, navy night set.
+  Verified over http in light and dark and at a narrow width.
+- The documents are written under the site's inherited rule: they describe
+  what the software actually does. The privacy policy names Anthropic,
+  Google, and Apple as processors, says plainly that the home-LAN engine
+  mode is unencrypted local traffic, and says what the server keeps.
+  Canonical markdown copies live in the product repo under `docs/legal/`.
+- Footer links to Legal added on `index.html` and `devlog.html`; the page
+  list in `CLAUDE.md` now says three pages.
+
+## Deliberately not merged to main
+
+Each contact section holds a bracketed placeholder, styled in the
+contradicted red: no public contact email exists yet, and the page must not
+go live until one does. This work rides a branch and a PR so the owner
+decides when the site changes; publishing is his call, not the session's.
+
+---
+
 # The Wheel Stopped Showing - Saturday Aug 29
 
 *Written 10:31 AM.*

@@ -1,3 +1,66 @@
+# The Public Repo Had No Licence At All - Thursday Sep 3
+
+*Written 4:31 PM.*
+
+## What was reported
+
+"explain the license in the laneway org", then "make it fully covering all
+bases". The question was about the engine repo's licence file, but reading it
+meant reading this repo too, and this one had nothing.
+
+## What it actually was
+
+The engine repo at least had a three-sentence proprietary notice. This repo
+had no licence file of any kind. Public, served by Pages, and silent: the copy,
+the page design, the stylesheets, and every dev log entry sitting under bare
+default copyright with nothing stated either way.
+
+Silence is not the same as safety here. It is the one Laneway repo a stranger
+can actually read, and the dev log is the most copyable thing either repo
+contains.
+
+The Geist fonts made it more than a formality. `fonts/OFL.txt` has been sitting
+in the tree since the specimen shell landed, and a blanket all-rights-reserved
+claim over "everything in this repository" would have quietly contradicted it.
+
+## What was done
+
+Added `LICENSE`, nine short sections, shaped for what this repo actually is
+rather than copied from the engine's:
+
+- Reading, linking, and quoting short passages with attribution are explicitly
+  allowed, which is what a public site is for.
+- Republishing the pages, mirroring the dev log, reusing the design or the
+  stylesheets, and training on the copy are not.
+- Section 4 carves the Geist and Geist Mono typefaces out to SIL OFL 1.1 and
+  says plainly that this file does not restrict them.
+- Section 5 says publishing the terms, privacy policy, and EULA on
+  `legal.html` grants no licence to copy their text.
+- Section 7 restates the boundary: the app and engine are not in this repo,
+  their source is private and separately licensed.
+
+No confidentiality or reverse engineering clauses, because this repo has no
+secrets and copying them over from the engine licence would have been theatre.
+
+Tracked as lanewayapp/Laneway#116, where the engine side of the same work
+landed.
+
+## Checked
+
+The non-ASCII house-style check passes on the new file. Nothing else in the
+repo was touched: no page, no stylesheet, no dev log entry, no asset.
+
+## Open
+
+- **The contact address.** Section 9 carries the same `[CONTACT EMAIL]`
+  placeholder the three documents in `legal.html` already carry. One decision
+  fills all four.
+- **`CLAUDE.md` still points at `barongartner/LANEWAY`** as the product repo.
+  That moved to the `lanewayapp` org on Wednesday Aug 26 and this file never
+  caught up.
+
+---
+
 # The Route Was Never Reaching Its Nodes - Thursday Sep 3
 
 *Written 5:45 PM.*

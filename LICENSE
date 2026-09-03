@@ -1,0 +1,62 @@
+Laneway website
+Copyright (c) 2026 Baron Gartner. All rights reserved.
+
+This repository is public so the site can be served from it. Public is not the
+same as open source, and nothing here is offered under an open source licence.
+
+1. What this covers
+
+   The pages, copy, dev log entries, page design, stylesheets, markup, images,
+   and other assets in this repository are the property of Baron Gartner ("the
+   owner"), except for the third-party material named in section 4. Every
+   right not expressly granted here is reserved.
+
+2. What you may do
+
+   Read the site, link to it, and quote short passages with attribution and a
+   link, the way anyone may quote any published writing.
+
+3. What you may not do
+
+   Copy, republish, mirror, or redistribute the pages or the dev log; reuse
+   the page design, layout, or stylesheets in another site; use the copy or
+   the dev log to build, train, evaluate, or improve any product, model, or
+   dataset; or present any of it as your own. Ask first, in writing.
+
+4. Third-party material
+
+   The Geist and Geist Mono typefaces are copyright Vercel in collaboration
+   with basement.studio, under the SIL Open Font Licence 1.1. See
+   fonts/OFL.txt. They are licensed by that file, not by this one, and this
+   file does not restrict them.
+
+5. The legal documents
+
+   legal.html publishes the Laneway Terms of Service, Privacy Policy, and End
+   User Licence Agreement. Those documents govern use of the Laneway app and
+   service. Publishing them grants no licence to copy or adapt their text.
+
+6. Trademarks
+
+   The Laneway name, wordmark, and logo are not licensed by this file. They
+   may not be used to name, brand, or promote any product, service, or site.
+
+7. The app and the engine
+
+   The Laneway app and its engine are not in this repository. Their source is
+   private and separately licensed.
+
+8. No warranty
+
+   This repository is provided as is, without warranty of any kind. The owner
+   is not liable for any claim or damage arising from it or from its use, to
+   the maximum extent permitted by law.
+
+9. Governing law and contact
+
+   This file is governed by the laws of the Province of Alberta and the
+   federal laws of Canada that apply there. Permission under it is valid only
+   if it is in writing and signed by the owner. Requests go to:
+
+   [CONTACT EMAIL - a public contact address has not been chosen yet, the same
+   blank legal.html carries. Fill both together.]

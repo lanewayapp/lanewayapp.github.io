@@ -17,10 +17,10 @@ Generated from the mark shipped in `index.html` (favicon SVG + header lockup). S
 Files are named in title case with spaces, e.g. `Laneway Mark Dark 512.png`. In HTML and CSS references, encode the spaces as `%20`.
 
 ## Contents
-- `mark/` — tile mark, dark + light, SVG and PNG at 1024/512/256/128/64/32.
-- `wordmark/` — horizontal lockups (on ink, on cream, transparent ink, transparent cream) and stacked lockups.
-- `avatar/` — 1024px full-bleed profile pictures, safe for a circle crop.
-- `favicon/` — `Favicon.svg` plus PNG at 16/32/48/180/192/512.
+- `mark/` - tile mark, dark + light, SVG and PNG at 1024/512/256/128/64/32.
+- `wordmark/` - horizontal lockups (on ink, on cream, transparent ink, transparent cream) and stacked lockups.
+- `avatar/` - 1024px full-bleed profile pictures, safe for a circle crop.
+- `favicon/` - `Favicon.svg` plus PNG at 16/32/48/180/192/512.
 
 ## Usage
 ```html

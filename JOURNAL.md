@@ -1,6 +1,6 @@
 # The Glass Was Only Glass in Daylight - Thursday Sep 3
 
-*Written 5:23 PM.*
+*Written 5:23 PM, extended 5:26 PM.*
 
 ## What was reported
 
@@ -50,6 +50,30 @@ being added to the mark.
 Both themes, at rest and scrolled to 2600 where the journey scene runs
 under the bar. Night now shows the blurred map shapes inside the pane; day
 is pixel for pixel what it was.
+
+## Then the bar itself, 20% taller
+
+*5:26 PM.* Owner's call: the bar 20% bigger, the mark scaled with it. 54px
+to 65px, and the mark 26px to 31px, which holds the mark at the same
+fraction of the bar it had before.
+
+The height was written into four places that all had to agree: the bar, the
+room `main` leaves for it now that it is out of flow, the `scroll-margin` an
+anchored heading needs to clear it, and the top of the journey's counter.
+Four copies of 54 is three chances to drift, so it is a token now, `--bar`,
+and the other three are `calc()` off it. The full height is `--bar` plus
+2px, the progress rail and the hairline.
+
+Measured after: bar 65, header 67, hero starts at 67 so the padding pays
+back exactly what the bar takes, anchor margin 83 which clears the bar by
+16, counter at 101, document 8198 which is the old 8187 plus the 11px the
+bar grew. Both themes at rest and under the journey scene.
+
+`devlog.html` and `legal.html` were not touched: their bars are 52px and
+their marks 26px, so the three pages no longer agree on either. Their
+headers are a different object, opaque paper on an ink rule rather than
+glass over a map, but if the mark is meant to be one size everywhere they
+need the same pass.
 
 ---
 

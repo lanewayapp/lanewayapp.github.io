@@ -42,6 +42,12 @@
    at load. It is a diagram of the anchor case, not a claimed screenshot. */
 
 :root{
+  /* The bar's height, and the four things that have to agree with it: the
+     bar itself, the room main leaves for it, where an anchored heading
+     lands, and where the journey's counter sits. The bar's full height is
+     this plus 2px, the progress rail and the hairline under it. */
+  --bar:65px;
+
   --bg:#FFFFFF;
   --ink:#0A0A0A;
   --muted:#6B665F;
@@ -101,7 +107,7 @@
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
 /* The header is sticky, so anything an in-page link targets has to clear it
    or the heading lands underneath. Long standing open item, closed. */
-[id]{scroll-margin-top:calc(54px + 18px)}
+[id]{scroll-margin-top:calc(var(--bar) + 18px)}
 body{
   margin:0;background:var(--bg);color:var(--ink);
   font-family:"Geist",-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
@@ -154,14 +160,14 @@ a{color:inherit}
    asked for: the bar holds still, the page stretches past it. Nothing is
    painted above the bar. A band of page colour that rode down with it was
    tried and cut, since a bar that carries a lid with it is not a bar that is
-   holding still. main pays back the 56px the bar no longer takes in flow. */
+   holding still. main pays back the height the bar no longer takes in flow. */
 header.top{
   position:fixed;top:0;left:0;right:0;z-index:60;
   background:var(--glass);
   backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
   border-bottom:1px solid var(--hair);
 }
-.top .wrap{display:flex;align-items:center;gap:24px;height:54px}
+.top .wrap{display:flex;align-items:center;gap:24px;height:var(--bar)}
 .brand{display:flex;align-items:center;gap:9px;text-decoration:none;font-weight:500;font-size:14.5px}
 .brand svg{flex:none}
 .top nav{margin-left:auto;display:flex;gap:clamp(18px,3vw,30px);align-items:center}
@@ -170,7 +176,7 @@ header.top{
 .progress{height:1px;background:transparent}
 .progress i{display:block;height:1px;width:0%;background:var(--accent)}
 
-main{position:relative;z-index:1;padding-top:56px}
+main{position:relative;z-index:1;padding-top:calc(var(--bar) + 2px)}
 
 /* ---------------- hero ---------------- */
 .hero{padding:clamp(72px,11vw,150px) 0 clamp(72px,12vw,160px);position:relative}
@@ -229,7 +235,7 @@ main{position:relative;z-index:1;padding-top:56px}
 .journey-sticky .wrap{width:100%;padding-bottom:clamp(32px,7vh,72px);position:relative}
 /* Pinned to the top of the viewport, not to the bottom-aligned column. */
 .jhud{
-  position:absolute;top:calc(54px + clamp(20px,4vh,40px));
+  position:absolute;top:calc(var(--bar) + clamp(20px,4vh,40px));
   left:clamp(20px,5vw,56px);display:flex;align-items:center;gap:12px;
 }
 .jhud .rail{width:96px;height:1px;background:var(--hair);position:relative;overflow:hidden}
@@ -414,7 +420,7 @@ footer .right{margin-left:auto;display:flex;gap:20px}
 <header class="top">
   <div class="wrap">
     <a class="brand" href="./">
-      <svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true">
+      <svg width="31" height="31" viewBox="0 0 32 32" aria-hidden="true">
         <rect width="32" height="32" rx="7" fill="#172133"></rect>
         <path d="M9 25 Q9 13 16 13 Q23 13 23 7" stroke="#E89E2E" stroke-width="3.2" fill="none" stroke-linecap="round"></path>
         <circle cx="9" cy="25" r="2.6" fill="#E89E2E"></circle>

@@ -5,10 +5,13 @@
 The public face of Laneway: a landing page and an engineering dev log, served by
 GitHub Pages at <https://lanewayapp.github.io/>.
 
-Two pages, both self-contained:
+Three pages, all self-contained:
 
 - `index.html` - what Laneway is, the anchor case, how verification works, honest status
 - `devlog.html` - what got built, what broke, what was decided. Newest entry first.
+- `legal.html` - terms of service, privacy policy, and EULA, all three on one page
+  with `#terms`, `#privacy`, `#eula` anchors. Canonical copies live in the product
+  repo under `docs/legal/`; a change there gets mirrored here.
 
 `devlog.md` is the source of truth for the dev log's entries and its metrics
 band. `devlog.html` reads that file at load time and builds the page from it,

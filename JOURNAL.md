@@ -1,3 +1,76 @@
+# The Bar That Was Never Stuck - Thursday Sep 3
+
+*Written 4:52 PM.*
+
+## What was asked
+
+"When at the top of the website and you keep scrolling up, you can scroll
+past the top bar and see what's underneath." Reported as possibly a Mac
+thing. It is a Mac thing, and it was showing something it should not have.
+
+## What was found
+
+Two faults on `index.html`, in the same three words of CSS.
+
+- **The top bar was not sticky at all.** `html` and `body` both carried
+  `overflow-x:hidden`. The root's copy is the one the viewport takes, which
+  leaves body holding its own, and a body with overflow set is a scroll
+  container. The sticky header was then sticking to a box that never
+  scrolls, so it rode the page off the top and took the scroll progress bar
+  with it. Measured in a browser: at scroll 1500 the header's top was at
+  -1500. `devlog.html` and `legal.html` set the property on body alone and
+  their headers stick correctly, which is what made the difference legible.
+  The bug arrived with the map rebuild, `a4614be`.
+- **The rubber band was uncovering the map.** Elastic overscroll pulls the
+  scrolling content down past the top of the document while fixed layers
+  stay pinned. The map is `position:fixed`, the bar is not, so pulling up at
+  the top slid the bar down over a map that stayed where it was, and the
+  strip of map that lives under the bar came into view. The bar looks
+  detached, which is the opposite of what a page built on one continuous
+  ground wants. In light the land is #F4F3F0 against a white page, so the
+  seam reads; in dark the two are the same navy and it hides.
+
+## What was done
+
+One line of CSS, both faults:
+
+    html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;overscroll-behavior-y:none}
+
+Dropping `overflow-x:hidden` from the root hands horizontal clipping back to
+body alone, the way the other two pages do it, and the header sticks again.
+`overscroll-behavior-y:none` stops the page pulling past its own edges at
+either end, so there is no gap for the map to show through. Nothing to
+uncover beats painting over the thing that got uncovered.
+
+## Checked
+
+- Header top measured at 0 at scroll 0, 1500 and 4000, at 1280, 900 and
+  420 wide, and the progress bar tracks. No horizontal scroll at any of the
+  three widths: the root's clip moved to body, it did not disappear.
+- Document height and the hero's position are unchanged, 8187 and 56, so
+  nothing moved in the layout: the header was always in flow and still is.
+- Screenshots at four scroll positions in light and dark. The bar now sits
+  over the journey scene with its blur doing the work it was written for.
+- Non-ASCII check clean.
+
+## Open
+
+- The check in `CLAUDE.md` now crashes rather than reporting: it reads every
+  file matching `**/*.*` as UTF-8, and `fonts/*.woff2` are binary. It was
+  written before the fonts were vendored. Skipping binary extensions fixes
+  it; not done here, since it is the owner's file.
+- `devlog.html` and `legal.html` still bounce at the ends. Nothing shows
+  there, because their headers are paper on paper with no fixed layer
+  underneath, so the seam has nothing to reveal. Left alone rather than
+  changed for the sake of a matching feel.
+- The rubber band could not be exercised from here: the checks above ran in
+  headless Chromium on Linux, which has no elastic overscroll. The reasoning
+  about the pinned layer is from the behaviour reported, and
+  `overscroll-behavior` is the property that removes the pull itself rather
+  than dressing up what it exposes.
+
+---
+
 # The Paperwork Page - Wednesday Sep 2
 
 *Written 11:27 AM.*

@@ -83,7 +83,17 @@
 }
 
 *,*::before,*::after{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;overflow-x:hidden}
+/* Horizontal clipping is set on body alone, the way devlog and legal set it.
+   With it on both, the root's copy is the one the viewport takes and body
+   keeps its own, which makes body a scroll container: the sticky header then
+   sticks to a box that never scrolls, so it rode the page off the top and the
+   progress bar went with it.
+   overscroll-behavior stops the elastic pull past the ends of the page. The
+   map is a fixed layer and the bar is not, so pulling past the top slid the
+   bar down over a map that stayed put and showed the strip of map that lives
+   under it. There is nothing to uncover if the page will not pull past its
+   own edge. */
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;overscroll-behavior-y:none}
 /* The header is sticky, so anything an in-page link targets has to clear it
    or the heading lands underneath. Long standing open item, closed. */
 [id]{scroll-margin-top:calc(54px + 18px)}

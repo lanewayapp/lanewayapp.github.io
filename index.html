@@ -167,10 +167,15 @@ main{position:relative;z-index:1;padding-top:56px}
 .hero{padding:clamp(72px,11vw,150px) 0 clamp(72px,12vw,160px);position:relative}
 /* The map runs under the words. A flat scrim from the reading edge, not a
    blob. It overhangs the hero's bottom edge and a mask fades the last 300px,
-   so scrolling reveals the map through a soft edge instead of a hard stop. */
+   so scrolling reveals the map through a soft edge instead of a hard stop.
+   It overhangs the top by half a window as well. The scrim used to start at
+   the hero's top edge, which sits exactly under the pinned bar, so an elastic
+   pull dragged that edge into view and left a hard line of bare map between
+   the bar and the words. There is nothing above the hero to hide behind, so
+   the scrim reaches up past the bar instead and the pull finds more scrim. */
 .hero::before{
   content:"";position:absolute;z-index:-1;pointer-events:none;
-  top:0;bottom:-160px;left:-50vw;right:32%;
+  top:-50vh;bottom:-160px;left:-50vw;right:32%;
   background:linear-gradient(to right,
     var(--bg) 62%, color-mix(in srgb,var(--bg) 80%,transparent) 84%, transparent 100%);
   -webkit-mask-image:linear-gradient(to bottom,
@@ -400,7 +405,7 @@ footer .right{margin-left:auto;display:flex;gap:20px}
 <header class="top">
   <div class="wrap">
     <a class="brand" href="./">
-      <svg width="22" height="22" viewBox="0 0 32 32" aria-hidden="true">
+      <svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true">
         <rect width="32" height="32" rx="7" fill="#172133"></rect>
         <path d="M9 25 Q9 13 16 13 Q23 13 23 7" stroke="#E89E2E" stroke-width="3.2" fill="none" stroke-linecap="round"></path>
         <circle cx="9" cy="25" r="2.6" fill="#E89E2E"></circle>

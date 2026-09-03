@@ -1,6 +1,6 @@
 # The Mark Goes Back To Navy - Thursday Sep 3
 
-*Written 5:15 PM.*
+*Written 5:15 PM, extended 5:21 PM.*
 
 ## What was asked
 
@@ -21,8 +21,28 @@ is what the product repo's icon layers specify: flat navy behind, the amber
 `#E89E2E` route curve in front. It is the same pair the favicon in these
 pages already carries, so the tab icon and the header finally agree.
 
-The mark also went from 18px to 22px on `index.html` and from 20px to 22px
-on the other two, so all three carry it at one size.
+The mark also went up from 18px on `index.html` and 20px on the other two,
+to one size on all three.
+
+## Then the scrim, and the mark again
+
+*5:21 PM.* Two follow-ups from the owner, both from looking at the pinned
+bar in use.
+
+- **The hero scrim now reaches up past the bar.** It used to start at the
+  hero's top edge, which sits exactly under the bar, so it had nothing to
+  hide behind once the bar stopped moving: an elastic pull dragged the
+  scrim's top edge into view and left a hard line of bare map between the
+  bar and the words. `top` goes to `-50vh`, so the pull finds more scrim.
+  The scrim now passes behind the bar as well, which shows through the
+  bar's blur as slightly cleaner white on the reading side. Checked at rest
+  in both themes: no visible change to the bar.
+- **The mark went up again, 22px to 26px**, on all three pages.
+
+Simulated the pull the way it happens on that machine, fixed layers pinned
+and the page dragged down 90px: before, a hard scrim edge below the bar;
+after, scrim all the way up to it. As before, the pull itself cannot be
+felt from here.
 
 ## The thing to look at
 

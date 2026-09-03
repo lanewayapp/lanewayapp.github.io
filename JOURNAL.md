@@ -1,6 +1,6 @@
 # The Bar That Was Never Stuck - Thursday Sep 3
 
-*Written 4:52 PM.*
+*Written 4:52 PM, revised 5:01 PM.*
 
 ## What was asked
 
@@ -30,27 +30,50 @@ Two faults on `index.html`, in the same three words of CSS.
   ground wants. In light the land is #F4F3F0 against a white page, so the
   seam reads; in dark the two are the same navy and it hides.
 
-## What was done
+## What was done, first pass, and why it did not hold
 
-One line of CSS, both faults:
+`overscroll-behavior-y:none` on the root, on the theory that a page that
+will not pull past its own edge has no gap to show anything through. The
+owner tried it: still there. The root scroller on macOS ignores the
+property; it governs scroll chaining and the pull-to-refresh affordance,
+not the elastic bounce of the main frame. Reverted at 5:01 PM. Worth
+recording as a dead end so it does not get tried again.
 
-    html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;overscroll-behavior-y:none}
+## What shipped
 
-Dropping `overflow-x:hidden` from the root hands horizontal clipping back to
-body alone, the way the other two pages do it, and the header sticks again.
-`overscroll-behavior-y:none` stops the page pulling past its own edges at
-either end, so there is no gap for the map to show through. Nothing to
-uncover beats painting over the thing that got uncovered.
+The owner's call, and the right one: stop fighting the pull, and make the
+bar something the pull cannot get past.
+
+- **The bar is fixed, not sticky.** The evidence for this was in the report
+  itself. The map stayed put during the pull and the bar did not, and the
+  map is the one that is `position:fixed`, so fixed layers are pinned
+  through the bounce on that machine. Putting the bar on the map's layer
+  means the two hold together or move together, and either way no seam
+  opens between them. `main` carries `padding-top:56px` to pay back the flow
+  height the bar no longer occupies.
+- **The bar does not end at the top of the window.** A fixed curtain on
+  `main::before` sits directly above the viewport, a full window height of
+  page colour, for the browsers that drag the fixed layer down with the
+  bounce instead of pinning it. The pull runs out of page before it runs out
+  of bar. It is not blurred: there is nothing behind it to blur, and a
+  second backdrop filter that size would cost a window of blur on every
+  scrolled frame.
+- The root's `overflow-x:hidden` stays gone from the first pass. It is what
+  made body a scroll container and broke sticky, and while the bar is fixed
+  now and no longer cares, nothing else on the page should have to.
 
 ## Checked
 
-- Header top measured at 0 at scroll 0, 1500 and 4000, at 1280, 900 and
-  420 wide, and the progress bar tracks. No horizontal scroll at any of the
-  three widths: the root's clip moved to body, it did not disappear.
-- Document height and the hero's position are unchanged, 8187 and 56, so
-  nothing moved in the layout: the header was always in flow and still is.
-- Screenshots at four scroll positions in light and dark. The bar now sits
-  over the journey scene with its blur doing the work it was written for.
+- Bar top measured at 0 at scroll 0, 1500, 4000 and at the bottom of the
+  page, at 1280, 900 and 420 wide, with no horizontal scroll at any width.
+- Document height and the hero's position are unchanged, 8187 and 56: the
+  padding on main returns exactly what the bar stopped contributing.
+- The pull itself was simulated rather than felt: map, bar and page all
+  translated down 70px together, which is the harder of the two browser
+  behaviours, and the strip above the bar came out page colour in both
+  themes with no visible seam against the bar's own translucent white.
+- Screenshots at four scroll positions in light and dark, unchanged from
+  before the fix.
 - Non-ASCII check clean.
 
 ## Open
@@ -59,15 +82,13 @@ uncover beats painting over the thing that got uncovered.
   file matching `**/*.*` as UTF-8, and `fonts/*.woff2` are binary. It was
   written before the fonts were vendored. Skipping binary extensions fixes
   it; not done here, since it is the owner's file.
-- `devlog.html` and `legal.html` still bounce at the ends. Nothing shows
-  there, because their headers are paper on paper with no fixed layer
-  underneath, so the seam has nothing to reveal. Left alone rather than
-  changed for the sake of a matching feel.
-- The rubber band could not be exercised from here: the checks above ran in
-  headless Chromium on Linux, which has no elastic overscroll. The reasoning
-  about the pinned layer is from the behaviour reported, and
-  `overscroll-behavior` is the property that removes the pull itself rather
-  than dressing up what it exposes.
+- `devlog.html` and `legal.html` still bounce, and nothing shows there:
+  their headers are paper on paper with no fixed layer underneath, so the
+  pull has nothing to uncover. Left alone.
+- None of this could be felt from the session's machine. Headless Chromium
+  on Linux has no elastic overscroll, so the reasoning about which layer
+  gets pinned comes from what the owner reported seeing, and the fix covers
+  both behaviours rather than betting on one.
 
 ---
 

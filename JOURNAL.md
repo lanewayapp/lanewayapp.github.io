@@ -1,3 +1,58 @@
+# The Glass Was Only Glass in Daylight - Thursday Sep 3
+
+*Written 5:23 PM.*
+
+## What was reported
+
+"I like the frosted glass on the title bar in light mode but you can't see
+it in dark mode, and that's what most people use." Both halves are right,
+and the second one settles how much the first one matters.
+
+## Why it was invisible
+
+The bar was one recipe for both themes: the page colour held back to 80%,
+with a 10px blur behind it. In daylight that works, because the page is
+white and the map under it is paper, so the pane sits a shade off the map
+and the blur has drawn detail to soften.
+
+At night it cannot work, and the reason is a decision this journal already
+records. The night land was made identical to the background on Saturday
+Aug 29 to kill the scrim banding. So the map behind the bar is the page
+colour, and 80% of the page colour over the page colour is the page colour.
+No edge, no pane, nothing for the blur to show. The bar was not faint at
+night, it was absent.
+
+## What was done
+
+The bar's surface is a token now, `--glass`, set once per theme.
+
+- Day is unchanged, to the byte: `rgba(255,255,255,.80)` is what the old
+  `color-mix` was already computing.
+- Night is lifted off the navy instead of mixed into it,
+  `rgba(41,53,78,.74)`, which composites about ten points above the page.
+  It is also left more open than the day's, so more of what passes under it
+  comes through the blur rather than less. A pane you can see, with traffic
+  visible inside it.
+
+The blur is untouched, and so is the hairline under the bar.
+
+## The part that fixed itself
+
+The mark's tile went back to its own navy earlier today, which at night is
+the page colour, so the tile vanished and left the amber curve floating.
+The bar is now lighter than the tile, so on the bar, which is the only
+place the mark appears, the tile reads again as a dark chip with the curve
+on it. The open question from the 5:15 PM entry closes without a hairline
+being added to the mark.
+
+## Checked
+
+Both themes, at rest and scrolled to 2600 where the journey scene runs
+under the bar. Night now shows the blurred map shapes inside the pane; day
+is pixel for pixel what it was.
+
+---
+
 # The Mark Goes Back To Navy - Thursday Sep 3
 
 *Written 5:15 PM, extended 5:21 PM.*

@@ -51,6 +51,9 @@
   --contradicted:#B23A2A;
 
   --land:#F4F3F0;
+  /* The bar's own surface. Day it is the page held back to 80%, which over a
+     paper map is all the frosted pane needs to read. */
+  --glass:rgba(255,255,255,.80);
   --road:rgba(10,10,10,.26);
   --road-minor:rgba(10,10,10,.12);
   --built:rgba(10,10,10,.055);
@@ -75,6 +78,12 @@
     --contradicted:#E9695A;
 
     --land:#172133;
+    /* Night cannot use the same recipe. The land is identical to the page by
+       design, so 80% of the page colour over it is the page colour again and
+       the pane disappears: no edge, no glass, nothing for the blur to show.
+       The surface is lifted a step above the navy and left more open instead,
+       so the bar reads as a pane and what passes under it still shows. */
+    --glass:rgba(41,53,78,.74);
     --road:rgba(237,240,245,.24);
     --road-minor:rgba(237,240,245,.10);
     --built:rgba(237,240,245,.05);
@@ -148,7 +157,7 @@ a{color:inherit}
    holding still. main pays back the 56px the bar no longer takes in flow. */
 header.top{
   position:fixed;top:0;left:0;right:0;z-index:60;
-  background:color-mix(in srgb,var(--bg) 80%,transparent);
+  background:var(--glass);
   backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
   border-bottom:1px solid var(--hair);
 }

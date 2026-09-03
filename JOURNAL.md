@@ -1,6 +1,6 @@
 # The Bar That Was Never Stuck - Thursday Sep 3
 
-*Written 4:52 PM, revised 5:01 PM.*
+*Written 4:52 PM, revised 5:01 PM and 5:11 PM.*
 
 ## What was asked
 
@@ -51,13 +51,14 @@ bar something the pull cannot get past.
   means the two hold together or move together, and either way no seam
   opens between them. `main` carries `padding-top:56px` to pay back the flow
   height the bar no longer occupies.
-- **The bar does not end at the top of the window.** A fixed curtain on
-  `main::before` sits directly above the viewport, a full window height of
-  page colour, for the browsers that drag the fixed layer down with the
-  bounce instead of pinning it. The pull runs out of page before it runs out
-  of bar. It is not blurred: there is nothing behind it to blur, and a
-  second backdrop filter that size would cost a window of blur on every
-  scrolled frame.
+- **The curtain was built, then cut.** A fixed band of page colour on
+  `main::before`, a full window height directly above the viewport, for the
+  browsers that drag the fixed layer down with the bounce instead of pinning
+  it. The owner's call at 5:11 PM, and the right one: a bar that carries a
+  lid down with it is not a bar that is holding still. Solid bar, elastic
+  page, nothing painted above it. On the machine that reported the bug the
+  band could never have shown anyway, since the map staying put through the
+  pull is what says fixed layers are pinned there.
 - The root's `overflow-x:hidden` stays gone from the first pass. It is what
   made body a scroll container and broke sticky, and while the bar is fixed
   now and no longer cares, nothing else on the page should have to.

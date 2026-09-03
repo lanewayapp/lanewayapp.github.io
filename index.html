@@ -137,15 +137,15 @@ a{color:inherit}
 .atlas .node .halo{fill:none;stroke:var(--route);stroke-width:1.2;vector-effect:non-scaling-stroke;opacity:0}
 
 /* ---------------- shell ---------------- */
-/* The bar is fixed, not sticky, and it does not end at the top of the window.
-   An elastic pull past the top slides the scrolling content down and leaves
-   the fixed layers where they are. The map is fixed and the bar was not, so
-   the pull dragged the bar down off a map that stayed put and uncovered the
-   strip of map that lives under the bar. Fixed puts the bar on the map's
-   layer: they hold together, or they move together. The curtain below carries
-   the page colour a full window height above the bar, for the browsers that
-   pull the fixed layer down too, so the pull runs out of page before it runs
-   out of bar. main pays back the 56px the bar no longer occupies in flow. */
+/* The bar is fixed, not sticky. An elastic pull past the top slides the
+   scrolling content down and leaves the fixed layers where they are: the map
+   is fixed and the bar was not, so the pull dragged the bar down off a map
+   that stayed put and uncovered the strip of map that lives under the bar.
+   Fixed puts the bar on the map's layer, which is the way round the owner
+   asked for: the bar holds still, the page stretches past it. Nothing is
+   painted above the bar. A band of page colour that rode down with it was
+   tried and cut, since a bar that carries a lid with it is not a bar that is
+   holding still. main pays back the 56px the bar no longer takes in flow. */
 header.top{
   position:fixed;top:0;left:0;right:0;z-index:60;
   background:color-mix(in srgb,var(--bg) 80%,transparent);
@@ -162,13 +162,6 @@ header.top{
 .progress i{display:block;height:1px;width:0%;background:var(--accent)}
 
 main{position:relative;z-index:1;padding-top:56px}
-/* Above the bar, and above the window with it. Not blurred: there is nothing
-   behind it to blur, and a second backdrop filter this size costs a whole
-   window of blur on every scrolled frame. */
-main::before{
-  content:"";position:fixed;left:0;right:0;bottom:100%;height:100vh;
-  background:var(--bg);pointer-events:none;
-}
 
 /* ---------------- hero ---------------- */
 .hero{padding:clamp(72px,11vw,150px) 0 clamp(72px,12vw,160px);position:relative}

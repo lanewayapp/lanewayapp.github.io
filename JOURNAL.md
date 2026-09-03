@@ -1,3 +1,40 @@
+# The Mark Goes Back To Navy - Thursday Sep 3
+
+*Written 5:15 PM.*
+
+## What was asked
+
+"Use the dark logo instead of the light one, and make it a bit bigger."
+
+## What was wrong
+
+The tile behind the route curve was filled with `currentColor`, so it took
+the ink colour of whatever page it sat on: near black in light, and near
+white in dark. That second one is not a Laneway mark at all. Anyone reading
+the site at night got a white chip with an amber squiggle on it, which is
+the light version of a logo that has a dark version.
+
+## What was done
+
+The tile is the mark's own navy now, `#172133`, on all three pages, which
+is what the product repo's icon layers specify: flat navy behind, the amber
+`#E89E2E` route curve in front. It is the same pair the favicon in these
+pages already carries, so the tab icon and the header finally agree.
+
+The mark also went from 18px to 22px on `index.html` and from 20px to 22px
+on the other two, so all three carry it at one size.
+
+## The thing to look at
+
+In dark the tile is now the same navy as the page, so it disappears and
+leaves the amber curve on its own. That is what the dark logo does on its
+own background, and it reads well: the curve is the mark, the tile was only
+ever a chip to sit it on. If the shape should stay legible at night, a
+hairline around the tile or a tile a few points off the page colour would
+do it, but neither is in the mark as drawn, so neither is here.
+
+---
+
 # The Bar That Was Never Stuck - Thursday Sep 3
 
 *Written 4:52 PM, revised 5:01 PM.*

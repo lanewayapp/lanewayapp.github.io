@@ -75,6 +75,28 @@ headers are a different object, opaque paper on an ink rule rather than
 glass over a map, but if the mark is meant to be one size everywhere they
 need the same pass.
 
+## And the night lift came straight back out
+
+*5:29 PM.* "It looks like it is a lighter blue now, let's change that back."
+The lift did what it was built to do and the owner did not want it: a pane
+tinted off the navy reads as a lighter blue slab, not as glass, and at 65px
+tall there is a lot more of it to read that way. Reverted to the page colour
+in both themes, one `--glass` again, and the comment in `index.html` records
+the attempt so it does not get re-invented.
+
+What that gives back up is real and worth stating plainly: at night the bar
+has no tint of its own, so at the top of the page it is the page. It is told
+apart by the hairline under it and, once anything is scrolled, by the blur of
+what passes beneath. The frosted pane is a daylight effect on this palette.
+
+The other way to make it read without a lighter blue is to go the other
+direction, a smoked pane darker than the page, which stays inside the navy.
+Rendered and offered, not committed.
+
+The wordmark beside the mark went to 17.5px in the same pass, 14.5px times
+the same 1.2 the bar and the mark took. The nav links are untouched at 14px
+and the gap at 9px, so the brand grew and the navigation did not.
+
 ---
 
 # The Mark Goes Back To Navy - Thursday Sep 3

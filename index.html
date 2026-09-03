@@ -57,9 +57,13 @@
   --contradicted:#B23A2A;
 
   --land:#F4F3F0;
-  /* The bar's own surface. Day it is the page held back to 80%, which over a
-     paper map is all the frosted pane needs to read. */
-  --glass:rgba(255,255,255,.80);
+  /* The bar's own surface: the page held back to 80%, both themes. Night was
+     lifted off the navy for a while so the pane would read against a land
+     that is the same colour as the page, and it read as a lighter blue slab
+     instead of as glass. Owner's call at 5:29 PM: back to the page colour.
+     At night that means the pane has no tint of its own, and the bar is told
+     apart by its hairline and by the blur of what passes under it. */
+  --glass:color-mix(in srgb,var(--bg) 80%,transparent);
   --road:rgba(10,10,10,.26);
   --road-minor:rgba(10,10,10,.12);
   --built:rgba(10,10,10,.055);
@@ -84,12 +88,6 @@
     --contradicted:#E9695A;
 
     --land:#172133;
-    /* Night cannot use the same recipe. The land is identical to the page by
-       design, so 80% of the page colour over it is the page colour again and
-       the pane disappears: no edge, no glass, nothing for the blur to show.
-       The surface is lifted a step above the navy and left more open instead,
-       so the bar reads as a pane and what passes under it still shows. */
-    --glass:rgba(41,53,78,.74);
     --road:rgba(237,240,245,.24);
     --road-minor:rgba(237,240,245,.10);
     --built:rgba(237,240,245,.05);
@@ -168,7 +166,7 @@ header.top{
   border-bottom:1px solid var(--hair);
 }
 .top .wrap{display:flex;align-items:center;gap:24px;height:var(--bar)}
-.brand{display:flex;align-items:center;gap:9px;text-decoration:none;font-weight:500;font-size:14.5px}
+.brand{display:flex;align-items:center;gap:9px;text-decoration:none;font-weight:500;font-size:17.5px}
 .brand svg{flex:none}
 .top nav{margin-left:auto;display:flex;gap:clamp(18px,3vw,30px);align-items:center}
 .top nav a{color:var(--muted);text-decoration:none;font-size:14px;transition:color .15s}

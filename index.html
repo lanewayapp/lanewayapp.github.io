@@ -142,7 +142,6 @@ a{color:inherit}
 .atlas .route{fill:none;vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-linejoin:round}
 .atlas .route.bad{stroke:var(--muted);stroke-width:1.8;stroke-dasharray:5 6}
 .atlas .route.leg{stroke:var(--route);stroke-width:3}
-.atlas .route.leg.walk{stroke-dasharray:1 4.5;stroke-width:3}
 .atlas .route.leg.hot{stroke-width:4.5}
 .atlas .node .dot{fill:var(--bg);stroke:var(--ink);stroke-width:1.8;vector-effect:non-scaling-stroke}
 .atlas .node.on .dot,.atlas .node.warn .dot{fill:var(--route);stroke:var(--route)}
@@ -651,8 +650,6 @@ footer .right{margin-left:auto;display:flex;gap:20px}
   var panels = [].slice.call(document.querySelectorAll(".panel"));
   var hudNo = $("hudNo"), hudRail = $("hudRail"), bar = $("bar");
 
-  legs.forEach(function (p) { p.style.strokeDasharray = "1"; p.style.strokeDashoffset = "1"; });
-  rBad.style.strokeDasharray = "1"; rBad.style.strokeDashoffset = "1";
 
   var narrow = window.matchMedia("(max-width:820px)").matches;
   var ZK = narrow ? 0.84 : 1;                 // a phone travels less
@@ -679,6 +676,31 @@ footer .right{margin-left:auto;display:flex;gap:20px}
 
   var now = { cx: HOME.cx, cy: HOME.cy, z: 0.55 * ZK };
   var target = { cx: HOME.cx, cy: HOME.cy, z: HOME.z };
+
+  /* Drawing a leg means moving its dash offset from hidden to nothing. Two
+     things have to agree for that to land on the node at the far end, and
+     they did not. pathLength="1" says one dash unit is the whole path, but
+     the route carries non-scaling-stroke so it keeps one weight at every
+     zoom, and that puts the dash in screen units instead. A dash of 1 then
+     covers 1/scale of the path: every finished leg stopped short of its
+     node, and the route read as separate pieces rather than one line.
+     So the dash is written in screen units, scale and all. The scale is the
+     viewBox fit times the camera zoom, both known here, so no geometry is
+     read back per frame. */
+  var vbScale = 1;
+  function measure() {
+    var w = atlas.clientWidth || window.innerWidth;
+    var h = atlas.clientHeight || window.innerHeight;
+    vbScale = Math.max(w / VB_W, h / VB_H);   // preserveAspectRatio slice
+  }
+  function draw(path, t) {
+    var k = vbScale * now.z;
+    path.style.strokeDasharray = k.toFixed(4);
+    path.style.strokeDashoffset = (k * (1 - t)).toFixed(4);
+  }
+  measure();
+  legs.forEach(function (pth) { draw(pth, 0); });
+  draw(rBad, 0);
 
   function applyCam() {
     var z = now.z;
@@ -763,13 +785,13 @@ footer .right{margin-left:auto;display:flex;gap:20px}
     }
 
     var badIn = seg(sp, 0.14, 0.32), badOut = seg(sp, 0.44, 0.52);
-    rBad.style.strokeDashoffset = (1 - badIn).toFixed(4);
+    draw(rBad, badIn);
     rBad.style.opacity = (badIn * (1 - badOut)).toFixed(3);
 
     var START = 0.50, SPAN = 0.06;
     for (var i = 0; i < 4; i++) {
       var t = seg(sp, START + i * SPAN, START + (i + 1) * SPAN);
-      legs[i].style.strokeDashoffset = (1 - t).toFixed(4);
+      draw(legs[i], t);
       legs[i].style.opacity = t > 0 ? "1" : "0";
     }
 
@@ -814,7 +836,7 @@ footer .right{margin-left:auto;display:flex;gap:20px}
   if (reduced) {
     intro();
     rBad.style.opacity = "0";
-    legs.forEach(function (p) { p.style.strokeDashoffset = "0"; p.style.opacity = "1"; });
+    legs.forEach(function (p) { p.style.strokeDasharray = "none"; p.style.opacity = "1"; });
     nodes.forEach(function (n, i) { n.style.opacity = "1"; n.classList.add(i === 3 ? "warn" : "ok"); });
     panels.forEach(function (pn) { pn.style.opacity = "1"; });
     now = { cx: 580, cy: 420, z: 1.2 * ZK }; applyCam(); detail();
@@ -826,6 +848,7 @@ footer .right{margin-left:auto;display:flex;gap:20px}
   window.addEventListener("scroll", function () { pending = true; }, { passive: true });
   window.addEventListener("resize", function () {
     narrow = window.matchMedia("(max-width:820px)").matches;
+    measure();
     pending = true;
   });
   var lastT = 0;

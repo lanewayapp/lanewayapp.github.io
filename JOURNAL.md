@@ -1,3 +1,65 @@
+# The Route Was Never Reaching Its Nodes - Thursday Sep 3
+
+*Written 5:45 PM.*
+
+## What was reported
+
+A screenshot of the journey scene, and "make this yellow solid, not dashed."
+The orange route was showing as separate pieces: a line out of a node, a
+gap, then the next node with another line out of it.
+
+## What it actually was
+
+Not a dash style. A units bug, and the legs were never reaching the nodes
+they are drawn to.
+
+Each leg carries `pathLength="1"`, which says one dash unit is the whole
+path, and that is what the draw is built on: dash 1, offset 1 for hidden,
+offset 0 for drawn. The legs also carry `vector-effect:non-scaling-stroke`,
+so the route keeps one weight however far the camera zooms in. That second
+one puts the stroke, dashes included, in screen units, and the two do not
+compose: a dash of 1 covers 1/scale of the path.
+
+Measured at the frame in the screenshot: the route's screen scale was 1.505,
+so a leg reporting itself fully drawn painted 66% of itself and stopped
+short of its node. Every leg. The gaps were not between the legs, they were
+the missing third of each one.
+
+## What was done
+
+The dash is written in screen units now, scale and all: `k = viewBox fit x
+camera zoom`, dash `k`, offset `k * (1 - t)`. Both numbers are already known
+in the loop, so nothing is read back from the DOM and the frame keeps to its
+one rect. A resize re-measures the fit.
+
+- The dotted style on the walk legs is gone. It never rendered, because the
+  inline dash always won, and it could not have: with `pathLength="1"`, its
+  `1 4.5` meant a dash covering the whole path and a gap four and a half
+  times longer than the path. Solid amber is what walk legs actually were,
+  and now it is what they are specified as.
+- Reduced motion sets no dash at all rather than a zero offset, since it
+  draws nothing and a zero offset against the wrong dash was the bug.
+
+## Checked
+
+Drawn share read back from the DOM as `(k - o) / k` rather than assumed, at
+six points through the journey and three viewports, 995x550, 1440x900 and
+420x780. Every one reads `0` before its turn, about a third mid-draw, and a
+clean `1` after: legs fill in order and all four are complete by 76% through
+the section. Resized mid-journey and the dash followed the new fit. Zoomed
+captures before and after: pieces, then one line.
+
+## Open
+
+`.atlas .route.bad` still carries `stroke-dasharray:5 6` and still never
+renders, for exactly the reason above: the inline draw overrides it. The
+grey "every mapping app" route is meant to look provisional and is drawn
+solid. It at least reaches its end now. Making it dashed again needs the
+same screen-unit treatment, this time for a repeating pattern rather than a
+single dash, and nobody has asked for it.
+
+---
+
 # The Glass Was Only Glass in Daylight - Thursday Sep 3
 
 *Written 5:23 PM, extended 5:26 PM.*

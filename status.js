@@ -6,19 +6,19 @@
    is no per-commit row of any kind: only per-day counts and per-area
    totals.
 
-   Snapshot taken 2026-09-03. */
+   Snapshot taken 2026-09-04. */
 window.LANEWAY_STATUS = {
- "generated": "2026-09-03",
- "app": "0.27.2",
+ "generated": "2026-09-04",
+ "app": "0.29.0",
  "engine": "0.2.0",
- "tests": 352,
+ "tests": 358,
  "testFiles": 26,
  "modules": 23,
- "commits": 216,
- "added": 30798,
- "deleted": 2403,
+ "commits": 230,
+ "added": 33774,
+ "deleted": 2476,
  "first": "2026-08-07",
- "last": "2026-09-03",
+ "last": "2026-09-04",
  "areaOrder": [
   "Engine",
   "iOS app",
@@ -29,21 +29,21 @@ window.LANEWAY_STATUS = {
  "areas": [
   {
    "name": "Engine",
-   "commits": 69,
-   "added": 17933,
-   "deleted": 697
+   "commits": 70,
+   "added": 19732,
+   "deleted": 754
   },
   {
    "name": "iOS app",
-   "commits": 63,
-   "added": 14541,
-   "deleted": 1550
+   "commits": 68,
+   "added": 17179,
+   "deleted": 1623
   },
   {
    "name": "Tests",
-   "commits": 60,
-   "added": 17108,
-   "deleted": 586
+   "commits": 61,
+   "added": 18907,
+   "deleted": 643
   },
   {
    "name": "Design",
@@ -53,8 +53,8 @@ window.LANEWAY_STATUS = {
   },
   {
    "name": "Ops",
-   "commits": 16,
-   "added": 6608,
+   "commits": 17,
+   "added": 6946,
    "deleted": 208
   }
  ],
@@ -169,7 +169,11 @@ window.LANEWAY_STATUS = {
   ],
   [
    "2026-09-03",
-   14
+   16
+  ],
+  [
+   "2026-09-04",
+   12
   ]
  ],
  "releases": [
@@ -344,6 +348,14 @@ window.LANEWAY_STATUS = {
   [
    "2026-09-02",
    "0.27.2"
+  ],
+  [
+   "2026-09-04",
+   "0.28.0"
+  ],
+  [
+   "2026-09-04",
+   "0.29.0"
   ]
  ]
 };

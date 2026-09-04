@@ -8,6 +8,7 @@ GitHub Pages at <https://lanewayapp.github.io/>.
 Three pages, all self-contained:
 
 - `index.html` - what Laneway is, the anchor case, how verification works, honest status
+- `status.html` - the shape of the work, drawn from the engine repo's history
 - `devlog.html` - what got built, what broke, what was decided. Newest entry first.
 - `legal.html` - terms of service, privacy policy, and EULA, all three on one page
   with `#terms`, `#privacy`, `#eula` anchors. Canonical copies live in the product
@@ -21,6 +22,51 @@ whole publishing step. Never write entries into the HTML.
 The product itself lives in `barongartner/LANEWAY`, which is **private and stays
 private**. This repo is public. Treat the boundary between them as the most
 important rule in the file.
+
+## status.js, and the one place a number comes from
+
+`status.js` is the only generated file here. It is written by
+`ops/export_status.py` **in the private engine repo**, and both `index.html` and
+`status.html` load it with a plain `<script src>`, not a fetch, so both pages
+still open straight off disk.
+
+To refresh it, from the engine repo:
+
+```bash
+python3 ops/export_status.py ../laneway-site/status.js
+```
+
+Then commit `status.js` here. It is safe to run any time; it reads the engine
+repo and writes nothing to it.
+
+Three rules about it:
+
+- **Never edit `status.js` by hand.** The next export overwrites it, and a
+  hand-typed figure in it is exactly the unsourced claim these pages exist to
+  avoid. If a number looks wrong, fix the exporter.
+- **The exporter lives in the private repo on purpose.** It maps real source
+  paths to the five public area names, and that mapping is repo structure. Only
+  the names cross over. Keeping the script here would put the paths here.
+- **Prose is not counted, and is not named.** Owner call, Thursday Sep 3: the
+  engine repo's session journal is its largest file by a wide margin, and
+  counting it as source made documentation the biggest bucket on this page and
+  put twenty thousand lines into the totals, describing a writing habit rather
+  than a product. The exporter now skips every `.md` file and everything under
+  `docs/` when counting lines and areas. A commit that only touches prose is
+  still a commit and still lands on the per-day chart; it just contributes no
+  lines and no area. The page says "prose is not counted anywhere here" and
+  names no file, and it should stay that way.
+- **It carries nothing per commit.** Only per-day counts, per-area totals, the
+  release ladder and the headline numbers. No subject, no sha, no path, no
+  author, no time of day. An earlier version published a row per commit to feed
+  a redacted log on the page; that section was cut on Thursday Sep 3 for being
+  unreadable, and the rows went with it, because publishing data nothing renders
+  is the habit this file exists to prevent. If a section is ever cut again,
+  check whether it was the only consumer of a field.
+
+The `# Metrics` band in `devlog.md` is still typed by hand and is the one place
+a stale number can still appear. Check it against `status.js` when writing an
+entry.
 
 ## The one rule, inherited
 

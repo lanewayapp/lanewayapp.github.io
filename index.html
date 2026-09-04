@@ -305,6 +305,24 @@ section{padding:clamp(64px,9vw,132px) 0}
 .coverage li{font-size:13.5px;color:var(--muted);padding:0 13px;border-left:1px solid var(--hair)}
 .coverage li:first-child{padding-left:0;border-left:0}
 
+/* The pulse strip. Four figures and a sparkline, all of them read out of
+   status.js, which is written by the engine repo rather than typed here. The
+   numbers on this page used to be hand-copied and went stale within the week;
+   these cannot, because nothing on this side knows how to invent one. If the
+   file is missing the strip removes itself and the section reads as it always
+   did. */
+.pulse{margin-top:44px;padding-top:18px;border-top:1px solid var(--hair)}
+.pulse-figs{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:20px 26px}
+.pulse-fig .v{display:block;font-size:clamp(22px,2.6vw,30px);line-height:1;font-weight:500;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.pulse-fig .k{display:block;margin-top:7px;font-size:12px;color:var(--muted);font-family:"Geist Mono",ui-monospace,Menlo,monospace;letter-spacing:.09em;text-transform:uppercase}
+.pulse-spark{margin-top:22px}
+.pulse-spark svg{display:block;width:100%;height:44px}
+.pulse-spark rect{fill:var(--accent)}
+.pulse-spark rect.off{fill:var(--hair)}
+.pulse-foot{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;font-size:13.5px;color:var(--muted)}
+.pulse-foot a{color:var(--accent);text-decoration:none;border-bottom:1px solid transparent}
+.pulse-foot a:hover,.pulse-foot a:focus-visible{border-bottom-color:currentColor}
+
 /* Close: one line and one link. */
 .close{padding:clamp(56px,8vw,110px) 0;border-top:1px solid var(--hair)}
 .close h2{font-size:clamp(22px,2.8vw,30px);line-height:1.2;max-width:24ch}
@@ -427,7 +445,7 @@ footer .right{margin-left:auto;display:flex;gap:20px}
     <nav>
       <a href="#route">Route</a>
       <a href="#verification">Verification</a>
-      <a href="#status">Status</a>
+      <a href="status.html">Status</a>
       <a href="devlog.html">Dev log</a>
     </nav>
   </div>
@@ -580,6 +598,11 @@ footer .right{margin-left:auto;display:flex;gap:20px}
         <li>Calgary Transit</li>
       </ul>
     </div>
+    <div class="pulse" id="pulse" hidden>
+      <div class="pulse-figs" id="pulse-figs"></div>
+      <div class="pulse-spark" id="pulse-spark"></div>
+      <p class="pulse-foot" id="pulse-foot"></p>
+    </div>
   </div>
 </section>
 
@@ -595,6 +618,7 @@ footer .right{margin-left:auto;display:flex;gap:20px}
   <div class="wrap mono">
     <span>Laneway. Built in the open, shipped when it is trustworthy.</span>
     <span class="right">
+      <a href="status.html">Status</a>
       <a href="devlog.html">Dev log</a>
       <a href="legal.html">Legal</a>
       <a href="https://github.com/barongartner">GitHub</a>
@@ -859,6 +883,79 @@ footer .right{margin-left:auto;display:flex;gap:20px}
     requestAnimationFrame(tick);
   })();
 })();
+</script>
+
+<script src="status.js"></script>
+<script>
+/* ============================================================
+   The pulse strip in the status section. Every figure comes out
+   of status.js, which ops/export_status.py writes from the
+   private engine repo, so no number in this section is typed on
+   this side and none of them can go stale without the file going
+   stale visibly.
+
+   Loaded as a classic script, not fetched, so this page still
+   opens straight off disk. If the file is absent the strip stays
+   hidden and the section is exactly what it was before.
+   ============================================================ */
+(function () {
+  "use strict";
+
+  var S = window.LANEWAY_STATUS;
+  if (!S) return;
+
+  var MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+  function day(iso) {
+    var p = iso.split("-");
+    return new Date(+p[0], +p[1] - 1, +p[2]);
+  }
+  function since(iso) {
+    var now = new Date();
+    return Math.round((new Date(now.getFullYear(), now.getMonth(), now.getDate()) -
+      day(iso)) / 86400000);
+  }
+  function commas(n) {
+    return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  var figs = [
+    [S.app, "App build"],
+    [commas(S.commits), "Commits"],
+    [commas(S.tests), "Tests"],
+    [String(S.releases.length), "Builds numbered"]
+  ];
+  document.getElementById("pulse-figs").innerHTML = figs.map(function (f) {
+    return '<span class="pulse-fig"><span class="v">' + f[0] +
+           '</span><span class="k">' + f[1] + "</span></span>";
+  }).join("");
+
+  /* Last four weeks of commits, one bar a day. Days with nothing get a hairline
+     so the gaps read as gaps rather than as missing bars. */
+  var days = S.days.slice(-28);
+  var max = days.reduce(function (m, d) { return Math.max(m, d[1]); }, 1);
+  var W = 400, H = 44, gap = 1.4;
+  var w = (W - gap * (days.length - 1)) / days.length;
+  var bars = days.map(function (d, i) {
+    var h = d[1] ? Math.max(1.5, (d[1] / max) * H) : 1;
+    return '<rect' + (d[1] ? "" : ' class="off"') +
+      ' x="' + (i * (w + gap)).toFixed(2) + '" y="' + (H - h).toFixed(2) +
+      '" width="' + w.toFixed(2) + '" height="' + h.toFixed(2) + '"/>';
+  }).join("");
+  document.getElementById("pulse-spark").innerHTML =
+    '<svg viewBox="0 0 ' + W + " " + H + '" preserveAspectRatio="none" role="img" ' +
+    'aria-label="Commits per day over the last four weeks">' + bars + "</svg>";
+
+  var age = since(S.last);
+  var when = age <= 0 ? "today" : (age === 1 ? "yesterday" : age + " days ago");
+  var last = day(S.last);
+  document.getElementById("pulse-foot").innerHTML =
+    "<span>Last commit " + when + ", on " + MONTHS[last.getMonth()] + " " +
+    last.getDate() + ". Four weeks of commits above, read off the engine repo.</span>" +
+    '<a href="status.html">See the full status</a>';
+
+  document.getElementById("pulse").hidden = false;
+}());
 </script>
 
 </body>

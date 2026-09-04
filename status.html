@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Laneway status</title>
+<meta name="description" content="The shape of the work on Laneway: commits, releases, tests and coverage, read off the private engine repo and published with the content stripped out.">
+<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#172133" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Laneway status">
+<meta property="og:description" content="The shape of the work, published with the content stripped out.">
+<meta property="og:url" content="https://lanewayapp.github.io/status.html">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23172133'/><path d='M9 25 Q9 13 16 13 Q23 13 23 7' stroke='%23E89E2E' stroke-width='3.2' fill='none' stroke-linecap='round'/><circle cx='9' cy='25' r='2.6' fill='%23E89E2E'/></svg>">
+<link rel="preload" href="fonts/geist-var.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+/* Geist and Geist Mono, Vercel and basement.studio, SIL Open Font License 1.1.
+   Same files index.html and devlog.html use, served from this repo, never a
+   CDN. Variable 100-900, subset to the ASCII range the house style enforces.
+   See fonts/OFL.txt. */
+@font-face{
+  font-family:"Geist";
+  src:url("fonts/geist-var.woff2") format("woff2-variations"),
+      url("fonts/geist-var.woff2") format("woff2");
+  font-weight:100 900;font-style:normal;font-display:swap;
+}
+@font-face{
+  font-family:"Geist Mono";
+  src:url("fonts/geist-mono-var.woff2") format("woff2-variations"),
+      url("fonts/geist-mono-var.woff2") format("woff2");
+  font-weight:100 900;font-style:normal;font-display:swap;
+}
+
+/* Same specimen shell as the other two pages, duplicated on purpose: each
+   page is one file and there is no build step to share a stylesheet. Flat:
+   hairlines, no radius, no shadow. Greyscale carries the page, amber is the
+   only accent, and the verifier's green and red are not on this page at all
+   because nothing here is a verdict. */
+:root{
+  --paper:#FFFFFF;
+  --card:#F5F4F2;
+  --ink:#0A0A0A;
+  --subtle:#65605A;
+  --rail:rgba(10,10,10,.14);
+  --accent:#E89E2E;
+  --accent-deep:#B4761A;
+  --guide:rgba(10,10,10,.22);
+  --glass:rgba(255,255,255,.62);
+  --glass-edge:rgba(10,10,10,.16);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --paper:#172133;
+    --card:#232D41;
+    --ink:#EDF0F5;
+    --subtle:#9EA8BA;
+    --rail:rgba(237,240,245,.14);
+    --accent-deep:#EFAC3F;
+    --guide:rgba(237,240,245,.22);
+    --glass:rgba(23,33,51,.55);
+    --glass-edge:rgba(237,240,245,.18);
+  }
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+[id]{scroll-margin-top:calc(52px + 18px)}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:"Geist",-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;line-height:1.55;overflow-x:hidden;
+}
+.mono{font-family:"Geist Mono",ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  font-size:11px;letter-spacing:.13em;text-transform:uppercase}
+.num{font-variant-numeric:tabular-nums}
+a{color:inherit}
+.wrap{max-width:1120px;margin:0 auto;padding:0 clamp(18px,4vw,32px)}
+
+header.top{
+  position:sticky;top:0;z-index:50;
+  background:var(--paper);
+  border-bottom:1px solid var(--ink);
+}
+.top .wrap{display:flex;align-items:center;gap:16px;height:52px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:700;letter-spacing:.16em;font-size:13px}
+.brand svg{flex:none}
+.top nav{margin-left:auto;display:flex;gap:clamp(14px,3vw,26px);align-items:center}
+.top nav a{color:var(--subtle);text-decoration:none;transition:color .15s}
+.top nav a:hover,.top nav a:focus-visible{color:var(--ink)}
+.top nav a[aria-current]{color:var(--ink)}
+
+/* ---------- masthead ---------- */
+
+.masthead{padding-top:clamp(48px,8vw,96px);padding-bottom:clamp(24px,4vw,40px)}
+.masthead .mono{display:block;margin-bottom:20px}
+.masthead h1{font-size:clamp(28px,4.2vw,44px);line-height:1.1;letter-spacing:-.025em;margin:0;font-weight:700;max-width:19ch}
+.masthead p{color:var(--subtle);max-width:56ch;font-size:16px;margin:18px 0 0}
+
+/* The snapshot line. This page is a file that was written at a moment, not a
+   feed, and saying so is the difference between a status page and a claim. */
+.freshness{
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:10px 18px;
+  margin-top:26px;padding-top:14px;border-top:1px solid var(--rail);
+  color:var(--subtle);
+}
+.freshness b{color:var(--ink);font-weight:500}
+.freshness .age{color:var(--accent-deep)}
+
+/* ---------- metric bands ---------- */
+
+.metrics{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);
+}
+.metric{padding:16px 16px 18px 0;border-right:1px solid var(--rail)}
+.metric:last-child{border-right:0}
+.metric .v{font-size:clamp(30px,4.2vw,46px);line-height:1;font-weight:700;letter-spacing:-.05em;display:block}
+.metric .k{color:var(--subtle);margin-top:9px;display:block;max-width:22ch}
+
+/* ---------- sections ---------- */
+
+section{padding:clamp(34px,5.5vw,64px) 0;border-bottom:1px solid var(--rail)}
+section:last-of-type{border-bottom:0}
+.head{display:grid;grid-template-columns:minmax(150px,1fr) minmax(0,760px);gap:clamp(16px,3vw,38px);align-items:start}
+.head .label{position:sticky;top:74px}
+.head h2{font-size:clamp(21px,3vw,30px);line-height:1.16;margin:0;font-weight:700;letter-spacing:-.02em}
+.head p{color:var(--subtle);font-size:16px;margin:14px 0 0;max-width:64ch}
+.head p b{color:var(--ink);font-weight:500}
+.body{margin-top:clamp(22px,3.4vw,36px)}
+
+figcaption{color:var(--subtle);font-size:14px;margin-top:14px;max-width:70ch}
+
+/* ---------- charts ---------- */
+
+/* Charts only. The brand mark in the header is an svg too, and a blanket
+   width:100% on it fills the page with a logo. */
+#pulse-chart svg,#release-chart svg{display:block;width:100%;height:auto;overflow:visible}
+.axis{fill:var(--subtle);font-family:"Geist Mono",ui-monospace,Menlo,Consolas,monospace;font-size:10px;letter-spacing:.1em}
+.rule{stroke:var(--rail);stroke-width:1}
+/* transform-box matters here. On an SVG element it defaults to view-box, so
+   "center bottom" resolved to the centre-bottom of the whole chart, 26 units
+   below the baseline, and every bar stretched up from under the axis about a
+   point nowhere near itself. fill-box makes the origin the bar's own bottom
+   edge, which is what a bar filling in should do. */
+.bar{
+  fill:var(--accent);
+  transform-box:fill-box;transform-origin:center bottom;
+  transform:scaleY(.02);
+}
+.bar.tall{fill:var(--accent-deep)}
+.zero{fill:var(--guide)}
+.step{fill:none;stroke:var(--accent);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.dot{fill:var(--accent-deep)}
+.tick{stroke:var(--guide);stroke-width:1;stroke-dasharray:2 3}
+.pin{fill:var(--ink);font-family:"Geist Mono",ui-monospace,Menlo,Consolas,monospace;font-size:11px;font-weight:700;letter-spacing:.06em}
+/* Hover state per bar. The whole day column is the target, not the drawn bar,
+   so a one commit day and a zero commit day are as easy to hit as day one. */
+.hit{fill:transparent;cursor:default}
+.bar,.zero{pointer-events:none}
+.hovering .day:not(.lit) .bar,.hovering .day:not(.lit) .zero{opacity:.3}
+.day.lit .bar,.day.lit .zero{fill:var(--accent-deep)}
+
+/* One transition declaration for the bar, covering the grow and the hover
+   both. Split across two rules of equal specificity the later one silently
+   won and the grow stopped animating. */
+.in .bar{
+  transform:scaleY(1);
+  /* Plain decelerate, no fast start, and a short cascade. The bars settle
+     rather than announce themselves. */
+  transition:transform .34s cubic-bezier(.33,.9,.5,1),opacity .18s,fill .18s;
+}
+.in .zero{transition:opacity .18s,fill .18s}
+.in .step{stroke-dashoffset:0;transition:stroke-dashoffset 1.2s cubic-bezier(.33,.9,.5,1)}
+
+/* ---------- tooltip ---------- */
+
+/* Frosted rather than solid, so the bar it describes stays visible under it.
+   backdrop-filter is a native property, not a dependency; where it is not
+   supported the translucent background alone is still legible. */
+.tip{
+  position:absolute;left:0;top:0;z-index:20;
+  padding:4px 7px;
+  background:var(--glass);color:var(--ink);
+  border:1px solid var(--glass-edge);
+  -webkit-backdrop-filter:blur(14px) saturate(180%);
+  backdrop-filter:blur(14px) saturate(180%);
+  font-family:"Geist Mono",ui-monospace,Menlo,Consolas,monospace;
+  font-size:9.5px;letter-spacing:.07em;line-height:1.45;white-space:nowrap;
+  pointer-events:none;opacity:0;transform:translate(-50%,-100%);
+  transition:opacity .12s;
+}
+.tip[data-show]{opacity:1}
+.tip b{display:block;font-size:11.5px;letter-spacing:.02em;font-weight:700}
+.plot{position:relative}
+
+/* ---------- area bars ---------- */
+
+.areas-list{border-top:1px solid var(--ink)}
+.area{
+  display:grid;grid-template-columns:110px minmax(0,1fr) 64px 96px;
+  gap:14px;align-items:center;padding:12px 0;border-bottom:1px solid var(--rail);
+}
+.area .n{font-weight:500;font-size:15px}
+.area .t{height:10px;background:var(--rail);position:relative;overflow:hidden}
+.area .t i{display:block;height:100%;background:var(--accent);transform-origin:left center;transform:scaleX(0)}
+.in .area .t i{transform:scaleX(1);transition:transform .5s cubic-bezier(.33,.9,.5,1)}
+.area .c,.area .l{
+  font-family:"Geist Mono",ui-monospace,Menlo,Consolas,monospace;
+  font-size:11px;font-variant-numeric:tabular-nums;color:var(--subtle);text-align:right;
+}
+.area .c{color:var(--ink);font-weight:700}
+
+/* ---------- two up, and the build list beside the staircase ---------- */
+
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(20px,4vw,48px)}
+.cols h3{font-family:"Geist Mono",ui-monospace,Menlo,Consolas,monospace;
+  font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--subtle);
+  margin:0 0 4px;font-weight:700}
+
+.ladder{list-style:none;margin:0;padding:0;border-top:1px solid var(--rail)}
+.ladder li{display:flex;gap:16px;align-items:baseline;padding:9px 0;border-bottom:1px solid var(--rail);
+  font-family:"Geist Mono",ui-monospace,Menlo,Consolas,monospace;font-size:11px;
+  letter-spacing:.06em;color:var(--subtle);font-variant-numeric:tabular-nums}
+.ladder li b{color:var(--accent-deep);font-weight:700;font-size:13px;min-width:64px}
+
+/* ---------- rhythm ---------- */
+
+/* Three figures off the same per-day counts section 01 draws. Set as figures
+   rather than said in a sentence, because a sentence with three numbers in it
+   reads as prose and gets skipped. Section 01's caption gave these up when
+   this section took them, so they are stated once. */
+.rhythm{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:clamp(20px,4vw,48px)}
+.beat .v{display:block;font-size:clamp(46px,7vw,86px);line-height:.92;font-weight:700;letter-spacing:-.055em}
+.beat .k{display:block;margin-top:12px;padding-top:12px;border-top:1px solid var(--rail);
+  font-family:"Geist Mono",ui-monospace,Menlo,Consolas,monospace;
+  font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--subtle)}
+.beat .w{display:block;margin-top:9px;color:var(--subtle);font-size:14px;max-width:28ch}
+
+footer{border-top:1px solid var(--ink);padding:22px 0 40px;color:var(--subtle)}
+footer .wrap{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+footer a{color:var(--subtle);text-decoration:none}
+footer a:hover,footer a:focus-visible{color:var(--ink)}
+footer .right{margin-left:auto;display:flex;gap:18px}
+
+:focus-visible{outline:2px solid var(--accent-deep);outline-offset:2px}
+
+.fallback{color:var(--subtle);font-size:15px;max-width:62ch;margin:0}
+.fallback a{color:var(--accent-deep)}
+
+@media (max-width:820px){
+  .metric{border-right:0;border-bottom:1px solid var(--rail);padding-right:0}
+  .metric:last-child{border-bottom:0}
+  .head{grid-template-columns:minmax(0,1fr);gap:12px}
+  .head .label{position:static}
+  .area{grid-template-columns:100px 1fr 54px;gap:10px}
+  .area .l{grid-column:2 / -1;text-align:left}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{transition:none!important}
+  .bar{transform:scaleY(1)}
+  .area .t i{transform:scaleX(1)}
+  .step{stroke-dashoffset:0!important}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="./">
+      <svg width="20" height="20" viewBox="0 0 32 32" aria-hidden="true">
+        <rect width="32" height="32" rx="7" fill="currentColor"/>
+        <path d="M9 25 Q9 13 16 13 Q23 13 23 7" stroke="#E89E2E" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+        <circle cx="9" cy="25" r="2.6" fill="#E89E2E"/>
+      </svg>
+      LANEWAY
+    </a>
+    <nav class="mono">
+      <a href="./">Overview</a>
+      <a href="status.html" aria-current="page">Status</a>
+      <a href="devlog.html">Dev log</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<div class="wrap masthead">
+  <span class="mono">Repository status</span>
+  <h1>The work, with the content taken out.</h1>
+  <p>
+    The engine repo is private, so none of what was written can be published.
+    What can be published is the shape of it: when the commits landed, how big
+    they were, which part of the system they touched, and what shipped after.
+    Everything below is read off that repo and stripped before it crosses over.
+  </p>
+  <p class="freshness" id="freshness"></p>
+</div>
+
+<div class="wrap">
+  <div class="metrics" id="metrics"></div>
+</div>
+
+<div class="wrap">
+
+  <section id="pulse">
+    <div class="head">
+      <span class="label mono">01 / Pulse</span>
+      <div>
+        <h2>Commits per day</h2>
+      </div>
+    </div>
+    <div class="body">
+      <figure style="margin:0">
+        <div class="plot">
+          <div id="pulse-chart"></div>
+          <div class="tip" id="pulse-tip" role="status" aria-live="polite"></div>
+        </div>
+        <figcaption id="pulse-note"></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="releases">
+    <div class="head">
+      <span class="label mono">02 / Builds</span>
+      <div>
+        <h2>Progress</h2>
+      </div>
+    </div>
+    <div class="body">
+      <div class="cols" style="grid-template-columns:minmax(0,2.1fr) minmax(0,1fr)">
+        <figure style="margin:0">
+          <div id="release-chart"></div>
+          <figcaption id="release-note"></figcaption>
+        </figure>
+        <div>
+          <h3>Most recent</h3>
+          <ul class="ladder" id="ladder"></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="areas">
+    <div class="head">
+      <span class="label mono">03 / Weight</span>
+      <div>
+        <h2>Where the work actually went.</h2>
+        <p>
+          Six buckets, and a commit that touches two of them is counted in
+          both, so these do not add up to the commit total and are not drawn
+          as though they do. Bars are scaled against the largest bucket.
+        </p>
+      </div>
+    </div>
+    <div class="body">
+      <div class="areas-list" id="areas-list"></div>
+      <figcaption id="areas-note"></figcaption>
+    </div>
+  </section>
+
+  <section id="rhythm">
+    <div class="head">
+      <span class="label mono">04 / Rhythm</span>
+      <div>
+        <h2>How the work actually falls.</h2>
+      </div>
+    </div>
+    <div class="body">
+      <div class="rhythm" id="rhythm-figs"></div>
+    </div>
+  </section>
+
+</div>
+
+<div class="wrap" style="padding-bottom:clamp(40px,7vw,72px)">
+  <noscript>
+    <p class="fallback">This page is drawn from
+      <a href="status.js">status.js</a>, which needs JavaScript to render here.
+      The data file reads perfectly well on its own, and the
+      <a href="devlog.html">dev log</a> covers the same work in prose.</p>
+  </noscript>
+</div>
+
+</main>
+
+<footer>
+  <div class="wrap mono">
+    <span>Laneway. Built in the open, shipped when it is trustworthy.</span>
+    <span class="right">
+      <a href="./">Overview</a>
+      <a href="devlog.html">Dev log</a>
+      <a href="https://github.com/barongartner">GitHub</a>
+    </span>
+  </div>
+</footer>
+
+<script src="status.js"></script>
+<script>
+/* ============================================================
+   Draws the page from window.LANEWAY_STATUS, which is written by
+   ops/export_status.py in the private engine repo and committed
+   here as a plain script rather than fetched as JSON. A script
+   tag loads from a file:// origin; a fetch does not, and this
+   page should open off disk the way index.html does.
+
+   Nothing here interprets the data beyond arithmetic. If a
+   number is on this page it is in that file, and if it is not in
+   that file this page does not have it to draw.
+   ============================================================ */
+(function () {
+  "use strict";
+
+  var S = window.LANEWAY_STATUS;
+
+  /* status.js is a classic script rather than a fetch so that this page opens
+     off disk the way index.html does. If it did not load anyway, say so on the
+     page: an empty status page that gives no reason is worse than no page. */
+  if (!S) {
+    document.getElementById("freshness").innerHTML =
+      "<span>The snapshot did not load, so every figure below is missing " +
+      'rather than zero. The data is in <a href="status.js">status.js</a>, and ' +
+      'the <a href="devlog.html">dev log</a> covers the same work in prose.</span>';
+    return;
+  }
+
+  var MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  var WEEKDAYS = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+
+  /* Dates in the snapshot are plain calendar days with no zone. Parsing them
+     as local rather than letting Date read them as UTC keeps a snapshot taken
+     today from reading as yesterday west of Greenwich. */
+  function day(iso) {
+    var p = iso.split("-");
+    return new Date(+p[0], +p[1] - 1, +p[2]);
+  }
+  function shortDate(iso) {
+    var d = day(iso);
+    return MONTHS[d.getMonth()] + " " + d.getDate();
+  }
+  function longDate(iso) {
+    var d = day(iso);
+    return WEEKDAYS[d.getDay()] + " " + MONTHS[d.getMonth()] + " " + d.getDate();
+  }
+  function daysBetween(a, b) {
+    return Math.round((day(b) - day(a)) / 86400000);
+  }
+  function today() {
+    var n = new Date();
+    return [n.getFullYear(),
+            ("0" + (n.getMonth() + 1)).slice(-2),
+            ("0" + n.getDate()).slice(-2)].join("-");
+  }
+  function commas(n) {
+    return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+  function esc(t) {
+    return String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+  function el(id) { return document.getElementById(id); }
+
+  function band(target, items) {
+    el(target).innerHTML = items.map(function (m) {
+      return '<div class="metric"><span class="v num">' + esc(m[0]) +
+             '</span><span class="k">' + esc(m[1]) + "</span></div>";
+    }).join("");
+  }
+
+  /* ---------- the snapshot line ---------- */
+
+  var age = daysBetween(S.generated, today());
+  var howOld;
+  if (age <= 0) howOld = "Taken today.";
+  else if (age === 1) howOld = "One day old.";
+  else if (age <= 13) howOld = age + " days old.";
+  else howOld = age + " days old, which is old enough to distrust.";
+
+  el("freshness").innerHTML =
+    "<span>Snapshot taken <b>" + esc(longDate(S.generated)) + "</b>.</span>" +
+    '<span class="age">' + esc(howOld) + "</span>" +
+    "<span>This page is a file, not a feed. It is exactly as fresh as its last commit.</span>";
+
+  /* ---------- the two metric bands ---------- */
+
+  band("metrics", [
+    [S.app, "Current app build, never publicly released"],
+    [S.engine, "Engine version"],
+    [commas(S.commits), "Commits, in " + (daysBetween(S.first, S.last) + 1) + " days"],
+    [commas(S.tests), "Tests, all offline"],
+    [String(S.releases.length), "Numbered builds"]
+  ]);
+
+  /* ---------- 01, commits per day ---------- */
+
+  (function pulse() {
+    var days = S.days;
+    var W = 1120, H = 190, PAD_B = 26, PAD_T = 22;
+    var n = days.length;
+    var gap = 3;
+    var w = (W - gap * (n - 1)) / n;
+    var max = days.reduce(function (m, d) { return Math.max(m, d[1]); }, 1);
+    var plot = H - PAD_B - PAD_T;
+    var parts = [];
+
+    /* Each day is a group holding the drawn mark and a transparent rect the
+       full height of the plot. The transparent one is what the pointer hits,
+       so a zero day and a one commit day are as easy to land on as day one. */
+    days.forEach(function (d, i) {
+      var x = i * (w + gap);
+      var h = d[1] ? Math.max(2, (d[1] / max) * plot) : 0;
+      var y = PAD_T + plot - h;
+      var mark = d[1]
+        ? '<rect class="bar' + (d[1] === max ? " tall" : "") + '" x="' + x.toFixed(2) +
+          '" y="' + y.toFixed(2) + '" width="' + w.toFixed(2) + '" height="' + h.toFixed(2) +
+          '" style="transition-delay:' + (i * 9) + 'ms"/>'
+        : '<rect class="zero" x="' + x.toFixed(2) + '" y="' + (PAD_T + plot - 1) +
+          '" width="' + w.toFixed(2) + '" height="1"/>';
+
+      parts.push('<g class="day" data-i="' + i + '">' + mark +
+        '<rect class="hit" x="' + x.toFixed(2) + '" y="' + PAD_T +
+        '" width="' + w.toFixed(2) + '" height="' + plot + '"/></g>');
+
+      if (d[1] === max) {
+        parts.push('<text class="pin" x="' + (x + w / 2).toFixed(2) + '" y="' +
+          (y - 7).toFixed(2) + '" text-anchor="middle">' + d[1] + "</text>");
+      }
+    });
+
+    parts.push('<line class="rule" x1="0" y1="' + (PAD_T + plot) + '" x2="' + W +
+      '" y2="' + (PAD_T + plot) + '"/>');
+
+    days.forEach(function (d, i) {
+      if (i !== 0 && i !== n - 1 && i % 7 !== 0) return;
+      var x = i * (w + gap) + w / 2;
+      var anchor = i === 0 ? "start" : (i === n - 1 ? "end" : "middle");
+      parts.push('<text class="axis" x="' + x.toFixed(2) + '" y="' + (H - 8) +
+        '" text-anchor="' + anchor + '">' + esc(shortDate(d[0])) + "</text>");
+    });
+
+    el("pulse-chart").innerHTML =
+      '<svg viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="Commits per day from ' +
+      esc(shortDate(S.first)) + " to " + esc(shortDate(S.days[n - 1][0])) +
+      ', peaking at ' + max + '">' + parts.join("") + "</svg>";
+
+    el("pulse-note").textContent =
+      commas(S.commits) + " commits over " + n +
+      " days, newest on the right. Hover a bar for its day.";
+
+    /* ---- the tooltip ---- */
+
+    var svg = el("pulse-chart").firstChild;
+    var plotBox = el("pulse-chart").parentNode;
+    var tip = el("pulse-tip");
+    var lit = null;
+
+    function show(group) {
+      if (group === lit) return;
+      if (lit) lit.classList.remove("lit");
+      lit = group;
+      group.classList.add("lit");
+      svg.classList.add("hovering");
+
+      var d = days[+group.dataset.i];
+      tip.innerHTML = "<b>" + d[1] + (d[1] === 1 ? " commit" : " commits") + "</b>" +
+        esc(longDate(d[0]));
+
+      /* Positioned from the mark's untransformed geometry, not its client
+         rect. A bar that is still filling in has a client rect part way up,
+         and reading that put the tooltip inside the bar when someone hovered
+         mid animation. getBBox is in viewBox units and ignores the transform,
+         so this is the bar's resting position whatever the animation is doing.
+         The chart scales uniformly, so one factor converts. */
+      var frame = plotBox.getBoundingClientRect();
+      var svgRect = svg.getBoundingClientRect();
+      var scale = svgRect.width / W;
+      var bbox = group.firstChild.getBBox();
+      var x = svgRect.left - frame.left + (bbox.x + bbox.width / 2) * scale;
+      var y = svgRect.top - frame.top + bbox.y * scale - 10;
+
+      /* Keep it inside the figure at both ends rather than letting it hang off
+         the page on the first and last day. */
+      var half = tip.offsetWidth / 2;
+      var clamped = Math.min(Math.max(x, half + 2), frame.width - half - 2);
+      tip.style.left = clamped.toFixed(1) + "px";
+      tip.style.top = y.toFixed(1) + "px";
+      tip.setAttribute("data-show", "");
+    }
+
+    function hide() {
+      if (lit) lit.classList.remove("lit");
+      lit = null;
+      svg.classList.remove("hovering");
+      tip.removeAttribute("data-show");
+    }
+
+    svg.addEventListener("pointermove", function (event) {
+      var group = event.target.closest(".day");
+      if (group) show(group); else hide();
+    });
+    svg.addEventListener("pointerleave", hide);
+  }());
+
+  /* ---------- 04, rhythm ---------- */
+
+  /* The same per-day counts as section 01, read three ways. Section 01's
+     caption used to say all three in a sentence; it does not any more, so
+     each number appears on the page once. */
+  (function rhythm() {
+    var days = S.days;
+    var active = 0, busiest = 0, busiestOn = days[0][0], quiet = 0, run = 0;
+    days.forEach(function (d) {
+      if (d[1]) { active++; run = 0; } else { run++; if (run > quiet) quiet = run; }
+      if (d[1] > busiest) { busiest = d[1]; busiestOn = d[0]; }
+    });
+
+    /* Which day was busiest is read out of the data rather than asserted. It
+       is day one today, and writing that down would make this a false claim
+       the first time it stops being true. */
+    var busiestNote = busiestOn === days[0][0]
+      ? "Day one, which is the shape of every empty repo."
+      : longDate(busiestOn) + ".";
+
+    el("rhythm-figs").innerHTML = [
+      [active, "Days with a commit",
+        "Out of " + days.length + " since the repo was created."],
+      [quiet, quiet === 1 ? "Day, longest quiet run" : "Days, longest quiet run",
+        "The longest the repo has gone untouched."],
+      [busiest, "Commits, busiest day", busiestNote]
+    ].map(function (b) {
+      return '<div class="beat"><span class="v num">' + b[0] +
+        '</span><span class="k">' + esc(b[1]) +
+        '</span><span class="w">' + esc(b[2]) + "</span></div>";
+    }).join("");
+  }());
+
+  /* ---------- 02, the build ladder ---------- */
+
+  (function releases() {
+    var r = S.releases;
+    if (!r.length) return;
+    var W = 720, H = 240, PAD_L = 4, PAD_R = 4, PAD_T = 18, PAD_B = 26;
+    var first = day(r[0][0]), last = day(S.days[S.days.length - 1][0]);
+    var span = Math.max(1, (last - first) / 86400000);
+    var plotW = W - PAD_L - PAD_R, plotH = H - PAD_T - PAD_B;
+
+    function px(iso) { return PAD_L + ((day(iso) - first) / 86400000 / span) * plotW; }
+    function py(i) { return PAD_T + plotH - (i / (r.length - 1)) * plotH; }
+
+    var d = "M " + px(r[0][0]).toFixed(2) + " " + py(0).toFixed(2);
+    for (var i = 1; i < r.length; i++) {
+      d += " L " + px(r[i][0]).toFixed(2) + " " + py(i - 1).toFixed(2) +
+           " L " + px(r[i][0]).toFixed(2) + " " + py(i).toFixed(2);
+    }
+
+    var parts = ['<line class="rule" x1="0" y1="' + (PAD_T + plotH) + '" x2="' + W +
+      '" y2="' + (PAD_T + plotH) + '"/>'];
+
+    r.forEach(function (rel, i) {
+      if (i % 7 !== 0 && i !== r.length - 1) return;
+      parts.push('<line class="tick" x1="' + px(rel[0]).toFixed(2) + '" y1="' + PAD_T +
+        '" x2="' + px(rel[0]).toFixed(2) + '" y2="' + (PAD_T + plotH) + '"/>');
+    });
+
+    parts.push('<path class="step" d="' + d + '" pathLength="1" ' +
+      'stroke-dasharray="1" stroke-dashoffset="1"/>');
+
+    /* Both end labels sit above their dot. Below the first one is where the
+       axis date goes, and the two landed on the same pixel. */
+    [[0, "start", 9], [r.length - 1, "end", 0]].forEach(function (mark) {
+      var i = mark[0], rel = r[i];
+      parts.push('<circle class="dot" cx="' + px(rel[0]).toFixed(2) + '" cy="' +
+        py(i).toFixed(2) + '" r="3.5"/>');
+      parts.push('<text class="pin" x="' + (px(rel[0]) + mark[2]).toFixed(2) + '" y="' +
+        (py(i) - 12).toFixed(2) + '" text-anchor="' + mark[1] + '">' +
+        esc(rel[1]) + "</text>");
+    });
+
+    [[r[0][0], "start"], [r[r.length - 1][0], "end"]].forEach(function (mark) {
+      parts.push('<text class="axis" x="' + px(mark[0]).toFixed(2) + '" y="' + (H - 8) +
+        '" text-anchor="' + mark[1] + '">' + esc(shortDate(mark[0])) + "</text>");
+    });
+
+    el("release-chart").innerHTML =
+      '<svg viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="' +
+      r.length + " numbered builds from " + esc(r[0][1]) + " to " +
+      esc(r[r.length - 1][1]) + '">' + parts.join("") + "</svg>";
+
+    el("release-note").textContent =
+      r.length + " numbered builds between " + shortDate(r[0][0]) + " and " +
+      shortDate(r[r.length - 1][0]) + ". The steep stretch in the middle is the " +
+      "week navigation was built; the flat run at the end is the server work, " +
+      "which does not move the app's version.";
+
+    el("ladder").innerHTML = r.slice(-8).reverse().map(function (rel) {
+      return "<li><b>" + esc(rel[1]) + "</b><span>" + esc(shortDate(rel[0])) + "</span></li>";
+    }).join("");
+  }());
+
+  /* ---------- 03, weight by area ---------- */
+
+  (function areas() {
+    var max = S.areas.reduce(function (m, a) { return Math.max(m, a.commits); }, 1);
+    el("areas-list").innerHTML = S.areas.map(function (a, i) {
+      return '<div class="area">' +
+        '<span class="n">' + esc(a.name) + "</span>" +
+        '<span class="t"><i style="width:' + ((a.commits / max) * 100).toFixed(1) +
+          '%;transition-delay:' + (i * 50) + 'ms"></i></span>' +
+        '<span class="c num">' + a.commits + "</span>" +
+        '<span class="l num">+' + commas(a.added) + "</span>" +
+        "</div>";
+    }).join("");
+
+    var counted = S.areas.reduce(function (t, a) { return t + a.commits; }, 0);
+    el("areas-note").textContent =
+      commas(S.added) + " lines added and " + commas(S.deleted) +
+      " removed across " + commas(S.commits) + " commits, with the right hand " +
+      "column showing lines added. Prose is not counted anywhere here, so " +
+      "documentation carries no weight it did not earn in code. The bucket " +
+      "counts add to " + counted + " rather than " + S.commits +
+      " because a commit that touches two areas is counted in both.";
+  }());
+
+  /* ---------- reveal ---------- */
+
+  /* Each graphic fills in when the graphic itself reaches the viewport, not
+     when its section does. Watching the section meant a chart could finish
+     animating while it was still below the fold, so the reader scrolled down
+     to a chart that was already drawn and never saw it happen. */
+  var reduced = window.matchMedia &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function countUp(node, to) {
+    var from = 0, started = null, span = 1500;
+    var pretty = function (v) { return commas(v); };
+    function step(now) {
+      if (started === null) started = now;
+      var p = Math.min(1, (now - started) / span);
+      /* Fast out, slow in, so the number lands rather than stopping dead. */
+      var eased = 1 - Math.pow(1 - p, 3);
+      node.textContent = pretty(Math.round(from + (to - from) * eased));
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  /* Only whole numbers count up. A version string is not a quantity, and
+     watching "0.27.2" spin would be motion for its own sake. */
+  function fill(target) {
+    target.classList.add("in");
+    if (reduced) return;
+    var figures = target.querySelectorAll(".v.num");
+    Array.prototype.forEach.call(figures, function (node, i) {
+      var value = parseInt(node.textContent.replace(/,/g, ""), 10);
+      if (isNaN(value) || String(value) !== node.textContent.replace(/,/g, "")) return;
+      node.textContent = "0";
+      setTimeout(function () { countUp(node, value); }, i * 90);
+    });
+  }
+
+  var targets = ["metrics", "pulse-chart", "release-chart", "areas-list", "rhythm-figs"]
+    .map(el).filter(Boolean);
+
+  if (!("IntersectionObserver" in window)) {
+    targets.forEach(function (node) { node.classList.add("in"); });
+  } else {
+    var watcher = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        fill(entry.target);
+        watcher.unobserve(entry.target);
+      });
+    }, { threshold: 0.25, rootMargin: "0px 0px -8% 0px" });
+    targets.forEach(function (node) { watcher.observe(node); });
+  }
+}());
+</script>
+
+</body>
+</html>

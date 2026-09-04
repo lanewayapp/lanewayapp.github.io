@@ -1,3 +1,238 @@
+# The Status Page - Thursday Sep 3
+
+*Written 6:41 PM.*
+
+## What was asked
+
+"can you turn the status page into somthing really cool, like it shows
+(without leaking any info) last commits and a whole bunch of cool stuff".
+
+The status page was a section: two lists and a feed row inside `index.html`.
+It is now a page, `status.html`, and the section on the overview page has
+become a live strip that links to it.
+
+## The thing that decided the design
+
+The engine repo's commit subjects cannot be published. Not "should be reviewed
+first": cannot. Three of the last twenty name a spend figure, a deploy target
+and a device respectively, all of which this repo's own rules forbid. So the
+feature as asked, a list of recent commits, was impossible in its obvious
+form, and the version where a heuristic picks the harmless ones is worse,
+because it turns a fixed rule into a judgment that has to be right every time
+forever.
+
+The page shows the log with the subjects redacted, and says why. The bar is
+drawn as many characters wide as the subject it replaces, which is the only
+thing about that subject the published file knows. That keeps the bar from
+being decoration: it is the size of the thing it stands in for. A dashed bar
+is a merge.
+
+Section 06 is the written list of what is in the file and what is not. It is
+on the page because a boundary nobody states is a boundary that moves.
+
+## status.js
+
+One generated file, written by `ops/export_status.py` in the private repo and
+committed here. Both pages load it with a plain `<script src>`, not a fetch,
+so both still open straight off disk; `devlog.html` fetches its markdown and
+does not, and that difference was the reason to pick the script tag.
+
+The exporter lives in the private repo rather than here because it maps real
+source paths to the six public area names, and that mapping is repo structure.
+Only the names cross over.
+
+`CLAUDE.md` gained the refresh command and the three rules that go with it.
+
+## What is on the page
+
+01 Pulse, commits per day for every calendar day since the repo was empty,
+including the empty days. 02 Builds, the version ladder read off the Xcode
+project at each commit that changed it, drawn as a staircase, with the eight
+most recent listed beside it. 03 Log, the redacted commit log, filterable by
+area, forty rows at a time. 04 Weight, commit and line counts per area, drawn
+as bars against the largest bucket rather than as a stacked bar, because a
+commit that touches two areas is counted in both and a stacked bar would claim
+they were parts of a whole. 05 Surface, the counts plus the two lists the
+overview page carries. 06 Boundary.
+
+## The stale numbers
+
+`devlog.md` said the current build was 0.19.0 and the suite had 137 tests. The
+app is at 0.27.2 and pytest collects 350. That band is still typed by hand and
+is now the only place on the site where a stale number can appear; `CLAUDE.md`
+says to check it against `status.js`.
+
+## Checked
+
+Both themes, both breakpoints, no console errors. The area bars and the
+release staircase were both screenshotted mid-animation first and read as
+wrong until the transitions finished, which is worth remembering: this pane
+composites the first paint and then goes stale, so anything with a transition
+has to be waited out before the screenshot means anything.
+
+Filters and the "show more" control were driven and verified: filtering to
+Engine gives 66 rows, matching the chip's own count, and paging through
+reveals all 66.
+
+## Cut back, same session
+
+Baron read the page and cut most of it. The two chart intros went ("just
+'Commits per day'", and "progress" for the builds section), the redacted commit
+log went entirely ("i dont know how to read that and its way too long"), and
+sections 05 and 06 went with it.
+
+That is the right call on the log and worth writing down rather than
+defending. The redaction bar was the most interesting idea on the page and it
+was interesting to the person who built it: 211 rows of sha, bar, area and
+churn is a data structure, not a page. It answered "what does the history look
+like" for someone who already knew what a commit was, and the page's actual
+reader does not.
+
+**Cutting the section removed the only consumer of the per-commit rows**, so
+the exporter stopped producing them: no shas, no subject lengths, no per-commit
+anything, only per-day counts and per-area totals. `status.js` went from 41KB
+to 3.7KB. Leaving them in would have meant a public file carrying the shape of
+every commit for nothing to read, which is the exact habit the exporter exists
+to prevent.
+
+Two replacements, chosen by Baron off four:
+
+- **04 Rhythm.** Three figures from the same per-day counts: days with a
+  commit, longest quiet run, busiest day. Section 01's caption used to say all
+  three in one sentence and now says none of them, so each number is on the
+  page once. Which day was busiest is read out of the data rather than written
+  down, because "day one" is true today and would become a false claim the
+  first time it stops being.
+- **05 Milestones.** Ten rows, plain language, static markup. **Every row is an
+  entry that is already in `devlog.md`**, which is the constraint that shaped
+  the section: the public dev log's last entry is Aug 17, and the private
+  journal runs to today. Taking a milestone from the journal would publish a
+  claim the site has never made. So the list stops on Aug 17 and the last row
+  says so, next to a chart that visibly keeps going. That reads as an honest
+  page rather than a stalled project, and it is a standing nudge to write the
+  log forward.
+
+## Second pass, same session
+
+Four more changes from Baron, and one of them moved the numbers.
+
+**Prose stopped counting.** "remove all references to JOURNAL.md, we dont want
+that skewing results". The journal was the largest file in the engine repo and
+it was being counted as source: it made documentation the biggest bucket in
+section 03 by commit count, put roughly twenty thousand lines into the line
+totals, and the caption under the bars said so out loud. That describes a
+writing habit, not a product. The exporter now skips every `.md` file and
+everything under `docs/` when counting lines and areas, the sixth bucket is
+gone, and the totals fell from 36,944 lines added to 30,798. A commit that only
+edits prose is still a commit and still lands on the per-day chart, because the
+commit count is a plain fact about the repo and quietly filtering it would make
+it something else. The page now says "prose is not counted anywhere here" and
+names no file.
+
+**The reveal was watching the wrong element.** It observed each `<section>`,
+and a section starts well above its chart, so a chart could finish animating
+while it was still below the fold. Scroll down and the bars were already
+drawn. It now observes the graphics themselves, `#pulse-chart`,
+`#release-chart`, `#areas-list`, `#rhythm-figs` and the metric band, at a 0.25
+threshold with a small bottom margin, so each one fills as it arrives.
+
+- A same specificity collision had also killed the grow: `.in .bar` set
+  `transition:transform` and a later `.day .bar` set `transition:opacity,fill`,
+  which replaced it wholesale. Both are `(0,2,0)` so the later rule won and
+  the bars snapped in. One declaration now covers all three properties.
+- The figures count up on arrival, and only whole numbers do. A version string
+  is not a quantity, so `0.27.2` and `0.2.0` are left alone by a guard that
+  reparses the text and compares; verified against the live page, the three
+  counts animate and the two versions do not.
+
+**Per bar tooltips.** Each day is now a `<g>` holding the drawn mark and a
+transparent rect the full height of the plot, and the transparent one takes the
+pointer. That matters more than it sounds: a zero day was a one pixel line and
+a one commit day a two pixel stub, both effectively unhittable. The tooltip is
+positioned by measuring the drawn mark's client rect rather than computing from
+the viewBox, so it stays correct at every width the chart scales to, and it is
+clamped to the figure at both ends. Hovering dims the other days.
+
+**Section 05 removed**, the day it was added.
+
+## Third pass: the elastic was a bug
+
+"the bars animation is way too strong, and its elastic to the page or somthing".
+That last clause was right and it was not a taste note.
+
+**`transform-box` defaults to `view-box` on SVG elements.** So `.bar` with
+`transform-origin:center bottom` did not resolve to each bar's own bottom edge;
+it resolved to `560px 190px`, the centre-bottom of the entire chart, which is
+26 units *below* the baseline. Every bar was scaling about a point nowhere near
+itself, stretching up from under the axis and settling. That is the elastic,
+and no amount of easing would have fixed it because the geometry was wrong.
+
+`transform-box:fill-box` makes the origin the bar's own bottom edge. Confirmed
+on the live page: a 142 unit bar now reports its origin at y 142, a 47 unit bar
+at y 47, each its own bottom.
+
+Softened on top of that, since it was also too showy: bar grow 0.55s to 0.34s
+on a plain decelerate curve with no fast start, cascade 16ms to 9ms per bar
+(448ms of wave down to 243ms), staircase draw 1.5s to 1.2s, area fills 0.7s to
+0.5s with a 50ms stagger. Counting figures slowed from 900ms to 1500ms, which
+Baron asked for separately.
+
+**A second bug fell out of testing the first.** The tooltip was positioned from
+the hovered bar's client rect, which is the *animated* rect. Hover a bar while
+it is still filling and the tooltip landed inside it: measured at 111px when it
+should have been 42px. It now positions from `getBBox()`, which is in viewBox
+units and ignores the transform, scaled by the chart's own width factor. Same
+answer whether the bar is collapsed or grown, verified both ways: exactly 10px
+above the bar's resting top at day 0, day 4 and day 27, inside the figure at
+every one.
+
+The tooltip also got smaller and frosted: 4px by 7px padding, 9.5px mono,
+translucent background over `backdrop-filter: blur(14px) saturate(180%)`, a
+hairline border, and the solid arrow removed. Both palettes carry a `--glass`
+and `--glass-edge` token. Where `backdrop-filter` is unsupported the
+translucent background alone still reads.
+
+## Checked
+
+The pane was hidden for most of this, which means `document.hidden` was true,
+`innerHeight` read 0, and IntersectionObserver cannot fire in that state. So:
+
+- The tooltip was driven with synthetic `pointermove` events on day 0, day 7
+  (a zero day), day 26 and day 27. Correct text and plural in every case, one
+  day lit at a time, `pointerleave` clearing both, and the tooltip sitting
+  exactly 2px inside the figure at both edges with no page overflow.
+- The fills were checked by killing transitions and reading the end state
+  either side of the class change: bar `scaleY(.001)` to `scaleY(1)`, area fill
+  `scaleX(0)` to `scaleX(1)`, staircase dash offset 1 to 0.
+- **The motion itself was not watched, and neither was the scroll trigger.**
+  Both need a compositing page. The CSS resolves correctly and the observer is
+  wired to the right nodes, but "it animates as you scroll" is expected
+  behaviour here rather than something seen. Worth an eyeball before pushing.
+- **The pane served a stale composite once and it looked like a bug.** A light
+  mode screenshot showed the tooltip over one bar and the highlight on another,
+  about six columns apart. Measuring instead of reading the picture showed the
+  tooltip centre matching the lit bar exactly, 134 against 134 and 313 against
+  313, one bar lit at a time. The frame was left over from the previous hover.
+  Same lesson as Aug 29 and worth restating: in this pane a screenshot is
+  evidence of nothing on its own, and the measurement is the check.
+
+## Open
+
+- **The dev log is sixteen days behind**, and section 05 now says so in public.
+  Closing that gap is a writing job, not a code one.
+- **`status.html` was never opened from `file://`.** The pane refuses to load
+  file URLs, and Chrome is not connected. The classic script tag is chosen
+  precisely so it works there, and that is the expected behaviour rather than
+  a verified one. If it turns out to be blocked, the page now says the
+  snapshot did not load instead of rendering an empty shell.
+- **Nothing refreshes `status.js` on its own.** It is a command someone runs.
+  The page shows its own age and says it is a file rather than a feed, which
+  is honest about the problem without solving it.
+- The two lists under "Working today" and "Not there yet" now exist on two
+  pages. Deliberate, and flagged in `CLAUDE.md`: change both or neither.
+
+---
+
 # The Public Repo Had No Licence At All - Thursday Sep 3
 
 *Written 4:31 PM.*

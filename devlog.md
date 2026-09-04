@@ -1,8 +1,8 @@
 # Metrics
 
 - 6 | Days from empty repo to navigation
-- 0.19.0 | Current build
-- 137 | Tests, all offline
+- 0.27.2 | Current build
+- 350 | Tests, all offline
 - 5 | Official transit feeds
 
 # Entries

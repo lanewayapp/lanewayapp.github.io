@@ -2,7 +2,7 @@
 
 ### Emilio's Work
 
-*Time worked: 10:48 PM to 11:02 PM*
+*Time worked: 10:48 PM to 11:49 PM*
 
 ## Timeline
 
@@ -32,6 +32,56 @@ browser logged no warnings or errors. At a 360 px viewport the signature stays
 on one line with no horizontal overflow. Inline scripts parse, the diff passes
 whitespace checks, and the Markdown non-ASCII check is clean. Reduced-motion
 and no-script fallbacks show all three beats and the completed signature.
+
+**11:04 PM - The signature became a transport story.** Emilio asked for more
+legibility and more character: a normal L; a cyclist riding a hill that resolves
+into the rounded second letter; a car revealing ne along a road; then way drawn
+by an arrow that finishes as a check. The final held frame is now a conventional
+Laneway wordmark rather than cursive, while the vehicles remain temporary motion
+layers. The sequence is spread across a longer scroll stage so each idea has
+room to register. The decorative check stays amber because verifier green is
+reserved for real supported claims.
+
+**11:13 PM - The handoffs were separated.** Browser review found that rotating
+the cyclist to the full hill slope made the rider hard to recognise, and the
+bike and car briefly collided at the second-letter transition. The rider now
+stays within 18 degrees of upright, renders larger, and clears before the car
+enters its own road beat.
+
+**11:35 PM - The explorations resolved into one orange script.** Emilio first
+clarified that the vehicle trails, not separate roads, should form the letters.
+A working version let the bike paint a, the car paint ne, and an arrow paint
+way. He then briefly asked for fixed-speed playback before reversing that call:
+the title is scroll-controlled after all. The final aesthetic direction is a
+vintage connected-script wordmark in the spirit of early hand-lettered social
+logos, without copying one. The real Laneway route mark draws first, a heavier
+branch grows from its upper end into the L, and separate overlapping paths form
+the rest of Laneway before the terminal check. Those distinct paths keep the
+brush lettering organic without reducing it to one uniform wire. Every stroke,
+including the check, now uses the single Laneway orange; the gradient and the
+literal bike and car drawings were removed. Desktop and 360 px browser renders
+show the full word on one line without horizontal page overflow.
+
+**11:43 PM - The two beliefs received an editorial voice.** Emilio called the
+bold opening copy bland and asked for a different font, lighter weight, colour,
+and motion. Both statements now use a regular-weight Iowan-style serif stack
+instead of the site sans. Destination, efficient, and best use Laneway orange;
+journey receives a quieter orange-ink italic. Thin orange route lines draw under
+the key words with each scroll beat. Browser inspection confirms the resolved
+weight is 400, the first composition remains centered, and the script title
+still takes over without competing type styles.
+
+**11:44 PM - Simple type won over the editorial experiment.** Emilio asked to
+keep the statements simple. The serif treatment was rendered and discarded
+rather than shipped. The statements now use the site's existing Geist face at
+regular weight, with no italics. Laneway orange on the key words and the moving
+underline remain the personality layer.
+
+**11:49 PM - The underline became a route.** Emilio asked for a bike or plane
+instead of a generic rule. Each accent word now contains its own small orange
+route scene: a bike under destination, a plane under efficient, and a bike under
+best. The dotted track and vehicle position share the existing scroll progress,
+so the icon travels under the word as that beat enters.
 
 ## Open
 

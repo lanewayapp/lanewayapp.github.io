@@ -460,13 +460,34 @@ footer .right{margin-left:auto;display:flex;gap:20px}
 .art-end{fill:var(--bg);stroke:var(--route);stroke-width:2}
 .art-end.unknown{stroke:var(--muted)}
 .art-traveller-ring{fill:#E89E2E;fill-opacity:.12}
-.connection-label{position:absolute;display:flex;align-items:center;gap:12px;padding:14px 17px;background:var(--bg);border:1px solid var(--hair);border-radius:5px;box-shadow:0 4px 16px rgba(0,0,0,.025)}
+.connection-label{position:relative;display:flex;align-items:center;gap:12px;padding:14px 17px;background:var(--bg);border:1px solid var(--hair);border-radius:5px;box-shadow:0 4px 16px rgba(0,0,0,.025)}
 .connection-label b{display:block;font-size:13px;line-height:1.4;font-weight:500;letter-spacing:-.02em}
-.connection-label span:not(.connection-symbol):not(.rail-icon){display:block;font-size:11px;line-height:1.5;color:var(--muted);margin-top:4px}
+.connection-label .connection-copy > span{display:block;font-size:11px;line-height:1.5;color:var(--muted);margin-top:4px}
 .connection-symbol{display:grid;place-items:center;flex:none;width:28px;height:28px;background:var(--navy);color:#fff;border-radius:50%;font-size:12px}
 .rail-icon{display:grid;place-items:center;color:var(--accent);width:28px}
 .rail-icon svg{fill:none;stroke:currentColor;stroke-width:1.4;stroke-linecap:round}
 .label-a{left:10%;top:16%}.label-rail{right:8%;top:44%}.label-b{left:15%;bottom:17%}
+/* Native disclosures provide the same information by hover, focus or tap.
+   Their padded panel bridge keeps the popover hoverable without a dead gap. */
+.connection-stop{position:absolute;z-index:3;max-width:86%}
+.connection-stop[open]{z-index:5}
+.connection-label{cursor:pointer;list-style:none;transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease}
+.connection-label::-webkit-details-marker{display:none}
+.connection-label:focus-visible{outline:2px solid #243F64;outline-offset:4px}
+.connection-stop[open] .connection-label{transform:translateY(-3px);border-color:#647D9E;box-shadow:0 8px 24px rgba(23,33,51,.12)}
+.connection-expand{font-size:18px;line-height:1;color:#243F64;margin-left:6px;transition:transform .22s ease}
+.connection-stop[open] .connection-expand{transform:rotate(45deg)}
+.connection-symbol,.rail-icon{transition:transform .22s ease}
+.connection-stop[open] .connection-symbol,.connection-stop[open] .rail-icon{transform:rotate(-7deg)}
+.connection-info{position:absolute;top:100%;left:0;width:270px;max-width:100%;padding-top:9px}
+.label-rail .connection-info{left:auto;right:0;top:auto;bottom:100%;padding-top:0;padding-bottom:9px}
+.label-b .connection-info{top:auto;bottom:100%;padding-top:0;padding-bottom:9px}
+.connection-info-box{padding:17px;background:#172133;color:#fff;border:1px solid #314562;border-radius:6px;box-shadow:0 12px 26px rgba(23,33,51,.16);animation:connection-info-in .2s ease both}
+.connection-info h3{font-size:14px;font-weight:500;letter-spacing:-.02em;line-height:1.4;margin:0 0 8px}
+.connection-info p{font-size:14px;line-height:1.55;color:#D9E5F5;margin:0}
+.connection-art:has(.connection-stop[open]) .art-line{animation:connection-route-focus .8s ease both}
+@keyframes connection-info-in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+@keyframes connection-route-focus{from{stroke-dashoffset:1;stroke-width:2.5}to{stroke-dashoffset:0;stroke-width:3.5}}
 .beat-eyebrow{position:absolute;top:15%;left:24px;right:24px;text-align:center}
 .opening-footer{position:absolute;bottom:24px;width:100%;display:flex;justify-content:space-between;gap:16px;color:var(--muted);font-size:12px;z-index:3;pointer-events:none}
 .scroll-arrow{display:inline-block;margin-left:14px;animation:scroll-cue 2s ease-in-out infinite}
@@ -751,7 +772,7 @@ footer .wrap{align-items:center;gap:24px}
           <p class="intro-description">Trip plans that connect the shuttles, terminal walks, and missing links. With the evidence to back them up.</p>
           <div class="intro-actions"><a class="btn" href="#route">Explore a journey <span aria-hidden="true">&#8599;</span></a><a class="link" href="#verification">How verification works</a></div>
         </div>
-        <div class="connection-art" role="img" aria-label="Illustration of walking, rail and shuttle connections, with the shuttle connection marked unverified. Not travel directions.">
+        <div class="connection-art" role="group" aria-label="Illustration of walking, rail and shuttle connections, with the shuttle connection marked unverified. Not travel directions.">
           <div class="art-heading"><span class="mono">The space between A and B</span><span class="art-status">Route illustration</span></div>
           <svg class="connection-grid" viewBox="0 0 500 460" aria-hidden="true">
             <defs><pattern id="introGrid" width="28" height="28" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".8" fill="currentColor" opacity=".16"/></pattern></defs>
@@ -764,9 +785,18 @@ footer .wrap{align-items:center;gap:24px}
             <circle class="art-end unknown" cx="437" cy="390" r="7"/>
             <g class="art-traveller"><circle r="12" class="art-traveller-ring"/><circle r="4" fill="#E89E2E"/><animateMotion dur="7s" repeatCount="indefinite" path="M92 98 V176 Q92 218 134 218 H327 Q369 218 369 260 V340"/></g>
           </svg>
-          <div class="connection-label label-a"><span class="connection-symbol">A</span><div><b>Arrive.</b><span>Your journey starts here</span></div></div>
-          <div class="connection-label label-rail"><span class="rail-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="14" rx="3"/><path d="M6 10h12M9 21l2-4m4 4-2-4M9 13h.01M15 13h.01"/></svg></span><div><b>Find the connection.</b><span>Walk. Ride. Keep going.</span></div></div>
-          <div class="connection-label label-b"><span class="connection-symbol">B</span><div><b>Know what is ahead.</b><span class="unverified-label">Shuttle connection unverified</span></div></div>
+          <details class="connection-stop label-a">
+            <summary class="connection-label"><span class="connection-symbol">A</span><span class="connection-copy"><b>Arrive.</b><span>Your journey starts here</span></span><span class="connection-expand" aria-hidden="true">+</span></summary>
+            <div class="connection-info"><div class="connection-info-box"><h3>Start With the Arrival Point</h3><p>The airport name is only the beginning. The terminal and arrival details help define the first walking leg.</p></div></div>
+          </details>
+          <details class="connection-stop label-rail">
+            <summary class="connection-label"><span class="rail-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="14" rx="3"/><path d="M6 10h12M9 21l2-4m4 4-2-4M9 13h.01M15 13h.01"/></svg></span><span class="connection-copy"><b>Find the connection.</b><span>Walk. Ride. Keep going.</span></span><span class="connection-expand" aria-hidden="true">+</span></summary>
+            <div class="connection-info"><div class="connection-info-box"><h3>Follow Every Connection</h3><p>Walk, ride, then take the shuttle. Each connection needs evidence before it can be treated as confirmed.</p></div></div>
+          </details>
+          <details class="connection-stop label-b">
+            <summary class="connection-label"><span class="connection-symbol">B</span><span class="connection-copy"><b>Know what is ahead.</b><span class="unverified-label">Shuttle connection unverified</span></span><span class="connection-expand" aria-hidden="true">+</span></summary>
+            <div class="connection-info"><div class="connection-info-box"><h3>Keep the Unknowns Visible</h3><p>If a shuttle pickup cannot be checked, that connection stays unverified. Check the operator before relying on it.</p></div></div>
+          </details>
           <div class="art-footer"><span class="mono">One connected journey</span><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 10h13m-5-5 5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></div>
         </div>
       </div>
@@ -1581,6 +1611,52 @@ footer .wrap{align-items:center;gap:24px}
     '<a href="status.html">See the full status</a>';
 
   document.getElementById("pulse").hidden = false;
+}());
+</script>
+
+<script>
+/* Hover previews a stop. A click pins it until another stop, outside click,
+   or Escape closes it; native details still work when scripting is absent. */
+(function () {
+  "use strict";
+  var art = document.querySelector(".connection-art");
+  if (!art) return;
+  var stops = [].slice.call(art.querySelectorAll(".connection-stop"));
+  var pinned = null;
+  function closeAll() {
+    pinned = null;
+    stops.forEach(function (stop) { stop.open = false; });
+  }
+  function show(stop) {
+    if (pinned && pinned !== stop) pinned = null;
+    stops.forEach(function (item) { item.open = item === stop; });
+  }
+  stops.forEach(function (stop) {
+    var summary = stop.querySelector("summary");
+    stop.addEventListener("pointerenter", function (event) {
+      if (event.pointerType === "mouse" || event.pointerType === "pen") show(stop);
+    });
+    stop.addEventListener("pointerleave", function () {
+      if (pinned !== stop && !stop.contains(document.activeElement)) stop.open = false;
+    });
+    stop.addEventListener("focusin", function () { show(stop); });
+    stop.addEventListener("focusout", function (event) {
+      if (pinned !== stop && !stop.contains(event.relatedTarget)) stop.open = false;
+    });
+    summary.addEventListener("click", function (event) {
+      event.preventDefault();
+      if (pinned === stop) closeAll();
+      else { show(stop); pinned = stop; }
+    });
+  });
+  document.addEventListener("pointerdown", function (event) {
+    if (!art.contains(event.target)) closeAll();
+  });
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape" && stops.some(function (stop) { return stop.open; })) {
+      closeAll();
+    }
+  });
 }());
 </script>
 

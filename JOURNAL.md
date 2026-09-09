@@ -6,7 +6,7 @@
 12:15 AM; the redesign direction was recorded at 12:18 AM. The latest palette refinement was
 recorded at 12:32 AM. The user resumed at the 6:38 AM clock check. These
 are clock checks, not an estimated active duration, and include interruptions.
-The latest request was recorded at the 10:12 AM clock check.*
+The latest requests were recorded at 10:14 AM and on resuming at 2:28 PM.*
 
 ## Timeline
 
@@ -85,6 +85,27 @@ A pull was attempted before editing; the isolated branch has no tracking
 branch, so no merge was made. The checkpoint before this refinement is
 codex/before-titlecard-removal at 73aeaee, in addition to the original
 pre-redesign snapshot. Issue #140 stays open pending publication.
+
+**2:30 PM - Route Illustration Disclosures and Pull Request Requested.**
+The hover request was first recorded at the 10:14 AM clock check. The user
+then asked to submit a pull request; the resumed clock check was 2:28 PM.
+These checks span an interruption and are not active work time.
+
+Converted the three illustration stop labels into native details and summary
+controls. Hover or keyboard focus previews contextual information; click or
+tap pins a panel. Another stop, an outside click or Escape dismisses it.
+The cards lift slightly, their icons tilt and the route redraws. Information
+panels use navy with white text and explain the illustration without claiming
+real travel directions. The illustration now has group semantics so its
+controls remain accessible. Native clicks also work without JavaScript.
+
+All seven scripts parse. Local links, fragments, IDs and font assets pass.
+Focused interaction checks pass for hover, focus, touch, pinning, one open
+panel, Escape and outside dismissal, alongside the existing opening tests.
+The diff is clean; visual browser testing was not performed. Fetched main
+and confirmed it is an ancestor. No PR is open for this branch. The proposed
+PR includes the earlier activity-feed, opening and loading-state work already
+on the branch, plus this redesign, since those commits are not on main.
 
 ## Validation and Rollback
 

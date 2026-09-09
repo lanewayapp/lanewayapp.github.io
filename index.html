@@ -111,6 +111,28 @@ body{
   font-family:"Geist",-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
   font-weight:400;-webkit-font-smoothing:antialiased;line-height:1.6;overflow-x:hidden;
 }
+/* The first frame is part of the product. The route mark draws once, then its
+   endpoint carries forward into an open ring. The overlay leaves on load and
+   has a timeout as a defensive fallback, so it can never trap the page. */
+.site-loader{
+  position:fixed;inset:0;z-index:1000;display:grid;place-items:center;
+  background:var(--bg);opacity:1;visibility:visible;
+  transition:opacity .42s ease,visibility .42s ease;
+}
+.site-loader.is-leaving{opacity:0;visibility:hidden;pointer-events:none}
+.loader-symbol{width:76px;height:76px;overflow:visible;transition:transform .42s ease}
+.site-loader.is-leaving .loader-symbol{transform:scale(.82)}
+.loader-route,.loader-ring{fill:none;stroke:var(--accent);stroke-linecap:round;vector-effect:non-scaling-stroke}
+.loader-route{stroke-width:4.5;stroke-dasharray:1;stroke-dashoffset:1;animation:loader-route 1.05s cubic-bezier(.4,0,.2,1) forwards}
+.loader-route-dot{fill:var(--accent);transform-box:fill-box;transform-origin:center;animation:loader-dot 1.05s ease forwards}
+.loader-orbit{opacity:0;transform-origin:32px 32px;animation:loader-orbit-in .38s .62s ease forwards,loader-spin .82s .84s linear infinite}
+.loader-ring{stroke-width:3.5;stroke-dasharray:.72 .28;stroke-dashoffset:1;animation:loader-ring .48s .56s ease forwards}
+.loader-orbit-dot{fill:var(--accent)}
+@keyframes loader-route{0%{stroke-dashoffset:1;opacity:1}58%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}
+@keyframes loader-dot{0%{opacity:0;transform:scale(0)}20%,62%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(.5)}}
+@keyframes loader-ring{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+@keyframes loader-orbit-in{to{opacity:1}}
+@keyframes loader-spin{to{transform:rotate(360deg)}}
 /* Three weights. 400 reads, 500 labels, 700 leads. Nothing else. */
 h1,h2,h3{font-weight:700;letter-spacing:-.022em;margin:0}
 .mono{
@@ -179,7 +201,7 @@ main{position:relative;z-index:1;padding-top:calc(var(--bar) + 2px)}
 /* Three full-screen beats precede the map journey. The map remains fixed
    behind them and keeps its existing load animation, while this layer owns
    only the words and their scroll progress. */
-.opening{position:relative;height:360vh;padding:0}
+.opening{position:relative;height:480vh;padding:0}
 .opening-sticky{position:sticky;top:var(--bar);height:calc(100vh - var(--bar));display:grid;place-items:center;overflow:hidden}
 .opening-sticky::before{
   content:"";position:absolute;inset:0;background:color-mix(in srgb,var(--bg) 88%,transparent);
@@ -276,7 +298,8 @@ main{position:relative;z-index:1;padding-top:calc(var(--bar) + 2px)}
 .panel ol{list-style:none;margin:14px 0 0;padding:0;pointer-events:auto}
 .panel ol li{
   display:grid;grid-template-columns:22px 1fr;gap:10px;align-items:baseline;
-  padding:7px 0;border-top:1px solid var(--hair);font-size:14px;color:var(--muted);transition:color .15s;
+  padding:7px 0;border-top:1px solid var(--hair);font-size:14px;color:var(--muted);
+  transition:color .2s ease,background-color .2s ease,transform .2s ease;
 }
 .panel ol li:hover{color:var(--ink)}
 .panel ol li .k{font-family:"Geist Mono",ui-monospace,Menlo,monospace;font-size:11px;color:var(--accent)}
@@ -298,6 +321,7 @@ section{padding:clamp(64px,9vw,132px) 0}
 .ledger .row{
   display:grid;grid-template-columns:150px minmax(0,1fr) minmax(0,.85fr);
   gap:clamp(14px,3vw,36px);padding:22px 0;border-bottom:1px solid var(--hair);align-items:start;
+  transition:background-color .22s ease,transform .22s ease;
 }
 .ledger .claim{font-size:16px;line-height:1.45}
 .ledger .src{font-size:13.5px;color:var(--muted)}
@@ -317,7 +341,10 @@ section{padding:clamp(64px,9vw,132px) 0}
 
 /* Pipeline: dense and technical on purpose, small type, no boxes. */
 .pipe{margin-top:40px;border-top:1px solid var(--hair);display:grid;grid-template-columns:repeat(3,1fr);gap:0}
-.pipe div{padding:20px clamp(16px,2.4vw,30px) 24px 0;border-bottom:1px solid var(--hair)}
+.pipe div{
+  padding:20px clamp(16px,2.4vw,30px) 24px 0;border-bottom:1px solid var(--hair);
+  transition:background-color .22s ease,transform .22s ease;
+}
 .pipe .k{font-family:"Geist Mono",ui-monospace,Menlo,monospace;font-size:11px;font-weight:500;color:var(--accent)}
 .pipe h3{font-size:14.5px;margin:8px 0 5px;font-weight:500}
 .pipe p{margin:0;font-size:13.5px;line-height:1.5;color:var(--muted)}
@@ -329,11 +356,17 @@ section{padding:clamp(64px,9vw,132px) 0}
 .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:clamp(28px,5vw,64px);margin-top:40px}
 .cols h3{font-size:13px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-family:"Geist Mono",ui-monospace,Menlo,monospace}
 .cols ul{list-style:none;margin:16px 0 0;padding:0}
-.cols li{padding:12px 0;border-top:1px solid var(--hair);font-size:14.5px;line-height:1.5;color:var(--muted)}
+.cols li{
+  padding:12px 0;border-top:1px solid var(--hair);font-size:14.5px;line-height:1.5;color:var(--muted);
+  transition:color .2s ease,background-color .2s ease,transform .2s ease;
+}
 .cols li b{color:var(--ink);font-weight:500}
 .coverage{margin-top:44px;padding-top:16px;border-top:1px solid var(--hair);display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline}
 .coverage ul{list-style:none;display:flex;flex-wrap:wrap;margin:0;padding:0}
-.coverage li{font-size:13.5px;color:var(--muted);padding:0 13px;border-left:1px solid var(--hair)}
+.coverage li{
+  font-size:13.5px;color:var(--muted);padding:0 13px;border-left:1px solid var(--hair);
+  transition:color .2s ease,transform .2s ease;
+}
 .coverage li:first-child{padding-left:0;border-left:0}
 
 /* The pulse strip. Four figures and a sparkline, all of them read out of
@@ -371,6 +404,7 @@ section{padding:clamp(64px,9vw,132px) 0}
   display:grid;grid-template-columns:minmax(150px,.7fr) minmax(350px,1.6fr) minmax(145px,.7fr);
   gap:clamp(18px,4vw,54px);align-items:center;min-height:118px;padding:20px 0 20px 22px;
   border-bottom:1px solid var(--hair);position:relative;
+  transition:background-color .22s ease,box-shadow .22s ease;
 }
 .activity-item::after{
   content:"";position:absolute;left:3px;right:0;bottom:-1px;height:1px;
@@ -391,7 +425,7 @@ section{padding:clamp(64px,9vw,132px) 0}
 .activity-line .mode-icon{display:inline-block;vertical-align:-3px;margin-right:6px}
 .activity-line i{display:block;height:1px;background:currentColor;position:relative;overflow:hidden}
 .activity-line i::after{content:"";position:absolute;top:0;bottom:0;width:34%;background:var(--bg);animation:route-pulse 2.4s ease-in-out infinite}
-.activity-line svg{display:block;flex:none}
+.activity-line svg{display:block;flex:none;transition:transform .22s ease}
 .activity-state{text-align:right}
 .activity-state strong{display:inline-flex;align-items:center;gap:7px;color:var(--accent);font-family:"Geist Mono",ui-monospace,Menlo,monospace;font-size:10px;font-weight:500;letter-spacing:.09em;text-transform:uppercase}
 .activity-state strong::before{content:"";width:6px;height:6px;background:currentColor;animation:state-pulse 2.4s ease-in-out infinite}
@@ -403,6 +437,17 @@ section{padding:clamp(64px,9vw,132px) 0}
 @keyframes state-pulse{0%,100%{opacity:.35;transform:scale(.75)}50%{opacity:1;transform:scale(1)}}
 .activity-foot{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;margin:14px 0 0;color:var(--muted);font-size:12px}
 .activity-foot .mono{color:var(--accent)}
+/* Rows remain honest reading surfaces, not fake buttons. Hover supplies a
+   light physical response without suggesting that the row can be opened. */
+@media (hover:hover){
+  .panel ol li:hover,.ledger .row:hover,.cols li:hover{
+    background:color-mix(in srgb,var(--accent) 7%,transparent);transform:translateX(6px);
+  }
+  .pipe div:hover{background:color-mix(in srgb,var(--accent) 7%,transparent);transform:translateY(-4px)}
+  .coverage li:hover{color:var(--ink);transform:translateY(-2px)}
+  .activity-item:hover{background:color-mix(in srgb,var(--accent) 7%,transparent);box-shadow:inset 3px 0 var(--accent)}
+  .activity-item:hover .activity-line svg{transform:translateX(5px)}
+}
 @media (max-width:760px){
   .activity-head{grid-template-columns:1fr;gap:18px}
   .activity-item{grid-template-columns:1fr auto;gap:16px;padding:20px 0 20px 16px}
@@ -467,10 +512,44 @@ footer .right{margin-left:auto;display:flex;gap:20px}
 .panels{min-height:0}
 .panel{position:static;opacity:1;margin-bottom:36px}
 .atlas{opacity:.45}
+.site-loader{display:none}
 </style>
 </noscript>
 </head>
 <body>
+
+<div class="site-loader" id="siteLoader" aria-hidden="true">
+  <svg class="loader-symbol" viewBox="0 0 64 64" aria-hidden="true">
+    <path class="loader-route" pathLength="1" d="M18 50 Q18 26 32 26 Q46 26 46 10"></path>
+    <circle class="loader-route-dot" cx="18" cy="50" r="3.5"></circle>
+    <g class="loader-orbit">
+      <circle class="loader-ring" pathLength="1" cx="32" cy="32" r="20"></circle>
+      <circle class="loader-orbit-dot" cx="32" cy="12" r="2.2"></circle>
+    </g>
+  </svg>
+</div>
+<script>
+(function () {
+  "use strict";
+  var loader = document.getElementById("siteLoader");
+  if (!loader) return;
+  var started = performance.now();
+  var queued = false;
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function dismiss() {
+    if (queued) return;
+    queued = true;
+    var delay = reduced ? 0 : Math.max(0, 1200 - (performance.now() - started));
+    setTimeout(function () {
+      loader.classList.add("is-leaving");
+      setTimeout(function () { loader.remove(); }, reduced ? 0 : 450);
+    }, delay);
+  }
+  if (document.readyState === "complete") dismiss();
+  else window.addEventListener("load", dismiss, { once:true });
+  setTimeout(dismiss, 3500);
+}());
+</script>
 
 <div class="atlas" id="atlas" aria-hidden="true">
   <svg viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid slice">
@@ -592,12 +671,12 @@ footer .right{margin-left:auto;display:flex;gap:20px}
         <div class="panel" data-panel="0">
           <span class="mono">Toronto Pearson</span>
           <h2>You have landed at Terminal 1.</h2>
-          <p>The rental depot is off airport. The shuttle that serves it is in no transit feed, and the walk between terminals is not a mapped footway, so nothing in any graph connects the two.</p>
+          <p>The depot is off airport. Its shuttle and terminal walk exist in no route graph.</p>
         </div>
         <div class="panel" data-panel="1">
           <span class="mono">Every mapping app</span>
           <h2>One leg, no connections.</h2>
-          <p>A 2 h 4 min walk along the airport perimeter road, or a driving route to a car rental depot you have no car to reach. Technically valid, practically useless.</p>
+          <p>Maps return a 2 h 4 min perimeter walk, or a drive to a car you cannot reach.</p>
         </div>
         <div class="panel" data-panel="2">
           <span class="mono">Laneway</span>
@@ -612,7 +691,7 @@ footer .right{margin-left:auto;display:flex;gap:20px}
         <div class="panel" data-panel="3">
           <span class="mono">Verified</span>
           <h2>Checked leg by leg, before you see it.</h2>
-          <p>Three legs traced to a source. The operator shuttle has no published timetable, so Laneway says so and still gives you the leg, because "roughly every 20 minutes, call ahead" is a usable answer and a two hour walk is not.</p>
+          <p>Three legs are sourced. The unpublished shuttle stays visible and clearly unverified.</p>
         </div>
       </div>
     </div>
@@ -625,8 +704,8 @@ footer .right{margin-left:auto;display:flex;gap:20px}
   <div class="wrap">
     <h2>Maps route across a graph. Some edges were never in it.</h2>
     <div class="body measure lede">
-      <p>Mapping apps are excellent at what they have data for. They route across digitized road and transit graphs, and anything missing from that graph is invisible to them. Private shuttles, terminal interiors, courtesy vans, informal connections: the edges do not exist, so the answer that comes back is technically valid and practically useless.</p>
-      <p>Toronto Pearson Terminal 1 to an off-airport rental depot is the case Laneway is tested against, and the one you just travelled.</p>
+      <p>Maps route what their graphs contain. Private shuttles, terminal interiors, and informal connectors are often missing.</p>
+      <p>Laneway is tested against that gap: Pearson Terminal 1 to an off-airport rental depot.</p>
     </div>
   </div>
 </section>
@@ -635,29 +714,29 @@ footer .right{margin-left:auto;display:flex;gap:20px}
   <div class="wrap">
     <h2 class="measure" style="font-size:clamp(24px,3.2vw,34px);line-height:1.16;max-width:19ch">Never present a fact the system cannot back up.</h2>
     <div class="lede measure" style="margin-top:24px">
-      <p>Plausible and correct look identical on a page, which is why nobody trusts a generated itinerary. Every claim is checked against a retrieved source before you see it, and the checker is allowed to say no. Three verdicts, never collapsed into two. These are real results from the engine.</p>
+      <p>Plausible is not proof. Laneway checks every claim and can return supported, contradicted, or unsupported.</p>
     </div>
 
     <div class="ledger">
       <div class="row">
         <span class="mark ok">Supported</span>
         <p class="claim">"MiWay route 7 serves stops on Airport Road."</p>
-        <p class="src"><b>MiWay official GTFS schedule feed</b>The feed lists a stop at 6445 Airport Rd.</p>
+        <p class="src"><b>MiWay official GTFS schedule feed</b>Lists a stop at 6445 Airport Rd.</p>
       </div>
       <div class="row">
         <span class="mark bad">Contradicted</span>
         <p class="claim">"MiWay route 7 enters Pearson Terminal 1."</p>
-        <p class="src"><b>MiWay official GTFS schedule feed</b>Route termini are City Centre and Westwood Square. The claim was dropped.</p>
+        <p class="src"><b>MiWay official GTFS schedule feed</b>Terminates at City Centre and Westwood Square. Claim dropped.</p>
       </div>
       <div class="row">
         <span class="mark warn">Unsupported</span>
         <p class="claim">"The rental shuttle leaves from the arrivals level post."</p>
-        <p class="src"><b>Operator website, unreachable</b>Shown as unverified, never quietly deleted and never stated as fact.</p>
+        <p class="src"><b>Operator website, unreachable</b>Shown as unverified, never stated as fact.</p>
       </div>
     </div>
 
     <div class="lede measure" style="margin-top:32px">
-      <p>A fact without provenance is a bug, so the type system refuses to build one: inside the engine an unsourced fact is unconstructible. Every source carries the URL it came from and the moment it was fetched.</p>
+      <p>Unsourced facts cannot be constructed. Every source stores its URL and fetch time.</p>
     </div>
   </div>
 </section>
@@ -666,15 +745,15 @@ footer .right{margin-left:auto;display:flex;gap:20px}
   <div class="wrap">
     <h2 class="measure" style="font-size:clamp(24px,3.2vw,34px);line-height:1.16;max-width:19ch">A slow layer that thinks, a fast layer that checks.</h2>
     <div class="lede measure" style="margin-top:24px">
-      <p>The model proposes and never gets the last word. Retrieval, caching and composition are deterministic with no model calls inside them, which keeps both the cost and the failure modes predictable.</p>
+      <p>The model proposes. Deterministic systems retrieve, compose, cache, and verify.</p>
     </div>
     <div class="pipe">
-      <div><span class="k num">01</span><h3>Intake</h3><p>Plain language becomes a structured trip query. When it is ambiguous it asks rather than guesses.</p></div>
-      <div><span class="k num">02</span><h3>Planner</h3><p>Decides which legs to attempt and what evidence each needs. Treated as untrusted throughout.</p></div>
-      <div><span class="k num">03</span><h3>Retrieval</h3><p>Official feeds first, then the open web. Cache-first, robots respected, crawler identified honestly.</p></div>
-      <div><span class="k num">04</span><h3>Composer</h3><p>Chains legs into a journey and checks the timing is actually possible. Deterministic.</p></div>
-      <div><span class="k num">05</span><h3>Verifier</h3><p>Every claim traced to a verbatim span in a real source, or marked unverified. Fails closed.</p></div>
-      <div><span class="k num">06</span><h3>Present</h3><p>Map, timeline, turn-by-turn, and a citation on every leg. Saved plans work with no signal.</p></div>
+      <div><span class="k num">01</span><h3>Intake</h3><p>Turns plain language into a trip query and asks when intent is unclear.</p></div>
+      <div><span class="k num">02</span><h3>Planner</h3><p>Chooses the legs and evidence the trip needs.</p></div>
+      <div><span class="k num">03</span><h3>Retrieval</h3><p>Checks the cache, then official feeds and the open web.</p></div>
+      <div><span class="k num">04</span><h3>Composer</h3><p>Chains legs and checks that timing works.</p></div>
+      <div><span class="k num">05</span><h3>Verifier</h3><p>Traces each claim to a source or marks it unverified.</p></div>
+      <div><span class="k num">06</span><h3>Present</h3><p>Shows the route, directions, and citations, even offline.</p></div>
     </div>
   </div>
 </section>
@@ -683,14 +762,14 @@ footer .right{margin-left:auto;display:flex;gap:20px}
   <div class="wrap">
     <div class="activity-head">
       <h2>Plans moving through Laneway.</h2>
-      <p class="activity-note"><b>Simulated activity.</b> These are generated route examples, not real users, airline movements, customer telemetry, or a measure of traction.</p>
+      <p class="activity-note"><b>Simulated activity.</b> Generated route examples, never customer telemetry.</p>
     </div>
     <div class="activity-stage">
       <ol class="activity-stream" id="activityRows" aria-label="Generated examples of Laneway activity">
         <li class="activity-item"><div class="activity-person"><strong>Anonymous</strong><span>Simulation paused</span></div><div class="activity-route"><span class="activity-airport"><strong>YYC</strong><small>Gate 83</small></span><span class="activity-line"><span class="carrier">WestJet</span><i></i><svg width="16" height="10" viewBox="0 0 16 10" aria-hidden="true"><path d="M1 5h13M10 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></span><span class="activity-airport to"><strong>YEG</strong><small>Edmonton</small></span></div><div class="activity-state"><strong>Example</strong><span>JavaScript required</span></div></li>
       </ol>
     </div>
-    <p class="activity-foot"><span class="mono">Live user feed</span><span>Simulated preview. Updates at varied intervals. A route will not repeat within one hour in this browser.</span></p>
+    <p class="activity-foot"><span class="mono">Live user feed</span><span>Varied timing. No route repeats within one hour in this browser.</span></p>
   </div>
 </section>
 
@@ -701,20 +780,20 @@ footer .right{margin-left:auto;display:flex;gap:20px}
       <div>
         <h3>Working today</h3>
         <ul>
-          <li><b>Verified multi-modal plans</b> with a source and a fetch time on every claim</li>
-          <li><b>Turn-by-turn navigation</b> with off-route detection and a lock screen Live Activity</li>
-          <li><b>Live vehicle positions</b> where the operator publishes a realtime feed</li>
-          <li><b>Walking routes on real footpaths</b> from OpenStreetMap, not around the block</li>
-          <li><b>Saved plans that open offline</b>, because airport wifi fails exactly when you need the plan</li>
+          <li><b>Verified multi-modal plans</b> with a source and fetch time per claim</li>
+          <li><b>Turn-by-turn navigation</b> with off-route detection and Live Activities</li>
+          <li><b>Live vehicle positions</b> where operators publish realtime feeds</li>
+          <li><b>Walking routes on real footpaths</b> from OpenStreetMap</li>
+          <li><b>Saved offline plans</b> for unreliable airport wifi</li>
         </ul>
       </div>
       <div>
         <h3>Not there yet</h3>
         <ul>
-          <li><b>No public release.</b> There is nothing to download, and no App Store listing.</li>
-          <li><b>iOS only</b>, and Canada only, on purpose. Coverage grows one transit feed at a time.</li>
-          <li><b>No voice guidance</b>, and no booking or payment for any individual leg.</li>
-          <li><b>Some sources block crawlers.</b> When that happens the leg comes back honestly unverified.</li>
+          <li><b>No public release.</b> Nothing to download yet.</li>
+          <li><b>iOS and Canada only.</b> Coverage grows one feed at a time.</li>
+          <li><b>No voice guidance</b>, booking, or leg payments.</li>
+          <li><b>Some sources block crawlers.</b> Those legs return unverified.</li>
         </ul>
       </div>
     </div>
@@ -739,7 +818,7 @@ footer .right{margin-left:auto;display:flex;gap:20px}
 <div class="wrap">
   <div class="close">
     <h2>A maps app you can trust on the leg that matters.</h2>
-    <p>Planning and verification are the foundation. Navigation is the surface you live in. There is nothing to sign up for yet, so the engineering log is the whole story, updated as the work happens.</p>
+    <p>Verified planning is the foundation. Navigation is the product. Follow the engineering log until release.</p>
     <a href="devlog.html" class="btn">Read the dev log</a>
   </div>
 </div>

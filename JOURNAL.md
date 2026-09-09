@@ -1,3 +1,48 @@
+# A Calmer Page That Still Moves - Tuesday Sep 8
+
+### Emilio's Work
+
+*Time worked: 18m (11:52 PM to 12:10 AM)*
+
+## Timeline
+
+**11:52 PM - The polish pass started with less copy and more response.** Emilio
+asked to declutter the landing page, make every table-like surface react on
+hover, hold the Laneway title card longer, and add branded loading and 404
+states. Opened #139 before editing. The loading direction is the route-mark
+logo resolving into a spinning circle, with reduced-motion and no-script
+fallbacks so the introduction never blocks the page.
+
+**11:57 PM - The page became shorter and more tactile.** Rewrote the journey,
+problem, verification, architecture, activity, status, and closing paragraphs
+to preserve their claims in substantially fewer words. Added restrained hover
+motion to journey steps, verification rows, pipeline cells, status rows,
+coverage labels, and activity routes. Static information stays visually honest:
+it responds, but never gains a pointer cursor or pretends to be a link.
+
+**12:01 AM - Loading and not-found states joined the same visual system.** The
+new entry overlay draws the Laneway route mark, carries it into a rotating open
+ring, and clears after the page loads. A timeout prevents the overlay from ever
+trapping the site; reduced-motion and no-script visitors skip it. Added a
+self-contained `404.html` with a broken map route, a clear explanation, and a
+direct return to Laneway. It uses only local assets and has its own responsive
+and reduced-motion treatment.
+
+**12:10 AM - The interaction pass was verified.** The opening now spans 480
+viewport heights. Browser measurements show the title entering at 2.25 page
+heights and remaining fully visible after another full-page scroll. The loader
+was captured both while the route mark was drawing and after it became the
+spinner. Desktop and 360 px renders of the landing page and 404 page have no
+horizontal overflow. The browser logged no warnings or errors, all four inline
+scripts parse, and the diff passes whitespace checks.
+
+## Open
+
+- Issue #139 remains open until this local branch is merged into the public
+  site.
+
+---
+
 # Three Beats Before the Map - Tuesday Sep 8
 
 ### Emilio's Work

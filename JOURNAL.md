@@ -1,3 +1,92 @@
+# A Simulated Activity Feed That Says It Is Simulated - Tuesday Sep 8
+
+### Emilio's Work
+
+*Time worked: 9:33 PM to 10:46 PM*
+
+## Timeline
+
+**9:33 PM - Landing page work resumed.** Pulled both remotes before touching
+the page. The local map-first branch was clean and 25 commits behind
+`origin/main`, so it fast-forwarded to the latest public site, including the
+status and legal pages, refreshed assets, and subsequent map corrections.
+
+The requested live user table would have displayed generated people as if they
+had just planned real trips. That conflicts directly with the site's rule
+against invented users and unsupported traction. Opened engine tracker issue
+#137 for the honest version: the same changing, local-only activity treatment,
+explicitly labelled as a simulation and never described as customer telemetry.
+
+**10:21 PM - The table became a route board.** The first implementation was a
+plain three-column table with six rotating prose updates. Emilio asked for the
+information to move like travel information instead: airport codes, a gate,
+the carrier, a drawn arrow, the destination, and real fade transitions. The
+requested example, YYC Gate 83 on WestJet to YEG, is the first route a new
+browser sees. Commented the changed approach on #137 before replacing the
+table.
+
+**10:32 PM - The route board became genuinely multimodal.** Emilio pointed out
+that a board of only airline movements was still too narrow: a useful travel
+plan also has a Lime scooter from a subway exit to a saved place, a Calgary
+Transit bus 38 to Brentwood Station, a train, and a walking connector. The
+generator now chooses a different mode from the previous update and gives each
+one its own route vocabulary and inline SVG icon. The airplane example remains
+possible, but it is no longer privileged or fixed.
+
+**10:39 PM - Mixed modes were read back from the live page.** A timed browser
+observation produced a city bus, a flight, a Lime scooter, and a walking
+connector in the same four-row board. A fresh 360px render measured 304px for
+the route graphic inside a 360px document, with no overflow, no `undefined`
+labels, and no console warnings. The source includes the bus 38 and Brentwood
+example as a reachable generated case, alongside the requested YYC, Gate 83,
+WestJet, YEG vocabulary.
+
+## What Changed
+
+- `index.html` now has a four-row activity board rather than a text table. Each
+  row draws its route as origin, detail, mode icon, carrier, moving line, SVG
+  arrow, and destination; flights, scooters, buses, trains, and walks all use
+  the same visual grammar without pretending they are one data source.
+- Rows fade out before the replacement arrives, then the new route drops in
+  and traces its own baseline. The route line, board rail, and status marker
+  carry slower ambient motion. The existing reduced-motion rule switches all
+  of it off.
+- The source contains 200 unique first names and 200 unique last names. Seven
+  username patterns rotate without repeating consecutively, and each block of
+  ten generated identities contains exactly three `Anonymous` entries.
+- Route signatures persist in `localStorage` for one hour. The generator checks
+  that rolling history before display and prunes it as the hour moves, so a
+  route does not replay after a refresh in the same browser. A static site
+  cannot coordinate that history between different visitors.
+- The label reads `Live user feed`, as requested, but the adjacent copy says
+  `Simulated activity` and `Simulated preview`. It also names what the feed is
+  not: real users, airline movement, telemetry, or traction. Motion is not
+  allowed to turn demonstration data into a marketing claim.
+
+## Checked
+
+The feed rendered flight, scooter, bus, and walking examples during a timed
+browser observation, including Lime and a city-bus route, with no browser
+warnings or errors. Reloading generated four new route signatures with no
+overlap against the four displayed before the refresh. At a 360px viewport,
+the mobile breakpoint was active, the board measured 304px in a 360px
+document, and the document had no horizontal overflow. The requested route
+vocabulary, including YYC, Gate 83, WestJet, YEG, was read back from the
+rendered DOM rather than inferred from the source. Both name lists contain
+exactly 200 unique values, every inline script parses, `git diff --check` passes,
+and the repo-wide
+non-ASCII check is clean.
+
+## Open
+
+- Light mode was checked structurally through the existing colour tokens, but
+  the machine was in dark mode and the finished animation was watched only
+  there.
+- The public main branch still needs the review branch merged before GitHub
+  Pages serves the board.
+
+---
+
 # The Status Page - Thursday Sep 3
 
 *Written 6:41 PM.*

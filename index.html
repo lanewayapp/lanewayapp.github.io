@@ -323,6 +323,66 @@ section{padding:clamp(64px,9vw,132px) 0}
 .pulse-foot a{color:var(--accent);text-decoration:none;border-bottom:1px solid transparent}
 .pulse-foot a:hover,.pulse-foot a:focus-visible{border-bottom-color:currentColor}
 
+/* Simulated activity. The route board moves like a departures display, but
+   the disclosure stays beside the heading so motion never becomes a claim
+   that these are real users or real airline movements. */
+.activity-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(240px,.7fr);gap:clamp(28px,6vw,80px);align-items:end}
+.activity-head h2{font-size:clamp(24px,3.2vw,34px);line-height:1.16;max-width:19ch}
+.activity-note{margin:0;color:var(--muted);font-size:14px;line-height:1.55}
+.activity-note b{color:var(--ink);font-weight:500}
+.activity-stage{position:relative;margin-top:40px;border-top:1px solid var(--ink);overflow:hidden}
+.activity-stage::before{
+  content:"";position:absolute;z-index:2;left:0;top:0;width:3px;height:100%;
+  background:var(--accent);transform-origin:50% 0;animation:feed-scan 4.8s ease-in-out infinite;
+}
+.activity-stream{list-style:none;margin:0;padding:0}
+.activity-item{
+  display:grid;grid-template-columns:minmax(150px,.7fr) minmax(350px,1.6fr) minmax(145px,.7fr);
+  gap:clamp(18px,4vw,54px);align-items:center;min-height:118px;padding:20px 0 20px 22px;
+  border-bottom:1px solid var(--hair);position:relative;
+}
+.activity-item::after{
+  content:"";position:absolute;left:3px;right:0;bottom:-1px;height:1px;
+  background:var(--accent);transform:scaleX(0);transform-origin:0 50%;opacity:.72;
+}
+.activity-item.activity-enter{animation:feed-enter .62s cubic-bezier(.2,.8,.2,1) both}
+.activity-item.activity-enter::after{animation:feed-trace 1.2s ease-out both}
+.activity-item.activity-exit{animation:feed-exit .48s ease-in both}
+.activity-person{min-width:0}
+.activity-person strong{display:block;font-size:14px;font-weight:500;overflow-wrap:anywhere}
+.activity-person span,.activity-state span{display:block;margin-top:5px;color:var(--muted);font-size:12px}
+.activity-route{display:grid;grid-template-columns:auto minmax(95px,1fr) auto;gap:clamp(12px,2.5vw,28px);align-items:center;min-width:0}
+.activity-airport strong{display:block;font-size:clamp(25px,3.1vw,34px);line-height:1;font-weight:700;letter-spacing:-.035em;white-space:nowrap}
+.activity-airport small{display:block;margin-top:7px;color:var(--muted);font-size:11px;white-space:nowrap}
+.activity-airport.to{text-align:right}
+.activity-line{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:9px;min-width:0;color:var(--accent)}
+.activity-line .carrier{font-family:"Geist Mono",ui-monospace,Menlo,monospace;font-size:10px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.activity-line .mode-icon{display:inline-block;vertical-align:-3px;margin-right:6px}
+.activity-line i{display:block;height:1px;background:currentColor;position:relative;overflow:hidden}
+.activity-line i::after{content:"";position:absolute;top:0;bottom:0;width:34%;background:var(--bg);animation:route-pulse 2.4s ease-in-out infinite}
+.activity-line svg{display:block;flex:none}
+.activity-state{text-align:right}
+.activity-state strong{display:inline-flex;align-items:center;gap:7px;color:var(--accent);font-family:"Geist Mono",ui-monospace,Menlo,monospace;font-size:10px;font-weight:500;letter-spacing:.09em;text-transform:uppercase}
+.activity-state strong::before{content:"";width:6px;height:6px;background:currentColor;animation:state-pulse 2.4s ease-in-out infinite}
+@keyframes feed-enter{from{opacity:0;transform:translateY(-22px)}to{opacity:1;transform:none}}
+@keyframes feed-exit{to{opacity:0;transform:translateY(18px)}}
+@keyframes feed-trace{0%{transform:scaleX(0)}55%,100%{transform:scaleX(1)}}
+@keyframes feed-scan{0%,100%{transform:scaleY(.1);opacity:.4}50%{transform:scaleY(1);opacity:1}}
+@keyframes route-pulse{0%{transform:translateX(-130%)}60%,100%{transform:translateX(340%)}}
+@keyframes state-pulse{0%,100%{opacity:.35;transform:scale(.75)}50%{opacity:1;transform:scale(1)}}
+.activity-foot{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;margin:14px 0 0;color:var(--muted);font-size:12px}
+.activity-foot .mono{color:var(--accent)}
+@media (max-width:760px){
+  .activity-head{grid-template-columns:1fr;gap:18px}
+  .activity-item{grid-template-columns:1fr auto;gap:16px;padding:20px 0 20px 16px}
+  .activity-route{grid-column:1/-1;grid-row:1}
+  .activity-route{grid-template-columns:minmax(0,auto) minmax(40px,1fr) minmax(0,auto);gap:8px}
+  .activity-airport strong{font-size:26px}
+  .activity-airport small{font-size:10px;white-space:normal;max-width:110px;line-height:1.25}
+  .activity-person{grid-column:1;grid-row:2}
+  .activity-state{grid-column:2;grid-row:2}
+}
+
 /* Close: one line and one link. */
 .close{padding:clamp(56px,8vw,110px) 0;border-top:1px solid var(--hair)}
 .close h2{font-size:clamp(22px,2.8vw,30px);line-height:1.2;max-width:24ch}
@@ -561,6 +621,21 @@ footer .right{margin-left:auto;display:flex;gap:20px}
       <div><span class="k num">05</span><h3>Verifier</h3><p>Every claim traced to a verbatim span in a real source, or marked unverified. Fails closed.</p></div>
       <div><span class="k num">06</span><h3>Present</h3><p>Map, timeline, turn-by-turn, and a citation on every leg. Saved plans work with no signal.</p></div>
     </div>
+  </div>
+</section>
+
+<section id="activity">
+  <div class="wrap">
+    <div class="activity-head">
+      <h2>Plans moving through Laneway.</h2>
+      <p class="activity-note"><b>Simulated activity.</b> These are generated route examples, not real users, airline movements, customer telemetry, or a measure of traction.</p>
+    </div>
+    <div class="activity-stage">
+      <ol class="activity-stream" id="activityRows" aria-label="Generated examples of Laneway activity">
+        <li class="activity-item"><div class="activity-person"><strong>Anonymous</strong><span>Simulation paused</span></div><div class="activity-route"><span class="activity-airport"><strong>YYC</strong><small>Gate 83</small></span><span class="activity-line"><span class="carrier">WestJet</span><i></i><svg width="16" height="10" viewBox="0 0 16 10" aria-hidden="true"><path d="M1 5h13M10 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></span><span class="activity-airport to"><strong>YEG</strong><small>Edmonton</small></span></div><div class="activity-state"><strong>Example</strong><span>JavaScript required</span></div></li>
+      </ol>
+    </div>
+    <p class="activity-foot"><span class="mono">Live user feed</span><span>Simulated preview. Updates at varied intervals. A route will not repeat within one hour in this browser.</span></p>
   </div>
 </section>
 
@@ -883,6 +958,241 @@ footer .right{margin-left:auto;display:flex;gap:20px}
     requestAnimationFrame(tick);
   })();
 })();
+</script>
+
+<script>
+/* ============================================================
+   A local activity simulation, never customer telemetry. The identity pool
+   is synthetic and stays in this file. Three of every ten identity slots are
+   Anonymous; the other seven use different username patterns. Exact route
+   graphics are remembered in localStorage for an hour so a refresh cannot
+   replay one in the same browser. A static site cannot make that promise across
+   different visitors, which is why the disclosure says "in this browser".
+   ============================================================ */
+(function () {
+  "use strict";
+
+  var body = document.getElementById("activityRows");
+  if (!body) return;
+
+  var FIRST_NAMES = [
+    "Aaliyah","Aaron","Ada","Adrian","Aisha","Alejandro","Alex","Alice","Amara","Amelia","Amir","Ana","Andre","Anna","Aria","Arthur","Audrey","Ava","Ayla","Benjamin",
+    "Bianca","Blake","Caleb","Camila","Carmen","Carter","Celeste","Charles","Chloe","Clara","Daniel","Daniela","Darius","David","Delilah","Diego","Eden","Elena","Elias","Elise",
+    "Ella","Elliot","Emilia","Emilio","Emma","Ethan","Eva","Evelyn","Ezra","Fatima","Felix","Finn","Freya","Gabriel","Gabriela","Grace","Hana","Harper","Hazel","Henry",
+    "Hugo","Ian","Imani","Iris","Isaac","Isabella","Isla","Ivan","Jack","Jade","Jamal","James","Jasmine","Javier","Jayden","Joan","Joel","Jonah","Jordan","Joseph",
+    "Julia","Julian","Kai","Karina","Kieran","Laila","Lara","Laura","Leah","Leo","Liam","Lila","Lina","Logan","Lucia","Luis","Luna","Maeve","Malik","Marco",
+    "Maria","Mateo","Maya","Mia","Mila","Mina","Mira","Mohamed","Nadia","Naomi","Nathan","Nia","Nico","Noah","Nora","Oliver","Olivia","Omar","Oscar","Paolo",
+    "Parker","Priya","Rafael","Rania","Rebecca","Ren","Riley","Rosa","Rowan","Ruby","Ryan","Sabrina","Sam","Samuel","Sara","Sofia","Soren","Stella","Talia","Theo",
+    "Thomas","Valentina","Victor","Violet","William","Xavier","Yasmin","Yuna","Zoe","Abel","Abigail","Adam","Adriana","Ahmed","Alessia","Alina","Alvaro","Anika","Antonio",
+    "Ari","Arielle","Asher","Astrid","Atlas","Beatriz","Bella","Bruno","Celine","Cesar","Dahlia","Damian","Diana","Dominic","Eileen","Eliana","Esther","Evan","Fiona","George",
+    "Georgia","Hassan","Helena","Ibrahim","Ines","Jalen","Jamie","Kiara","Leila","Leon","Luca","Mara","Marina","Matteo","Max","Melanie","Micah","Niko","Nina","Owen","Zain"
+  ];
+  var LAST_NAMES = [
+    "Adams","Ahmed","Akhtar","Ali","Alvarez","Anderson","Aoki","Archer","Arora","Baker","Banks","Bennett","Berg","Brown","Campbell","Carter","Castillo","Chen","Choi","Clark",
+    "Cohen","Collins","Cooper","Costa","Cruz","Das","Davis","Diaz","Dubois","Evans","Fisher","Flores","Foster","Garcia","Gomez","Gonzalez","Green","Gupta","Hall","Harris",
+    "Hayes","Hernandez","Hill","Ho","Howard","Hughes","Ibrahim","Ito","Jackson","Jain","Jensen","Johnson","Jones","Kang","Khan","Kim","King","Kumar","Lee","Lewis",
+    "Li","Lin","Lopez","Martin","Martinez","Mason","Matsuda","Miller","Mitchell","Moore","Morgan","Morris","Murphy","Nakamura","Nelson","Nguyen","Novak","Ortiz","Owen","Park",
+    "Patel","Perez","Perry","Peterson","Phillips","Price","Quinn","Ramirez","Ramos","Reed","Rivera","Roberts","Robinson","Rodriguez","Rogers","Romero","Ross","Roy","Ruiz","Saito",
+    "Sanchez","Santos","Schmidt","Scott","Shah","Silva","Singh","Smith","Stewart","Sullivan","Suzuki","Tanaka","Taylor","Thomas","Thompson","Torres","Tran","Turner","Walker","Wang",
+    "Ward","Watson","White","Williams","Wilson","Wong","Wright","Wu","Young","Zhang","Zhao","Abbott","Acosta","Aguilar","Alexander","Allen","Andersen","Armstrong","Atkinson","Austin",
+    "Bailey","Bains","Barker","Barnes","Barrett","Barton","Bell","Benson","Bishop","Blair","Bolton","Boone","Boyd","Brady","Brooks","Burton","Byrne","Cabrera","Calderon","Campos",
+    "Carlson","Carr","Carroll","Chang","Chapman","Chow","Cook","Crawford","Cunningham","Davidson","Delgado","Dunn","Edwards","Elliott","Ellis","Erickson","Estrada","Fleming","Ford","Fowler",
+    "Franklin","Freeman","Gallo","Gardner","Gill","Grant","Gray","Griffin","Gutierrez","Hansen","Hart","Hawkins","Holland","Holmes","Ingram","James","Kennedy","Lane","Larson","Lawson"
+  ];
+  var AIRPORTS = [
+    { code:"YYC", city:"Calgary" },{ code:"YEG", city:"Edmonton" },
+    { code:"YYZ", city:"Toronto" },{ code:"YVR", city:"Vancouver" },
+    { code:"YUL", city:"Montreal" },{ code:"YOW", city:"Ottawa" },
+    { code:"YHZ", city:"Halifax" },{ code:"YWG", city:"Winnipeg" },
+    { code:"YQB", city:"Quebec City" },{ code:"YTZ", city:"Toronto Island" },
+    { code:"YXE", city:"Saskatoon" },{ code:"YQR", city:"Regina" },
+    { code:"YXY", city:"Whitehorse" },{ code:"YHM", city:"Hamilton" },
+    { code:"YKF", city:"Waterloo" },{ code:"YYJ", city:"Victoria" },
+    { code:"YXX", city:"Abbotsford" },{ code:"YFC", city:"Fredericton" },
+    { code:"YQM", city:"Moncton" },{ code:"YYT", city:"St. John's" }
+  ];
+  var AIRLINES = ["WestJet","Air Canada","Porter","Flair"];
+  var SCOOTER_STARTS = ["SUBWAY","MARKET","CAMPUS","LIBRARY","OFFICE"];
+  var SCOOTER_ENDS = ["HOME","HOTEL","STATION","TERMINAL","DEPOT"];
+  var BUS_LINES = [
+    { code:"38", agency:"Calgary Transit", to:"BRTWD", place:"Brentwood Station" },
+    { code:"7", agency:"MiWay", to:"AIRPT", place:"Airport Road" },
+    { code:"504", agency:"TTC", to:"KING", place:"King Street" },
+    { code:"6", agency:"Calgary Transit", to:"DOWNT", place:"Downtown" }
+  ];
+  var TRAIN_LINES = [
+    { from:"T1", fromPlace:"Terminal 1", to:"T3", toPlace:"Terminal 3", carrier:"LINK train" },
+    { from:"UNION", fromPlace:"Union Station", to:"YYZ", toPlace:"Pearson", carrier:"UP Express" },
+    { from:"CITY", fromPlace:"City Hall", to:"BRTWD", toPlace:"Brentwood", carrier:"CTrain" }
+  ];
+  var WALK_STARTS = ["DOOR D","ARRIVALS","PLATFORM","PARKADE","POST 17"];
+  var WALK_ENDS = ["POST 17","RENTAL","CHECK-IN","LINK","HOTEL" ];
+  var MODES = ["flight","scooter","bus","train","walk"];
+  var STATES = [
+    { verb:"planned a route", label:"Route ready" },
+    { verb:"checked the sources", label:"Sources checked" },
+    { verb:"saved a plan offline", label:"Saved offline" },
+    { verb:"started guidance", label:"Guidance started" },
+    { verb:"rechecked a connection", label:"Route refreshed" }
+  ];
+  var NAME_PATTERNS = [
+    function (f, l) { return f + " " + l; },
+    function (f, l) { return f + " " + l.charAt(0) + "."; },
+    function (f, l) { return f.charAt(0) + ". " + l; },
+    function (f, l, n) { return (f + "." + l).toLowerCase() + n; },
+    function (f, l, n) { return (f.charAt(0) + l).toLowerCase() + n; },
+    function (f, l, n) { return (f + "_" + l.charAt(0)).toLowerCase() + n; },
+    function (f, l, n) { return (l + f.charAt(0)).toLowerCase() + n; }
+  ];
+
+  var STORAGE_KEY = "laneway-simulated-activity-v3";
+  var HOUR = 60 * 60 * 1000;
+  var rows = [];
+  var history = [];
+  var identitySlots = [];
+  var lastIdentityType = null;
+  var lastMode = null;
+  var timer = null;
+  var animating = false;
+
+  function randomInt(max) { return Math.floor(Math.random() * max); }
+  function shuffle(list) {
+    for (var i = list.length - 1; i > 0; i--) {
+      var j = randomInt(i + 1), hold = list[i]; list[i] = list[j]; list[j] = hold;
+    }
+    return list;
+  }
+  function refillIdentitySlots() {
+    var slots;
+    do { slots = shuffle([-1,-1,-1,0,1,2,3,4,5,6]); }
+    while (slots.some(function (v, i) { return v === -1 && i > 0 && slots[i - 1] === -1; }) || slots[0] === lastIdentityType);
+    identitySlots = slots;
+  }
+  function nextIdentityType() {
+    if (!identitySlots.length) refillIdentitySlots();
+    var type = identitySlots.shift();
+    lastIdentityType = type;
+    return type;
+  }
+  function loadHistory() {
+    try {
+      history = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]").filter(function (item) {
+        return item && typeof item.key === "string" && Date.now() - item.at < HOUR;
+      });
+    } catch (error) { history = []; }
+  }
+  function saveHistory() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(history)); } catch (error) {}
+  }
+  function known(key) { return history.some(function (item) { return item.key === key; }); }
+  function randomTrip() {
+    var mode;
+    do { mode = MODES[randomInt(MODES.length)]; } while (mode === lastMode);
+    lastMode = mode;
+    if (mode === "flight") {
+      var from = randomInt(AIRPORTS.length), to = randomInt(AIRPORTS.length - 1);
+      if (to >= from) to++;
+      return { mode:mode,from:{code:AIRPORTS[from].code,detail:"Gate " + (1 + randomInt(99))},to:{code:AIRPORTS[to].code,detail:AIRPORTS[to].city},carrier:AIRLINES[randomInt(AIRLINES.length)],verb:"planned a flight connection" };
+    }
+    if (mode === "scooter") {
+      var scooterMinutes = 5 + randomInt(24);
+      return { mode:mode,from:{code:SCOOTER_STARTS[randomInt(SCOOTER_STARTS.length)],detail:"Subway exit"},to:{code:SCOOTER_ENDS[randomInt(SCOOTER_ENDS.length)],detail:"Saved place, " + scooterMinutes + " min"},carrier:"Lime scooter",verb:"took a Lime scooter" };
+    }
+    if (mode === "bus") {
+      var bus = BUS_LINES[randomInt(BUS_LINES.length)];
+      var stops = 2 + randomInt(15);
+      return { mode:mode,from:{code:bus.code,detail:bus.agency},to:{code:bus.to,detail:bus.place + ", " + stops + " stops"},carrier:"City bus",verb:"took bus " + bus.code };
+    }
+    if (mode === "train") {
+      var train = TRAIN_LINES[randomInt(TRAIN_LINES.length)];
+      var stations = 2 + randomInt(12);
+      return { mode:mode,from:{code:train.from,detail:train.fromPlace},to:{code:train.to,detail:train.toPlace + ", " + stations + " stops"},carrier:train.carrier,verb:"took the train" };
+    }
+    return { mode:mode,from:{code:WALK_STARTS[randomInt(WALK_STARTS.length)],detail:"Wayfinding"},to:{code:WALK_ENDS[randomInt(WALK_ENDS.length)],detail:"Connector"},carrier:(3 + randomInt(16)) + " min walk",verb:"walked the connector" };
+  }
+  function tripKey(trip) {
+    return "route|" + trip.mode + "|" + trip.from.code + "|" + trip.from.detail + "|" + trip.carrier + "|" + trip.to.code + "|" + trip.to.detail;
+  }
+  function identity(type) {
+    if (type === -1) return "Anonymous";
+    var first = FIRST_NAMES[randomInt(FIRST_NAMES.length)];
+    var last = LAST_NAMES[randomInt(LAST_NAMES.length)];
+    return NAME_PATTERNS[type](first, last, 10 + randomInt(990));
+  }
+  function makeEvent(age) {
+    history = history.filter(function (item) { return Date.now() - item.at < HOUR; });
+    for (var attempt = 0; attempt < 100; attempt++) {
+      var trip = randomTrip();
+      var key = tripKey(trip);
+      if (!known(key)) {
+        var type = nextIdentityType();
+        var who = identity(type);
+        var event = { who:who,trip:trip,state:STATES[randomInt(STATES.length)],at:Date.now() - age,key:key };
+        history.push({ key: key, at: Date.now() });
+        saveHistory();
+        return event;
+      }
+    }
+    var fallback = randomTrip();
+    return { who:"Anonymous",trip:fallback,state:STATES[0],at:Date.now() - age,key:tripKey(fallback) };
+  }
+  function ago(at) {
+    var seconds = Math.max(0, Math.floor((Date.now() - at) / 1000));
+    if (seconds < 8) return "just now";
+    if (seconds < 60) return seconds + " sec ago";
+    var minutes = Math.floor(seconds / 60);
+    return minutes === 1 ? "1 min ago" : minutes + " min ago";
+  }
+  function modeIcon(mode) {
+    var path = {
+      flight:"<path d=\"M2 6h5l3-4h2l-1 4h5v2h-5l1 4h-2L7 8H2z\"/>",
+      scooter:"<circle cx=\"4\" cy=\"10\" r=\"1.5\"/><circle cx=\"14\" cy=\"10\" r=\"1.5\"/><path d=\"M5 10h5l2-6h3M10 4h3\"/>",
+      bus:"<rect x=\"3\" y=\"2\" width=\"12\" height=\"8\" rx=\"1\"/><path d=\"M3 6h12M6 12v-2m6 2v-2M6 4h.01M12 4h.01\"/>",
+      train:"<rect x=\"3\" y=\"1.5\" width=\"12\" height=\"8.5\" rx=\"1\"/><path d=\"M5 12l2-2h4l2 2M3 6h12M6 4h.01M12 4h.01\"/>",
+      walk:"<circle cx=\"9\" cy=\"2.5\" r=\"1.5\"/><path d=\"M9 4v3l-3 2m3-2l3 2m-3-2v4l-2 2m2-2l3 2\"/>"
+    }[mode] || "<path d=\"M1 6h14M11 2l4 4-4 4\"/>";
+    return '<svg class="mode-icon" width="16" height="14" viewBox="0 0 18 14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">' + path + "</svg>";
+  }
+  function render(isNew) {
+    body.innerHTML = rows.map(function (event, index) {
+      var classes = "activity-item";
+      if (isNew && index === 0) classes += " activity-enter";
+      return '<li class="' + classes + '" data-signature="' + encodeURIComponent(event.key) + '">' +
+        '<div class="activity-person"><strong>' + event.who + '</strong><span>' + event.trip.verb + '</span></div>' +
+        '<div class="activity-route"><span class="activity-airport"><strong>' + event.trip.from.code + '</strong><small>' + event.trip.from.detail + '</small></span>' +
+        '<span class="activity-line"><span class="carrier">' + modeIcon(event.trip.mode) + event.trip.carrier + '</span><i></i><svg width="18" height="12" viewBox="0 0 18 12" aria-hidden="true"><path d="M1 6h14M11 2l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></span>' +
+        '<span class="activity-airport to"><strong>' + event.trip.to.code + '</strong><small>' + event.trip.to.detail + '</small></span></div>' +
+        '<div class="activity-state"><strong>' + event.state.label + '</strong><span><time>' + ago(event.at) + '</time></span></div></li>';
+    }).join("");
+  }
+  function update() {
+    if (animating) { schedule(); return; }
+    animating = true;
+    var last = body.lastElementChild;
+    if (last) last.classList.add("activity-exit");
+    setTimeout(function () {
+      rows.unshift(makeEvent(0));
+      rows = rows.slice(0, 4);
+      render(true);
+      setTimeout(function () {
+        render(false);
+        animating = false;
+      }, 640);
+    }, 480);
+    schedule();
+  }
+  function schedule() {
+    clearTimeout(timer);
+    if (!document.hidden) timer = setTimeout(update, 4200 + randomInt(6800));
+  }
+
+  loadHistory();
+  rows = [makeEvent(4000),makeEvent(26000),makeEvent(57000),makeEvent(91000)];
+  render(false);
+  schedule();
+  setInterval(function () { if (!animating) render(false); }, 10000);
+  document.addEventListener("visibilitychange", schedule);
+}());
 </script>
 
 <script src="status.js"></script>

@@ -27,7 +27,9 @@ a whole using its exact commit ID.
 
 Black and white page surfaces and neutral typography form the foundation.
 Navy is the main accent, with orange limited to small markers. This follows
-the user's final clarification after reviewing the preview. The existing scroll sequence and map animation are retained.
+the user's final clarification after reviewing the preview. The opening now contains two statements; the animated Laneway title card
+was removed at the user's request. The map animation is retained. Selected
+sections stay white in both themes, with navy accents.
 Supporting page palettes match. No dependencies, build tooling, signups,
 analytics or public release promises were introduced.
 
@@ -35,3 +37,10 @@ analytics or public release promises were introduced.
 
 The local preview is for review. The live GitHub Pages website is unchanged.
 Source checks passed; visual browser testing has not been performed.
+
+## Before the Title-Card Refinement
+
+`codex/before-titlecard-removal` (`73aeaee`) preserves the version immediately
+before removing the title card and adding the white sections. Use this
+checkpoint to undo only that refinement; use the original snapshot above
+to undo the complete redesign.

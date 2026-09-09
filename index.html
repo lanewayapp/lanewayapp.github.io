@@ -159,10 +159,10 @@ header.top{
 main{position:relative;z-index:1;padding-top:calc(var(--bar) + 2px)}
 
 /* ---------------- opening ---------------- */
-/* Three full-screen beats precede the map journey. The map remains fixed
+/* Two full-screen beats precede the map journey. The map remains fixed
    behind them and keeps its existing load animation, while this layer owns
    only the words and their scroll progress. */
-.opening{position:relative;height:480vh;padding:0}
+.opening{position:relative;height:300vh;padding:0}
 .opening-sticky{position:sticky;top:var(--bar);height:calc(100vh - var(--bar));display:grid;place-items:center;overflow:hidden}
 .opening-sticky::before{
   content:"";position:absolute;inset:0;background:var(--bg);
@@ -196,27 +196,6 @@ main{position:relative;z-index:1;padding-top:calc(var(--bar) + 2px)}
 .accent-route .accent-bike,.accent-route .accent-plane{transform-box:fill-box;transform-origin:center;
 }
 .opening-turn{font-style:normal;color:var(--muted)}
-.opening-wordmark{
-  position:relative;display:flex;align-items:center;justify-content:center;
-  width:min(94vw,980px);height:clamp(170px,27vw,260px);
-}
-.opening-scene{width:100%;height:auto;overflow:visible;filter:none}
-.brush-stroke{
-  fill:none;stroke:var(--accent);stroke-linecap:round;stroke-linejoin:round;
-  stroke-dasharray:1;stroke-dashoffset:1;vector-effect:non-scaling-stroke;
-}
-.opening-logo{stroke-width:clamp(8px,1.35vw,14px)}
-.opening-branch{stroke-width:clamp(10px,1.7vw,17px)}
-.opening-script{stroke-width:clamp(8px,1.45vw,15px)}
-.opening-check{stroke-width:clamp(7px,1.2vw,12px)}
-.opening-logo-dot{
-  fill:var(--accent);opacity:0;transform:scale(0);transform-box:fill-box;transform-origin:center;
-}
-.opening-beat.title-card::before,.opening-beat.title-card::after{
-  content:"";position:absolute;left:clamp(24px,7vw,96px);right:clamp(24px,7vw,96px);height:1px;background:var(--hair);
-}
-.opening-beat.title-card::before{top:22%}
-.opening-beat.title-card::after{bottom:22%}
 .btn{
   display:inline-flex;align-items:center;padding:12px 22px;border-radius:999px;
   background:var(--ink);color:var(--bg);
@@ -491,10 +470,6 @@ footer .right{margin-left:auto;display:flex;gap:20px}
 .beat-eyebrow{position:absolute;top:15%;left:24px;right:24px;text-align:center}
 .opening-footer{position:absolute;bottom:24px;width:100%;display:flex;justify-content:space-between;gap:16px;color:var(--muted);font-size:12px;z-index:3;pointer-events:none}
 .scroll-arrow{display:inline-block;margin-left:14px;animation:scroll-cue 2s ease-in-out infinite}
-.opening-script,.opening-branch{stroke:var(--ink)}
-.opening-logo,.opening-check{stroke:var(--ink)}
-.opening-logo-dot{fill:#E89E2E}
-.opening-beat.title-card::before,.opening-beat.title-card::after{display:none}
 .jhud{background:var(--glass);border:1px solid var(--hair);padding:12px 16px;border-radius:999px}
 .panel h2{font-weight:500;letter-spacing:-.04em;font-size:clamp(28px,3vw,40px)}
 section{padding:clamp(72px,9vw,128px) 0}
@@ -503,6 +478,19 @@ section.opening{padding:0}
 .section-title,.activity-head h2,.reading h2{font-size:clamp(36px,4.5vw,58px);line-height:1.06;font-weight:450;letter-spacing:-.055em;max-width:22ch}
 .reading .body{max-width:46ch;margin-left:auto;font-size:18px;line-height:1.6}
 .lede{color:var(--muted);font-size:17px}
+/* Selected sections stay white in both system themes; dark chapters retain
+   the black foundation so the page has deliberate light and dark contrast. */
+.light-section{
+  --bg:#FFFFFF;--ink:#151515;--muted:#666666;--surface:#F6F6F6;
+  --hair:rgba(23,33,51,.13);--accent:#243F64;--route:#243F64;
+  --verified:#1E7A48;--contradicted:#B23A2A;
+  background:var(--bg);color:var(--ink);color-scheme:light;
+}
+.light-section .section-index,.light-section .pipe .k{color:#243F64}
+.light-section .btn{background:#172133;border-color:#172133;color:#FFFFFF}
+.light-section .btn:hover{background:#243F64;border-color:#243F64}
+.top nav .nav-cta{background:#172133;border-color:#3D506B;color:#FFFFFF}
+.top nav .nav-cta:hover,.top nav .nav-cta:focus-visible{background:#243F64;color:#FFFFFF}
 .contrast-section{--bg:#101010;--ink:#F5F5F5;--muted:#A6A6A6;--hair:rgba(255,255,255,.16);--accent:#D9E5F5;--verified:#53C68B;--contradicted:#F08073;background:var(--bg);color:var(--ink)}
 .ledger{margin-top:56px;border-color:var(--hair)}
 .ledger summary{padding:26px 0;grid-template-columns:160px 1.15fr 1fr}
@@ -586,8 +574,6 @@ footer .wrap{align-items:center;gap:24px}
   .opening-footer{display:none}
   .beat-eyebrow{position:static;grid-row:1;margin-bottom:24px}
   .intro-grid{padding-block:48px}
-  .brush-stroke{stroke-dashoffset:0!important}
-  .opening-logo-dot{opacity:1!important;transform:none!important}
 }
 
 @media (prefers-reduced-motion:reduce){
@@ -604,8 +590,6 @@ footer .wrap{align-items:center;gap:24px}
   .opening-sticky{position:static;height:auto;display:block}
   .opening-sticky::before{display:none}
   .opening-beat{position:relative;min-height:70vh;opacity:1;transform:none}
-  .brush-stroke{stroke-dashoffset:0!important}
-  .opening-logo-dot{opacity:1!important;transform:none!important}
   .journey{height:auto}
   .journey-sticky{position:static;height:auto;padding:44px 0}
   .journey-sticky::before{display:none}
@@ -625,8 +609,6 @@ footer .wrap{align-items:center;gap:24px}
 .opening-sticky{position:static;height:auto;display:block}
 .opening-sticky::before{display:none}
 .opening-beat{position:relative;min-height:70vh;opacity:1;transform:none}
-.brush-stroke{stroke-dashoffset:0!important}
-.opening-logo-dot{opacity:1!important;transform:none!important}
 .journey{height:auto}
 .journey-sticky{position:static;height:auto;padding:44px 0}
 .journey-sticky::before{display:none}
@@ -758,7 +740,7 @@ footer .wrap{align-items:center;gap:24px}
 
 <main>
 
-<section class="opening" id="opening" aria-label="Laneway introduction">
+<section class="opening light-section" id="opening" aria-label="Laneway introduction">
   <div class="opening-sticky">
     <div class="opening-footer wrap" aria-hidden="true"><span>Built for the whole journey.</span><span>Scroll to connect <span class="scroll-arrow">&#8595;</span></span></div>
     <div class="opening-beat" data-opening-beat="0">
@@ -793,20 +775,7 @@ footer .wrap{align-items:center;gap:24px}
       <span class="beat-eyebrow mono">Less guesswork. More getting there.</span>
       <h2>The most <span class="opening-accent" data-accent-mode="plane">efficient<svg class="accent-route" viewBox="0 0 120 28" aria-hidden="true"><path class="accent-track" d="M4 21 H116"></path><g class="accent-plane" data-accent-vehicle="plane" transform="translate(94 0) scale(1.25)"><path d="M2 19 L11 15 L3 10 L5 8 L17 13 L29 6 L24 15 L29 20 L17 16 L5 22 Z"></path></g></svg></span> way is the <span class="opening-accent" data-accent-mode="bike">best<svg class="accent-route" viewBox="0 0 120 28" aria-hidden="true"><path class="accent-track" d="M4 21 H116"></path><g class="accent-bike" data-accent-vehicle="bike" transform="translate(94 0) scale(1.45)"><circle cx="7" cy="20" r="4"></circle><circle cx="19" cy="20" r="4"></circle><path d="M7 20 L12 12 L19 20 M9 20 H17 M12 12 L17 11 M12 12 L9 8 M8 8 H12"></path></g></svg></span> way.</h2>
     </div>
-    <div class="opening-beat title-card" data-opening-beat="2">
-      <span class="beat-eyebrow mono">Every connection counts.</span>
-      <div class="opening-wordmark" id="openingWordmark" role="img" aria-label="Laneway">
-        <svg class="opening-scene" viewBox="0 0 920 260" aria-hidden="true">
-          <path class="brush-stroke opening-logo" id="openingLogoStroke" pathLength="1" d="M45 194 C45 116 76 98 111 98 C146 98 166 73 166 36"></path>
-          <circle class="opening-logo-dot" id="openingLogoDot" cx="45" cy="194" r="7"></circle>
-          <path class="brush-stroke opening-branch" id="openingBranch" pathLength="1" d="M166 36 C181 55 174 128 153 184 C193 180 221 165 242 141"></path>
-          <path class="brush-stroke opening-script" id="openingA" pathLength="1" d="M242 141 C258 111 292 112 297 140 C302 169 267 182 249 160 C232 136 255 109 286 119 C307 125 304 158 320 170"></path>
-          <path class="brush-stroke opening-script" id="openingNe" pathLength="1" d="M320 170 C328 130 332 119 338 119 C346 119 335 170 351 170 C367 170 371 121 394 123 C418 125 406 170 430 170 C454 170 477 155 474 137 C471 119 445 125 443 146 C441 169 469 181 497 157"></path>
-          <path class="brush-stroke opening-script" id="openingWay" pathLength="1" d="M497 157 C501 181 516 182 523 131 C527 182 543 182 552 133 C554 175 569 180 585 156 C594 125 631 119 643 143 C656 170 620 186 601 165 C584 147 604 121 633 127 C653 131 652 155 656 177 C666 177 675 159 682 136 C688 117 693 136 688 158 C682 181 705 185 720 152 C734 121 740 131 730 169 C722 200 709 225 685 223 C668 222 666 203 680 196 C706 183 753 180 807 180"></path>
-          <path class="brush-stroke opening-check" id="openingCheck" pathLength="1" d="M807 180 L822 195 L856 153"></path>
-        </svg>
-      </div>
-    </div>
+
   </div>
 </section>
 
@@ -850,7 +819,7 @@ footer .wrap{align-items:center;gap:24px}
 
 <div class="solid">
 
-<section class="reading">
+<section class="reading light-section">
   <div class="wrap">
     <p class="eyebrow section-index">01 / The missing connections</p>
     <h2>Some Journeys Go<br>Beyond the Map.</h2>
@@ -890,7 +859,7 @@ footer .wrap{align-items:center;gap:24px}
   </div>
 </section>
 
-<section>
+<section class="light-section">
   <div class="wrap">
     <p class="eyebrow section-index">03 / Under the hood</p>
     <h2 class="section-title">Intelligence Meets<br>a Reality Check.</h2>
@@ -908,7 +877,7 @@ footer .wrap{align-items:center;gap:24px}
   </div>
 </section>
 
-<section id="activity">
+<section id="activity" class="light-section">
   <div class="wrap">
     <div class="activity-head">
       <div><p class="eyebrow section-index">04 / In motion</p>
@@ -924,7 +893,7 @@ footer .wrap{align-items:center;gap:24px}
   </div>
 </section>
 
-<section id="status">
+<section id="status" class="light-section">
   <div class="wrap">
     <p class="eyebrow section-index">05 / Building in the open</p>
     <h2 class="section-title">Real Progress.<br>Honest Limits.</h2>
@@ -993,22 +962,14 @@ footer .wrap{align-items:center;gap:24px}
 </main>
 
 <script>
-/* Three opening beats. This is deliberately separate from the map camera
+/* Two opening beats. This is deliberately separate from the map camera
    below: changing the introduction must not change the route choreography. */
 (function () {
   "use strict";
   var staticOpening = window.matchMedia("(prefers-reduced-motion: reduce), (max-height: 550px)");
   var opening = document.getElementById("opening");
   var beats = [].slice.call(document.querySelectorAll("[data-opening-beat]"));
-  var logo = document.getElementById("openingLogoStroke");
-  var logoDot = document.getElementById("openingLogoDot");
-  var branch = document.getElementById("openingBranch");
-  var letterA = document.getElementById("openingA");
-  var letterNe = document.getElementById("openingNe");
-  var letterWay = document.getElementById("openingWay");
-  var check = document.getElementById("openingCheck");
-  if (!opening || beats.length !== 3 || !logo || !logoDot || !branch ||
-      !letterA || !letterNe || !letterWay || !check) return;
+  if (!opening || beats.length !== 2) return;
   var clamp = function (v, a, b) { return Math.min(b, Math.max(a, v)); };
   var smooth = function (v, a, b) {
     var t = clamp((v - a) / (b - a), 0, 1);
@@ -1029,43 +990,25 @@ footer .wrap{align-items:center;gap:24px}
   function update() {
     if (staticOpening.matches) {
       beats.forEach(function (beat) { place(beat, 1, 0, 1); beat.style.setProperty("--line-draw", "1"); });
-      [logo, branch, letterA, letterNe, letterWay, check].forEach(function (path) { path.style.strokeDashoffset = "0"; });
-      logoDot.style.opacity = "1";
-      logoDot.style.transform = "none";
       return;
     }
     var rect = opening.getBoundingClientRect();
     var distance = Math.max(1, rect.height - window.innerHeight);
     var p = clamp(-rect.top / distance, 0, 1);
 
-    var firstOut = smooth(p, 0.20, 0.32);
+    var firstOut = smooth(p, 0.34, 0.49);
     place(beats[0], 1 - firstOut, -34 * firstOut, 1 - 0.025 * firstOut);
-    var firstAccentProgress = smooth(p, 0.02, 0.15);
+    var firstAccentProgress = smooth(p, 0.03, 0.25);
     beats[0].style.setProperty("--line-draw", firstAccentProgress.toFixed(3));
     positionAccentVehicles(beats[0], firstAccentProgress);
 
-    var secondIn = smooth(p, 0.24, 0.36);
-    var secondOut = smooth(p, 0.50, 0.62);
+    var secondIn = smooth(p, 0.40, 0.55);
+    var secondOut = smooth(p, 0.89, 1.00);
     place(beats[1], secondIn * (1 - secondOut), 30 * (1 - secondIn) - 30 * secondOut, 0.97 + 0.03 * secondIn);
-    var secondAccentProgress = smooth(p, 0.28, 0.43);
+    var secondAccentProgress = smooth(p, 0.47, 0.77);
     beats[1].style.setProperty("--line-draw", secondAccentProgress.toFixed(3));
     positionAccentVehicles(beats[1], secondAccentProgress);
 
-    var titleIn = smooth(p, 0.54, 0.64);
-    var titleOut = smooth(p, 0.96, 1.00);
-    var titleOpacity = titleIn * (1 - titleOut);
-    place(beats[2], titleOpacity, 38 * (1 - titleIn) - 22 * titleOut, 0.88 + 0.12 * titleIn);
-
-    var motion = clamp((p - 0.54) / 0.42, 0, 1);
-    logo.style.strokeDashoffset = (1 - smooth(motion, 0.00, 0.18)).toFixed(3);
-    branch.style.strokeDashoffset = (1 - smooth(motion, 0.14, 0.35)).toFixed(3);
-    letterA.style.strokeDashoffset = (1 - smooth(motion, 0.30, 0.52)).toFixed(3);
-    letterNe.style.strokeDashoffset = (1 - smooth(motion, 0.48, 0.74)).toFixed(3);
-    letterWay.style.strokeDashoffset = (1 - smooth(motion, 0.69, 0.94)).toFixed(3);
-    check.style.strokeDashoffset = (1 - smooth(motion, 0.91, 1.00)).toFixed(3);
-    var dotIn = smooth(motion, 0.00, 0.08);
-    logoDot.style.opacity = dotIn.toFixed(3);
-    logoDot.style.transform = "scale(" + dotIn.toFixed(3) + ")";
   }
   var queued = false;
   function queue() {

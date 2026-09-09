@@ -5,7 +5,8 @@
 *Time worked: exact prompt timestamps were unavailable. First clock check was
 12:15 AM; the redesign direction was recorded at 12:18 AM. The latest palette refinement was
 recorded at 12:32 AM. The user resumed at the 6:38 AM clock check. These
-are clock checks, not an estimated active duration, and include an interruption.*
+are clock checks, not an estimated active duration, and include interruptions.
+The latest request was recorded at the 10:12 AM clock check.*
 
 ## Timeline
 
@@ -63,6 +64,27 @@ sibling project folder. The exact original snapshot remains 477ed1e.
 Moving the checkout left the preview pointing at its old directory and
 produced a 404; restarted the same preview against the permanent folder.
 No application code or production deployment changed.
+
+**10:12 AM - Title Card Removed and White Sections Expanded.** The user
+asked to scrap the Laneway title card, add more white sections and increase
+navy accents slightly. Removed its SVG markup, dedicated styles and drawing
+code. The two remaining opening statements now span 300 rather than 480
+viewport heights, with retimed entrances and exits so removing the third
+scene does not leave an empty scroll interval. The map camera is unchanged.
+
+The introduction, problem, pipeline and status sections now stay white in
+both system themes, with a light activity surface. Verification remains a
+black chapter. Navy primary buttons, section labels and navigation details
+add brand emphasis without changing the black-and-white foundation.
+
+All six scripts parse; links, fragments, IDs and font assets pass. Focused
+checks pass for the two-scene transition, hidden-scene keyboard access,
+reduced-motion changes and recovery after viewport changes. The diff is
+clean. Browser visual testing was not performed. Refreshed the same preview.
+A pull was attempted before editing; the isolated branch has no tracking
+branch, so no merge was made. The checkpoint before this refinement is
+codex/before-titlecard-removal at 73aeaee, in addition to the original
+pre-redesign snapshot. Issue #140 stays open pending publication.
 
 ## Validation and Rollback
 

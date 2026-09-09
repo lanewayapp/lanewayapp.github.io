@@ -1,3 +1,78 @@
+# A Monochrome Foundation for Laneway - Wednesday Sep 9
+
+### Session Owner Not Confirmed
+
+*Time worked: exact prompt timestamps were unavailable. First clock check was
+12:15 AM; the redesign direction was recorded at 12:18 AM. The latest palette refinement was
+recorded at 12:32 AM. These are clock checks, not an estimated active duration.*
+
+## Timeline
+
+**12:15 AM - Landing Page Work Located.** The initial request was to redesign
+Laneway's landing page. Located the separate public website repository and
+its existing animated redesign. Another task was still modifying the page;
+paused when the user asked to wait. No changes were made in that phase.
+
+**12:18 AM - A New Visual Direction Requested.** The user referenced doss.com
+and asked for white or black backgrounds, navy and orange accents, a cleaner
+startup aesthetic, retained animation, and a way to revert every change.
+Opened issue #140 before editing. Created an isolated branch and committed
+an exact snapshot of the current page, including its in-progress edits. The
+original working branch was left intact.
+
+**12:28 AM - The New Design Was Ready for Review.** Updated index.html with
+a split opening layout, an explicitly illustrative connection diagram,
+neutral surfaces, lighter typography, a compact pill navigation action,
+numbered sections, a charcoal verification section, a more orderly pipeline,
+and a restrained closing statement. Kept the original three opening beats,
+the wordmark drawing, map camera, route sequence, and simulated feed. Orange
+marks route movement; navy remains in small brand elements. Green and red
+remain reserved for verdicts. Matched the dev log, status, legal, and 404
+palettes and shared navigation typography.
+
+The feed footer now says simulated route feed, consistent with its existing
+disclosure. Removed the stale no-voice-guidance exclusion after checking the
+product's spoken-directions setting. No new capability was claimed.
+
+Keyboard focus follows the visible opening scene. Reduced-motion settings
+and short viewports expose the static opening, including when those settings
+change after load. Corrected the miniature trace's dash scaling and made its
+marker follow the curve instead of sliding straight across it.
+
+**12:30 AM - More Navy and White, Less Black and Orange.** The user reviewed
+the preview and asked for more navy and white. Replaced charcoal surfaces
+with navy, shifted light-mode text and route lines to navy, used white and
+pale blue on the dark background, and reserved orange for small dots and
+unverified indicators. Applied the same change to all supporting pages and
+refreshed the existing preview.
+
+**12:32 AM - Black and White Remain the Foundation.** The user clarified
+that navy and white should not replace the neutral foundation. Restored white
+and black page surfaces and neutral typography across all five pages. Kept
+navy as the main accent in route lines, small brand surfaces and secondary
+actions, with orange limited to small markers and unverified indicators.
+The final system is black and white first, navy second, orange sparingly.
+Refreshed the same preview and reran the checks.
+
+## Validation and Rollback
+
+All six inline scripts parse. Local links, fragment targets, unique IDs and
+CSS font assets pass across all five pages. A focused script check passes
+for keyboard visibility, reduced-motion changes and viewport-mode recovery.
+Primary muted and accent text combinations exceed 4.5:1 contrast in both
+final palettes. The diff and changed HTML are whitespace and ASCII clean. The
+first link check falsely treated root-relative 404 links as filesystem roots;
+corrected the checker and reran successfully. Browser visual and interaction
+testing was not performed, so rendered layout remains for review. No engine
+code changed and no engine benchmark was run.
+
+The saved rollback point is codex/before-monochrome-redesign at 477ed1e.
+The new branch is codex/monochrome-redesign. See Redesign.md for restoration
+instructions. Issue #140 remains open until the design ships. GitHub Pages
+has not been changed.
+
+---
+
 # A Calmer Page That Still Moves - Tuesday Sep 8
 
 ### Emilio's Work

@@ -6,7 +6,7 @@
 <title>Laneway - the legs no map has indexed</title>
 <meta name="description" content="Verified, multi-modal trip plans including the shuttles, terminal walks and connectors no mapping app has in its graph. Every fact carries a source. In development for iOS.">
 <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#172133" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#101010" media="(prefers-color-scheme: dark)">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Laneway - the legs no map has indexed">
 <meta property="og:description" content="Verified, multi-modal trip plans including the shuttles, terminal walks and connectors no mapping app has in its graph.">
@@ -32,66 +32,27 @@
   font-weight:100 900;font-style:normal;font-display:swap;
 }
 
-/* The map is the product, so the map is the page. Everything else is set in
-   one typeface at three weights, on hairlines, with no cards, no shadows and
-   no decoration. Three colours do the work; amber marks the route and the
-   single action. The verifier's green and red appear only on real verdicts.
-
-   The map is drawn here in SVG rather than fetched from a tile server: this
-   page makes no third-party request, so it renders offline and cannot break
-   at load. It is a diagram of the anchor case, not a claimed screenshot. */
-
+/* Neutral surfaces let the route carry the brand. Green and red remain
+   reserved for verification verdicts. The map is an illustration, not a
+   screenshot or a live source of directions. */
 :root{
-  /* The bar's height, and the four things that have to agree with it: the
-     bar itself, the room main leaves for it, where an anchored heading
-     lands, and where the journey's counter sits. The bar's full height is
-     this plus 2px, the progress rail and the hairline under it. */
-  --bar:65px;
-
-  --bg:#FFFFFF;
-  --ink:#0A0A0A;
-  --muted:#6B665F;
-  --hair:rgba(10,10,10,.13);
-  --accent:#B4761A;
-  --verified:#1E7A48;
-  --contradicted:#B23A2A;
-
-  --land:#F4F3F0;
-  /* The bar's own surface: the page held back to 80%, both themes. Night was
-     lifted off the navy for a while so the pane would read against a land
-     that is the same colour as the page, and it read as a lighter blue slab
-     instead of as glass. Owner's call at 5:29 PM: back to the page colour.
-     At night that means the pane has no tint of its own, and the bar is told
-     apart by its hairline and by the blur of what passes under it. */
-  --glass:color-mix(in srgb,var(--bg) 80%,transparent);
-  --road:rgba(10,10,10,.26);
-  --road-minor:rgba(10,10,10,.12);
-  --built:rgba(10,10,10,.055);
-  --route:#C9871E;
+  --bar:76px;
+  --bg:#FFFFFF;--ink:#151515;--muted:#666666;
+  --hair:rgba(23,33,51,.13);--accent:#243F64;
+  --verified:#1E7A48;--contradicted:#B23A2A;
+  --land:#FFFFFF;--surface:#F6F6F6;--navy:#172133;
+  --glass:color-mix(in srgb,var(--bg) 94%,transparent);
+  --road:rgba(21,21,21,.22);--road-minor:rgba(21,21,21,.10);
+  --built:rgba(23,33,51,.04);--route:#243F64;
 }
-/* Night is the Laneway navy again, owner call Saturday Aug 29, reversing the
-   neutral grey recorded on Aug 26. The background is the brand ink #172133,
-   the tile behind the wordmark; ink and muted come from Theme.swift's night
-   set. The land is IDENTICAL to the background on purpose: the scrims fade
-   the page colour over the map, and a 300px fade between two navys a few RGB
-   units apart quantises into a handful of 100px bands whose edges read as
-   hard lines. With land equal to bg the scrims fade only the drawn details,
-   which cannot band. Do not "fix" the land back to a surface tint. */
 @media (prefers-color-scheme:dark){
   :root{
-    --bg:#172133;
-    --ink:#EDF0F5;
-    --muted:#9EA8BA;
-    --hair:rgba(237,240,245,.14);
-    --accent:#E8A33C;
-    --verified:#3FBE7C;
-    --contradicted:#E9695A;
-
-    --land:#172133;
-    --road:rgba(237,240,245,.24);
-    --road-minor:rgba(237,240,245,.10);
-    --built:rgba(237,240,245,.05);
-    --route:#E8A33C;
+    --bg:#101010;--ink:#F5F5F5;--muted:#A6A6A6;
+    --hair:rgba(255,255,255,.16);--accent:#D9E5F5;
+    --verified:#53C68B;--contradicted:#F08073;
+    --land:#101010;--surface:#191919;--navy:#172133;
+    --road:rgba(245,245,245,.22);--road-minor:rgba(245,245,245,.10);
+    --built:rgba(255,255,255,.04);--route:#D9E5F5;
   }
 }
 
@@ -134,14 +95,14 @@ body{
 @keyframes loader-orbit-in{to{opacity:1}}
 @keyframes loader-spin{to{transform:rotate(360deg)}}
 /* Three weights. 400 reads, 500 labels, 700 leads. Nothing else. */
-h1,h2,h3{font-weight:700;letter-spacing:-.022em;margin:0}
+h1,h2,h3{font-weight:500;letter-spacing:-.045em;margin:0}
 .mono{
   font-family:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-  font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+  font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);
 }
 .num{font-variant-numeric:tabular-nums}
 a{color:inherit}
-.wrap{max-width:1120px;margin:0 auto;padding:0 clamp(20px,5vw,56px)}
+.wrap{max-width:1320px;margin:0 auto;padding:0 clamp(20px,5vw,56px)}
 .measure{max-width:58ch}
 
 /* ---------------- the map ---------------- */
@@ -204,8 +165,7 @@ main{position:relative;z-index:1;padding-top:calc(var(--bar) + 2px)}
 .opening{position:relative;height:480vh;padding:0}
 .opening-sticky{position:sticky;top:var(--bar);height:calc(100vh - var(--bar));display:grid;place-items:center;overflow:hidden}
 .opening-sticky::before{
-  content:"";position:absolute;inset:0;background:color-mix(in srgb,var(--bg) 88%,transparent);
-  backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);
+  content:"";position:absolute;inset:0;background:var(--bg);
 }
 .opening-beat{
   position:absolute;inset:0;display:grid;place-items:center;padding:clamp(24px,7vw,96px);
@@ -213,12 +173,12 @@ main{position:relative;z-index:1;padding-top:calc(var(--bar) + 2px)}
 }
 .opening-beat h1,.opening-beat h2{
   max-width:19ch;font-family:"Geist",-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
-  font-size:clamp(40px,7vw,88px);font-weight:400;line-height:1.01;letter-spacing:-.045em;
-  color:color-mix(in srgb,var(--ink) 88%,var(--muted));text-wrap:balance;
+  font-size:clamp(40px,5.5vw,74px);font-weight:450;line-height:1.05;letter-spacing:-.045em;
+  color:var(--ink);text-wrap:balance;
 }
 .opening-accent,.opening-turn{display:inline-block}
 .opening-accent{
-  position:relative;display:inline-block;padding-bottom:.34em;color:var(--accent);
+  position:relative;display:inline-block;padding-bottom:.34em;color:var(--ink);
   font-style:normal;letter-spacing:-.055em;
 }
 .accent-route{
@@ -235,12 +195,12 @@ main{position:relative;z-index:1;padding-top:calc(var(--bar) + 2px)}
 .accent-route .accent-bike,.accent-route .accent-plane{will-change:transform}
 .accent-route .accent-bike,.accent-route .accent-plane{transform-box:fill-box;transform-origin:center;
 }
-.opening-turn{font-style:normal;color:color-mix(in srgb,var(--ink) 62%,var(--accent))}
+.opening-turn{font-style:normal;color:var(--muted)}
 .opening-wordmark{
   position:relative;display:flex;align-items:center;justify-content:center;
   width:min(94vw,980px);height:clamp(170px,27vw,260px);
 }
-.opening-scene{width:100%;height:auto;overflow:visible;filter:drop-shadow(0 12px 24px rgba(10,10,10,.12))}
+.opening-scene{width:100%;height:auto;overflow:visible;filter:none}
 .brush-stroke{
   fill:none;stroke:var(--accent);stroke-linecap:round;stroke-linejoin:round;
   stroke-dasharray:1;stroke-dashoffset:1;vector-effect:non-scaling-stroke;
@@ -258,7 +218,7 @@ main{position:relative;z-index:1;padding-top:calc(var(--bar) + 2px)}
 .opening-beat.title-card::before{top:22%}
 .opening-beat.title-card::after{bottom:22%}
 .btn{
-  display:inline-flex;align-items:center;padding:9px 16px;border-radius:4px;
+  display:inline-flex;align-items:center;padding:12px 22px;border-radius:999px;
   background:var(--ink);color:var(--bg);
   font-size:14px;font-weight:500;text-decoration:none;border:1px solid var(--ink);
   transition:opacity .15s;
@@ -334,10 +294,9 @@ section{padding:clamp(64px,9vw,132px) 0}
 .ledger-map-road{fill:none;stroke:var(--hair);stroke-width:1.2;vector-effect:non-scaling-stroke}
 .ledger-map-route{
   fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;
-  vector-effect:non-scaling-stroke;
 }
 .ledger-map-node{fill:var(--bg);stroke:currentColor;stroke-width:2;vector-effect:non-scaling-stroke}
-.ledger-map-vehicle{fill:currentColor;opacity:0;transform-box:fill-box;transform-origin:center}
+.ledger-map-vehicle{fill:currentColor;opacity:0;offset-path:path("M72 54 C190 20 340 64 552 26");offset-anchor:center;offset-rotate:auto}
 .ledger .row[data-verdict="supported"] .ledger-route-map{color:var(--verified)}
 .ledger .row[data-verdict="contradicted"] .ledger-route-map{color:var(--contradicted)}
 .ledger .row:hover .ledger-route-map,.ledger .row[open] .ledger-route-map,.ledger .row:focus-within .ledger-route-map{
@@ -350,7 +309,7 @@ section{padding:clamp(64px,9vw,132px) 0}
   animation:ledger-map-travel 1.05s .18s cubic-bezier(.2,.8,.2,1) forwards;
 }
 @keyframes ledger-map-draw{to{stroke-dashoffset:0}}
-@keyframes ledger-map-travel{0%{opacity:0;transform:translateX(0)}18%{opacity:1}100%{opacity:1;transform:translateX(430px)}}
+@keyframes ledger-map-travel{0%{opacity:0;offset-distance:0%}18%{opacity:1}100%{opacity:1;offset-distance:100%}}
 .mark{
   display:inline-flex;align-items:center;gap:7px;
   font-family:"Geist Mono",ui-monospace,Menlo,monospace;
@@ -359,7 +318,7 @@ section{padding:clamp(64px,9vw,132px) 0}
 .mark::before{content:"";width:6px;height:6px;flex:none;background:currentColor}
 .mark.ok{color:var(--verified)}
 .mark.bad{color:var(--contradicted)}
-.mark.warn{color:var(--accent)}
+.mark.warn{color:#F2AC53}
 @media (max-width:760px){
   .ledger summary{grid-template-columns:1fr;gap:8px;padding:20px 0}
 }
@@ -493,12 +452,155 @@ footer .right{margin-left:auto;display:flex;gap:20px}
   .reading .body{margin-left:0}
 }
 
+/* Monochrome editorial layout. Shared tokens stay aligned with the other pages. */
+.eyebrow{font-size:13px;line-height:1.6;font-weight:500;letter-spacing:.015em;color:var(--muted);margin:0 0 26px}
+.status-dot{display:inline-block;width:6px;height:6px;margin:0 8px 2px 0;border-radius:50%;background:#E89E2E}
+.brand{font-size:23px;font-weight:600;letter-spacing:-.045em;gap:10px}
+.brand svg{width:28px;height:28px}
+.top nav a{font-size:13px;color:var(--ink)}
+.top nav .nav-cta{padding:9px 17px;border:1px solid var(--hair);border-radius:999px;display:flex;align-items:center;gap:22px}
+.nav-cta:hover{background:var(--surface)}
+.opening-beat[data-opening-beat="0"]{padding:0;text-align:left}
+.intro-grid{width:100%;display:grid;grid-template-columns:1.12fr 1fr;gap:clamp(32px,5vw,76px);align-items:center}
+.intro-copy h1{max-width:15ch;font-size:clamp(40px,4.65vw,66px);line-height:1.08;letter-spacing:-.055em}
+.intro-description{max-width:38ch;margin:22px 0 28px;font-size:16px;line-height:1.65;color:var(--muted)}
+.intro-actions{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.btn{gap:26px;font-weight:500;transition:background .2s,color .2s,transform .2s}
+.btn:hover{opacity:1;background:var(--navy);color:#fff;transform:translateY(-2px)}
+.intro-actions .link{font-size:13px}
+.connection-art{position:relative;aspect-ratio:1/1.08;background:var(--surface);border:1px solid var(--hair);border-radius:4px;overflow:hidden;isolation:isolate}
+.art-heading,.art-footer{position:absolute;z-index:2;left:24px;right:24px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.art-heading{top:22px}.art-footer{bottom:20px;padding-top:16px;border-top:1px solid var(--hair)}
+.art-heading .mono,.art-footer .mono{font-size:10px;letter-spacing:.06em}
+.art-status{color:var(--muted);font-size:11px}
+.connection-grid{position:absolute;inset:20px 0 0;width:100%;height:calc(100% - 40px);color:var(--muted)}
+.art-streets{fill:none;stroke:var(--hair);stroke-width:1}
+.art-line-base{fill:none;stroke:var(--bg);stroke-width:14}
+.art-line{fill:none;stroke:var(--route);stroke-width:2.5;stroke-dasharray:1;animation:connect-line 2s cubic-bezier(.2,.7,.2,1) both}
+.art-unknown{fill:none;stroke:var(--muted);stroke-width:1.5;stroke-dasharray:4 5}
+.art-end{fill:var(--bg);stroke:var(--route);stroke-width:2}
+.art-end.unknown{stroke:var(--muted)}
+.art-traveller-ring{fill:#E89E2E;fill-opacity:.12}
+.connection-label{position:absolute;display:flex;align-items:center;gap:12px;padding:14px 17px;background:var(--bg);border:1px solid var(--hair);border-radius:5px;box-shadow:0 4px 16px rgba(0,0,0,.025)}
+.connection-label b{display:block;font-size:13px;line-height:1.4;font-weight:500;letter-spacing:-.02em}
+.connection-label span:not(.connection-symbol):not(.rail-icon){display:block;font-size:11px;line-height:1.5;color:var(--muted);margin-top:4px}
+.connection-symbol{display:grid;place-items:center;flex:none;width:28px;height:28px;background:var(--navy);color:#fff;border-radius:50%;font-size:12px}
+.rail-icon{display:grid;place-items:center;color:var(--accent);width:28px}
+.rail-icon svg{fill:none;stroke:currentColor;stroke-width:1.4;stroke-linecap:round}
+.label-a{left:10%;top:16%}.label-rail{right:8%;top:44%}.label-b{left:15%;bottom:17%}
+.beat-eyebrow{position:absolute;top:15%;left:24px;right:24px;text-align:center}
+.opening-footer{position:absolute;bottom:24px;width:100%;display:flex;justify-content:space-between;gap:16px;color:var(--muted);font-size:12px;z-index:3;pointer-events:none}
+.scroll-arrow{display:inline-block;margin-left:14px;animation:scroll-cue 2s ease-in-out infinite}
+.opening-script,.opening-branch{stroke:var(--ink)}
+.opening-logo,.opening-check{stroke:var(--ink)}
+.opening-logo-dot{fill:#E89E2E}
+.opening-beat.title-card::before,.opening-beat.title-card::after{display:none}
+.jhud{background:var(--glass);border:1px solid var(--hair);padding:12px 16px;border-radius:999px}
+.panel h2{font-weight:500;letter-spacing:-.04em;font-size:clamp(28px,3vw,40px)}
+section{padding:clamp(72px,9vw,128px) 0}
+section.opening{padding:0}
+.section-index{margin-bottom:28px;font-family:"Geist Mono",ui-monospace,monospace;font-size:12px;letter-spacing:.02em}
+.section-title,.activity-head h2,.reading h2{font-size:clamp(36px,4.5vw,58px);line-height:1.06;font-weight:450;letter-spacing:-.055em;max-width:22ch}
+.reading .body{max-width:46ch;margin-left:auto;font-size:18px;line-height:1.6}
+.lede{color:var(--muted);font-size:17px}
+.contrast-section{--bg:#101010;--ink:#F5F5F5;--muted:#A6A6A6;--hair:rgba(255,255,255,.16);--accent:#D9E5F5;--verified:#53C68B;--contradicted:#F08073;background:var(--bg);color:var(--ink)}
+.ledger{margin-top:56px;border-color:var(--hair)}
+.ledger summary{padding:26px 0;grid-template-columns:160px 1.15fr 1fr}
+.ledger .claim{margin:0;font-size:17px;letter-spacing:-.015em;line-height:1.5}
+.ledger .src{margin:0;font-size:14px}
+.ledger summary .mark{font-size:12px;padding-top:3px}
+.ledger summary:focus-visible{outline-offset:7px}
+.ledger summary .src::after{content:"Explore the trace +";display:block;font-size:12px;color:var(--ink);margin-top:10px}
+.ledger details[open] summary .src::after{content:"Close the trace -"}
+.pipe{margin-top:52px;grid-template-columns:repeat(3,1fr);border:1px solid var(--hair);border-radius:4px;overflow:hidden}
+.pipe div{padding:30px;border:0;min-height:205px}
+.pipe div:not(:nth-child(3n)){border-right:1px solid var(--hair)}
+.pipe div:nth-child(-n+3){border-bottom:1px solid var(--hair)}
+.pipe .k{font-size:12px;color:var(--muted)}
+.pipe h3{font-size:20px;letter-spacing:-.035em;margin:24px 0 9px}
+.pipe p{font-size:14px;line-height:1.6;max-width:29ch}
+#activity{background:var(--surface);border-block:1px solid var(--hair)}
+.activity-note{font-size:15px;max-width:32ch;margin-left:auto}
+.activity-stage{border-top:1px solid var(--hair)}
+.activity-stage::before,.activity-item::after{display:none}
+.activity-airport strong{font-size:28px;font-weight:500;letter-spacing:-.04em}
+.activity-item{padding-left:0;min-height:130px}
+.activity-person strong{font-size:14px}
+.activity-line{color:var(--muted)}
+.activity-line .mode-icon,.activity-runner{color:var(--accent)}
+.activity-state strong{color:var(--muted)}
+.activity-state strong::before{background:var(--route)}
+.cols{gap:64px}
+.cols h3{font-family:inherit;font-size:20px;letter-spacing:-.03em;text-transform:none;color:var(--ink)}
+.cols li{font-size:15px;padding:17px 0}
+.coverage{margin-top:52px;padding-top:24px;gap:16px 24px}
+.coverage li{font-size:14px}
+.close{padding:80px 0 88px;border-top:1px solid var(--hair);text-align:left}
+.close h2{font-size:clamp(44px,6.5vw,84px);font-weight:450;line-height:1.03;letter-spacing:-.06em;max-width:16ch}
+.close p:not(.eyebrow){font-size:16px;max-width:44ch;color:var(--muted);margin:24px 0 28px}
+.close .eyebrow{font-size:13px;margin-bottom:24px}
+footer{padding:32px 0;border-top:1px solid var(--hair)}
+footer .wrap{align-items:center;gap:24px}
+.footer-brand{font-family:"Geist",sans-serif;font-size:28px;font-weight:500;letter-spacing:-.06em;text-transform:none;color:var(--ink)}
+.footer-dot{color:var(--accent)}
+@keyframes connect-line{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+@keyframes scroll-cue{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+@media (max-width:1000px){
+  .intro-grid{gap:28px}.art-heading .mono{max-width:14ch}.art-status{max-width:10ch;text-align:right}
+  .connection-label{padding:11px;gap:8px}.label-a{left:7%}.label-rail{right:5%}.label-b{left:8%}
+  .intro-copy h1{font-size:clamp(38px,4.8vw,54px)}
+  .intro-actions{gap:16px}.intro-actions .link{font-size:12px}
+}
+@media (max-width:760px){
+  :root{--bar:64px}.top .wrap{gap:14px}.brand{font-size:21px}
+  .top nav{gap:16px}.top nav a{font-size:12px}.top nav a[href="#route"],.top nav a[href="status.html"]{display:none}
+  .top nav .nav-cta{padding:8px 12px;gap:8px}
+  .intro-grid{grid-template-columns:1fr;gap:24px;padding-top:16px;padding-bottom:50px}
+  .intro-copy h1{font-size:clamp(34px,7.7vw,53px);max-width:18ch}
+  .intro-copy .eyebrow{font-size:11px;margin-bottom:18px}
+  .intro-description{font-size:14px;line-height:1.55;margin:14px 0 20px;max-width:44ch}
+  .intro-actions .btn{font-size:13px;padding:10px 16px;gap:14px}
+  .connection-art{display:none}
+  .opening-beat h2{font-size:clamp(38px,8vw,62px)}
+  .opening-footer{font-size:11px;bottom:18px}
+  .reading .body{margin:28px 0 0;font-size:17px}
+  .ledger summary{grid-template-columns:1fr;gap:14px}
+  .ledger .claim{font-size:17px}
+  .pipe{grid-template-columns:repeat(2,1fr)}.pipe div{padding:24px;min-height:190px}
+  .pipe div:not(:nth-child(3n)){border-right:0}
+  .pipe div:nth-child(odd){border-right:1px solid var(--hair)}
+  .pipe div:nth-child(-n+4){border-bottom:1px solid var(--hair)}
+  .activity-note{margin:0;max-width:38ch}.activity-airport strong{font-size:25px}
+  .cols{gap:36px}.coverage ul{gap:10px 0}
+  footer .right{margin-left:0;gap:20px;flex-wrap:wrap}
+}
+@media (max-height:680px) and (min-width:761px){
+  .connection-art{max-height:410px;width:100%;aspect-ratio:auto;height:65vh}
+  .intro-copy h1{font-size:clamp(36px,4vw,52px)}
+  .intro-copy .eyebrow{margin-bottom:16px}.intro-description{margin:14px 0 20px;font-size:14px}
+}
+@media (max-height:550px){
+  .opening{height:auto}
+  .opening-sticky{position:static;height:auto;display:block}
+  .opening-beat{position:relative;min-height:460px;opacity:1!important;transform:none!important;will-change:auto}
+  .opening-footer{display:none}
+  .beat-eyebrow{position:static;grid-row:1;margin-bottom:24px}
+  .intro-grid{padding-block:48px}
+  .brush-stroke{stroke-dashoffset:0!important}
+  .opening-logo-dot{opacity:1!important;transform:none!important}
+}
+
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   *{transition:none!important;animation:none!important}
   .ledger-map-route{stroke-dashoffset:0}
   .ledger-map-vehicle{opacity:1;transform:translateX(430px)}
   .opening{height:auto}
+  .art-traveller{display:none}
+  .art-line,.ledger-map-route{stroke-dashoffset:0!important}
+  .opening-footer{display:none}
+  .beat-eyebrow{position:static;grid-row:1;margin-bottom:24px}
+  .intro-grid{padding-block:64px}
   .opening-sticky{position:static;height:auto;display:block}
   .opening-sticky::before{display:none}
   .opening-beat{position:relative;min-height:70vh;opacity:1;transform:none}
@@ -516,6 +618,9 @@ footer .right{margin-left:auto;display:flex;gap:20px}
 <style>
 /* No script means no camera and no reveal, so the journey becomes a plain
    readable stack and every word survives. */
+.art-traveller{display:none}
+.opening-footer{display:none}
+.intro-grid{padding-block:64px}
 .opening{height:auto}
 .opening-sticky{position:static;height:auto;display:block}
 .opening-sticky::before{display:none}
@@ -641,11 +746,11 @@ footer .right{margin-left:auto;display:flex;gap:20px}
       </svg>
       Laneway
     </a>
-    <nav>
+    <nav aria-label="Main navigation">
       <a href="#route">Route</a>
       <a href="#verification">Verification</a>
       <a href="status.html">Status</a>
-      <a href="devlog.html">Dev log</a>
+      <a href="devlog.html" class="nav-cta">Follow the build <span aria-hidden="true">&#8599;</span></a>
     </nav>
   </div>
   <div class="progress"><i id="bar"></i></div>
@@ -655,13 +760,41 @@ footer .right{margin-left:auto;display:flex;gap:20px}
 
 <section class="opening" id="opening" aria-label="Laneway introduction">
   <div class="opening-sticky">
+    <div class="opening-footer wrap" aria-hidden="true"><span>Built for the whole journey.</span><span>Scroll to connect <span class="scroll-arrow">&#8595;</span></span></div>
     <div class="opening-beat" data-opening-beat="0">
+      <div class="intro-grid wrap">
+        <div class="intro-copy">
+          <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> Verified routing. In development for iOS.</p>
       <h1>The <span class="opening-accent" data-accent-mode="bike">destination<svg class="accent-route" viewBox="0 0 120 28" aria-hidden="true"><path class="accent-track" d="M4 21 H116"></path><g class="accent-bike" data-accent-vehicle="bike" transform="translate(94 0) scale(1.45)"><circle cx="7" cy="20" r="4"></circle><circle cx="19" cy="20" r="4"></circle><path d="M7 20 L12 12 L19 20 M9 20 H17 M12 12 L17 11 M12 12 L9 8 M8 8 H12"></path></g></svg></span> is more important than the <span class="opening-turn">journey</span>.</h1>
+          <p class="intro-description">Trip plans that connect the shuttles, terminal walks, and missing links. With the evidence to back them up.</p>
+          <div class="intro-actions"><a class="btn" href="#route">Explore a journey <span aria-hidden="true">&#8599;</span></a><a class="link" href="#verification">How verification works</a></div>
+        </div>
+        <div class="connection-art" role="img" aria-label="Illustration of walking, rail and shuttle connections, with the shuttle connection marked unverified. Not travel directions.">
+          <div class="art-heading"><span class="mono">The space between A and B</span><span class="art-status">Route illustration</span></div>
+          <svg class="connection-grid" viewBox="0 0 500 460" aria-hidden="true">
+            <defs><pattern id="introGrid" width="28" height="28" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".8" fill="currentColor" opacity=".16"/></pattern></defs>
+            <rect width="500" height="460" fill="url(#introGrid)"/>
+            <g class="art-streets"><path d="M-20 310 L180 110 H520 M65 -10 V490 M355 -10 V490 M-20 410 H520 M-20 195 H520"/><path d="M180 0 V85 Q180 110 205 110 H330 Q355 110 355 135 V310 Q355 335 380 335 H520"/></g>
+            <path class="art-line-base" d="M92 98 V176 Q92 218 134 218 H327 Q369 218 369 260 V340"/>
+            <path class="art-line" pathLength="1" d="M92 98 V176 Q92 218 134 218 H327 Q369 218 369 260 V340"/>
+            <path class="art-unknown" d="M369 340 V362 Q369 390 397 390 H437"/>
+            <circle class="art-end" cx="92" cy="98" r="7"/><circle class="art-end" cx="369" cy="340" r="7"/>
+            <circle class="art-end unknown" cx="437" cy="390" r="7"/>
+            <g class="art-traveller"><circle r="12" class="art-traveller-ring"/><circle r="4" fill="#E89E2E"/><animateMotion dur="7s" repeatCount="indefinite" path="M92 98 V176 Q92 218 134 218 H327 Q369 218 369 260 V340"/></g>
+          </svg>
+          <div class="connection-label label-a"><span class="connection-symbol">A</span><div><b>Arrive.</b><span>Your journey starts here</span></div></div>
+          <div class="connection-label label-rail"><span class="rail-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="14" rx="3"/><path d="M6 10h12M9 21l2-4m4 4-2-4M9 13h.01M15 13h.01"/></svg></span><div><b>Find the connection.</b><span>Walk. Ride. Keep going.</span></div></div>
+          <div class="connection-label label-b"><span class="connection-symbol">B</span><div><b>Know what is ahead.</b><span class="unverified-label">Shuttle connection unverified</span></div></div>
+          <div class="art-footer"><span class="mono">One connected journey</span><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 10h13m-5-5 5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></div>
+        </div>
+      </div>
     </div>
     <div class="opening-beat" data-opening-beat="1">
+      <span class="beat-eyebrow mono">Less guesswork. More getting there.</span>
       <h2>The most <span class="opening-accent" data-accent-mode="plane">efficient<svg class="accent-route" viewBox="0 0 120 28" aria-hidden="true"><path class="accent-track" d="M4 21 H116"></path><g class="accent-plane" data-accent-vehicle="plane" transform="translate(94 0) scale(1.25)"><path d="M2 19 L11 15 L3 10 L5 8 L17 13 L29 6 L24 15 L29 20 L17 16 L5 22 Z"></path></g></svg></span> way is the <span class="opening-accent" data-accent-mode="bike">best<svg class="accent-route" viewBox="0 0 120 28" aria-hidden="true"><path class="accent-track" d="M4 21 H116"></path><g class="accent-bike" data-accent-vehicle="bike" transform="translate(94 0) scale(1.45)"><circle cx="7" cy="20" r="4"></circle><circle cx="19" cy="20" r="4"></circle><path d="M7 20 L12 12 L19 20 M9 20 H17 M12 12 L17 11 M12 12 L9 8 M8 8 H12"></path></g></svg></span> way.</h2>
     </div>
     <div class="opening-beat title-card" data-opening-beat="2">
+      <span class="beat-eyebrow mono">Every connection counts.</span>
       <div class="opening-wordmark" id="openingWordmark" role="img" aria-label="Laneway">
         <svg class="opening-scene" viewBox="0 0 920 260" aria-hidden="true">
           <path class="brush-stroke opening-logo" id="openingLogoStroke" pathLength="1" d="M45 194 C45 116 76 98 111 98 C146 98 166 73 166 36"></path>
@@ -719,7 +852,8 @@ footer .right{margin-left:auto;display:flex;gap:20px}
 
 <section class="reading">
   <div class="wrap">
-    <h2>Maps route across a graph. Some edges were never in it.</h2>
+    <p class="eyebrow section-index">01 / The missing connections</p>
+    <h2>Some Journeys Go<br>Beyond the Map.</h2>
     <div class="body measure lede">
       <p>Maps route what their graphs contain. Private shuttles, terminal interiors, and informal connectors are often missing.</p>
       <p>Laneway is tested against that gap: Pearson Terminal 1 to an off-airport rental depot.</p>
@@ -727,9 +861,10 @@ footer .right{margin-left:auto;display:flex;gap:20px}
   </div>
 </section>
 
-<section id="verification">
+<section id="verification" class="contrast-section">
   <div class="wrap">
-    <h2 class="measure" style="font-size:clamp(24px,3.2vw,34px);line-height:1.16;max-width:19ch">Never present a fact the system cannot back up.</h2>
+    <p class="eyebrow section-index">02 / Evidence, not estimates</p>
+    <h2 class="section-title">Trust Is Built.<br>One Fact at a Time.</h2>
     <div class="lede measure" style="margin-top:24px">
       <p>Plausible is not proof. Laneway checks every claim and can return supported, contradicted, or unsupported.</p>
     </div>
@@ -737,15 +872,15 @@ footer .right{margin-left:auto;display:flex;gap:20px}
     <div class="ledger">
       <details class="row" data-verdict="supported">
         <summary><span class="mark ok">Supported</span><span class="claim">"MiWay route 7 serves stops on Airport Road."</span><span class="src"><b>MiWay official GTFS schedule feed</b>Lists a stop at 6445 Airport Rd.</span></summary>
-        <div class="ledger-route-map" aria-hidden="true"><svg viewBox="0 0 640 82" preserveAspectRatio="none"><path class="ledger-map-road" d="M10 18 C160 44 260 5 410 22 S560 56 630 32 M40 70 C180 50 305 76 600 62 M180 0 L160 82 M470 0 L492 82"></path><path class="ledger-map-route" pathLength="1" d="M72 54 C190 20 340 64 552 26"></path><circle class="ledger-map-node" cx="72" cy="54" r="4"></circle><circle class="ledger-map-node" cx="552" cy="26" r="4"></circle><path class="ledger-map-vehicle" d="M68 48 L77 44 L70 39 L72 37 L84 42 L96 35 L91 44 L96 49 L84 45 L72 52 Z"></path></svg></div>
+        <div class="ledger-route-map" aria-hidden="true"><svg viewBox="0 0 640 82" preserveAspectRatio="none"><path class="ledger-map-road" d="M10 18 C160 44 260 5 410 22 S560 56 630 32 M40 70 C180 50 305 76 600 62 M180 0 L160 82 M470 0 L492 82"></path><path class="ledger-map-route" pathLength="1" d="M72 54 C190 20 340 64 552 26"></path><circle class="ledger-map-node" cx="72" cy="54" r="4"></circle><circle class="ledger-map-node" cx="552" cy="26" r="4"></circle><path class="ledger-map-vehicle" d="M-6 -5 L7 0 L-6 5 L-3 0 Z"></path></svg></div>
       </details>
       <details class="row" data-verdict="contradicted">
         <summary><span class="mark bad">Contradicted</span><span class="claim">"MiWay route 7 enters Pearson Terminal 1."</span><span class="src"><b>MiWay official GTFS schedule feed</b>Terminates at City Centre and Westwood Square. Claim dropped.</span></summary>
-        <div class="ledger-route-map" aria-hidden="true"><svg viewBox="0 0 640 82" preserveAspectRatio="none"><path class="ledger-map-road" d="M10 18 C160 44 260 5 410 22 S560 56 630 32 M40 70 C180 50 305 76 600 62 M180 0 L160 82 M470 0 L492 82"></path><path class="ledger-map-route" pathLength="1" d="M72 54 C190 20 340 64 552 26"></path><circle class="ledger-map-node" cx="72" cy="54" r="4"></circle><circle class="ledger-map-node" cx="552" cy="26" r="4"></circle><path class="ledger-map-vehicle" d="M68 48 L77 44 L70 39 L72 37 L84 42 L96 35 L91 44 L96 49 L84 45 L72 52 Z"></path></svg></div>
+        <div class="ledger-route-map" aria-hidden="true"><svg viewBox="0 0 640 82" preserveAspectRatio="none"><path class="ledger-map-road" d="M10 18 C160 44 260 5 410 22 S560 56 630 32 M40 70 C180 50 305 76 600 62 M180 0 L160 82 M470 0 L492 82"></path><path class="ledger-map-route" pathLength="1" d="M72 54 C190 20 340 64 552 26"></path><circle class="ledger-map-node" cx="72" cy="54" r="4"></circle><circle class="ledger-map-node" cx="552" cy="26" r="4"></circle><path class="ledger-map-vehicle" d="M-6 -5 L7 0 L-6 5 L-3 0 Z"></path></svg></div>
       </details>
       <details class="row" data-verdict="unsupported">
         <summary><span class="mark warn">Unsupported</span><span class="claim">"The rental shuttle leaves from the arrivals level post."</span><span class="src"><b>Operator website, unreachable</b>Shown as unverified, never stated as fact.</span></summary>
-        <div class="ledger-route-map" aria-hidden="true"><svg viewBox="0 0 640 82" preserveAspectRatio="none"><path class="ledger-map-road" d="M10 18 C160 44 260 5 410 22 S560 56 630 32 M40 70 C180 50 305 76 600 62 M180 0 L160 82 M470 0 L492 82"></path><path class="ledger-map-route" pathLength="1" d="M72 54 C190 20 340 64 552 26"></path><circle class="ledger-map-node" cx="72" cy="54" r="4"></circle><circle class="ledger-map-node" cx="552" cy="26" r="4"></circle><path class="ledger-map-vehicle" d="M68 48 L77 44 L70 39 L72 37 L84 42 L96 35 L91 44 L96 49 L84 45 L72 52 Z"></path></svg></div>
+        <div class="ledger-route-map" aria-hidden="true"><svg viewBox="0 0 640 82" preserveAspectRatio="none"><path class="ledger-map-road" d="M10 18 C160 44 260 5 410 22 S560 56 630 32 M40 70 C180 50 305 76 600 62 M180 0 L160 82 M470 0 L492 82"></path><path class="ledger-map-route" pathLength="1" d="M72 54 C190 20 340 64 552 26"></path><circle class="ledger-map-node" cx="72" cy="54" r="4"></circle><circle class="ledger-map-node" cx="552" cy="26" r="4"></circle><path class="ledger-map-vehicle" d="M-6 -5 L7 0 L-6 5 L-3 0 Z"></path></svg></div>
       </details>
     </div>
 
@@ -757,7 +892,8 @@ footer .right{margin-left:auto;display:flex;gap:20px}
 
 <section>
   <div class="wrap">
-    <h2 class="measure" style="font-size:clamp(24px,3.2vw,34px);line-height:1.16;max-width:19ch">A slow layer that thinks, a fast layer that checks.</h2>
+    <p class="eyebrow section-index">03 / Under the hood</p>
+    <h2 class="section-title">Intelligence Meets<br>a Reality Check.</h2>
     <div class="lede measure" style="margin-top:24px">
       <p>The model proposes. Deterministic systems retrieve, compose, cache, and verify.</p>
     </div>
@@ -775,7 +911,8 @@ footer .right{margin-left:auto;display:flex;gap:20px}
 <section id="activity">
   <div class="wrap">
     <div class="activity-head">
-      <h2>Plans moving through Laneway.</h2>
+      <div><p class="eyebrow section-index">04 / In motion</p>
+      <h2>One Journey.<br>Many Ways to Move.</h2></div>
       <p class="activity-note"><b>Simulated activity.</b> Generated route examples, never customer telemetry.</p>
     </div>
     <div class="activity-stage">
@@ -783,13 +920,14 @@ footer .right{margin-left:auto;display:flex;gap:20px}
         <li class="activity-item"><div class="activity-person"><strong>Anonymous</strong><span>Simulation paused</span></div><div class="activity-route"><span class="activity-airport"><strong>YYC</strong><small>Gate 83</small></span><span class="activity-line"><span class="carrier">WestJet</span><i></i><svg width="16" height="10" viewBox="0 0 16 10" aria-hidden="true"><path d="M1 5h13M10 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></span><span class="activity-airport to"><strong>YEG</strong><small>Edmonton</small></span></div><div class="activity-state"><strong>Example</strong><span>JavaScript required</span></div></li>
       </ol>
     </div>
-    <p class="activity-foot"><span class="mono">Live user feed</span><span>Varied timing. No route repeats within one hour in this browser.</span></p>
+    <p class="activity-foot"><span class="mono">Simulated route feed</span><span>Varied timing. No route repeats within one hour in this browser.</span></p>
   </div>
 </section>
 
 <section id="status">
   <div class="wrap">
-    <h2 class="measure" style="font-size:clamp(24px,3.2vw,34px);line-height:1.16;max-width:19ch">Honest status, since that is the whole product.</h2>
+    <p class="eyebrow section-index">05 / Building in the open</p>
+    <h2 class="section-title">Real Progress.<br>Honest Limits.</h2>
     <div class="cols">
       <div>
         <h3>Working today</h3>
@@ -806,7 +944,7 @@ footer .right{margin-left:auto;display:flex;gap:20px}
         <ul>
           <li><b>No public release.</b> Nothing to download yet.</li>
           <li><b>iOS and Canada only.</b> Coverage grows one feed at a time.</li>
-          <li><b>No voice guidance</b>, booking, or leg payments.</li>
+          <li><b>No booking or payments</b> for individual legs.</li>
           <li><b>Some sources block crawlers.</b> Those legs return unverified.</li>
         </ul>
       </div>
@@ -831,7 +969,8 @@ footer .right{margin-left:auto;display:flex;gap:20px}
 
 <div class="wrap">
   <div class="close">
-    <h2>A maps app you can trust on the leg that matters.</h2>
+    <p class="eyebrow">The next leg starts here.</p>
+    <h2>Good Journeys.<br>Grounded in Reality.</h2>
     <p>Verified planning is the foundation. Navigation is the product. Follow the engineering log until release.</p>
     <a href="devlog.html" class="btn">Read the dev log</a>
   </div>
@@ -839,7 +978,7 @@ footer .right{margin-left:auto;display:flex;gap:20px}
 
 <footer>
   <div class="wrap mono">
-    <span>Laneway. Built in the open, shipped when it is trustworthy.</span>
+    <span class="footer-brand">Laneway<span class="footer-dot">.</span></span>
     <span class="right">
       <a href="status.html">Status</a>
       <a href="devlog.html">Dev log</a>
@@ -858,7 +997,7 @@ footer .right{margin-left:auto;display:flex;gap:20px}
    below: changing the introduction must not change the route choreography. */
 (function () {
   "use strict";
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  var staticOpening = window.matchMedia("(prefers-reduced-motion: reduce), (max-height: 550px)");
   var opening = document.getElementById("opening");
   var beats = [].slice.call(document.querySelectorAll("[data-opening-beat]"));
   var logo = document.getElementById("openingLogoStroke");
@@ -885,8 +1024,16 @@ footer .right{margin-left:auto;display:flex;gap:20px}
     beat.style.opacity = opacity.toFixed(3);
     beat.style.transform = "translateY(" + y.toFixed(2) + "px) scale(" + scale.toFixed(4) + ")";
     beat.style.pointerEvents = opacity > 0.6 ? "auto" : "none";
+    beat.inert = opacity <= 0.6;
   }
   function update() {
+    if (staticOpening.matches) {
+      beats.forEach(function (beat) { place(beat, 1, 0, 1); beat.style.setProperty("--line-draw", "1"); });
+      [logo, branch, letterA, letterNe, letterWay, check].forEach(function (path) { path.style.strokeDashoffset = "0"; });
+      logoDot.style.opacity = "1";
+      logoDot.style.transform = "none";
+      return;
+    }
     var rect = opening.getBoundingClientRect();
     var distance = Math.max(1, rect.height - window.innerHeight);
     var p = clamp(-rect.top / distance, 0, 1);
@@ -928,6 +1075,7 @@ footer .right{margin-left:auto;display:flex;gap:20px}
   }
   window.addEventListener("scroll", queue, { passive:true });
   window.addEventListener("resize", queue);
+  staticOpening.addEventListener("change", queue);
   update();
 }());
 

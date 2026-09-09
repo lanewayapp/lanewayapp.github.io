@@ -1,3 +1,45 @@
+# Three Beats Before the Map - Tuesday Sep 8
+
+### Emilio's Work
+
+*Time worked: 10:48 PM to 11:02 PM*
+
+## Timeline
+
+**10:48 PM - The opening was reduced to two beliefs and a name.** Emilio asked
+to replace the conventional hero with three centered, scroll-driven moments:
+`The destination is more important than the journey.`, then `The most
+efficient way is the best way.`, then a large animated gradient title card.
+The existing map journey stays immediately after this opening and keeps its
+current camera and route choreography. Opened #138 before editing.
+
+**10:55 PM - The title card became the brand in motion.** Emilio refined the
+third beat: it should begin as the route-mark tile, then stretch into the full
+Laneway wordmark on one line. The animation now uses the existing logo artwork,
+an extending amber route line, and a clipped word reveal instead of dropping a
+finished word onto the screen.
+
+**10:58 PM - One brushstroke replaced the assembled lockup.** Emilio clarified
+that the logo should not merely move beside typeset letters. The reference is a
+painted studio-opening signature: one continuous line draws the route mark and
+keeps moving through a handwritten Laneway word. Replaced the separate icon,
+line, and text layers with one scroll-driven SVG path.
+
+**11:02 PM - The opening was verified in the browser.** The three beats fade
+and travel cleanly at desktop size. The continuous brush path resolves into a
+legible Laneway signature, the existing journey still follows it, and the
+browser logged no warnings or errors. At a 360 px viewport the signature stays
+on one line with no horizontal overflow. Inline scripts parse, the diff passes
+whitespace checks, and the Markdown non-ASCII check is clean. Reduced-motion
+and no-script fallbacks show all three beats and the completed signature.
+
+## Open
+
+- Issue #138 remains open until this local branch is merged into the public
+  site.
+
+---
+
 # A Simulated Activity Feed That Says It Is Simulated - Tuesday Sep 8
 
 ### Emilio's Work

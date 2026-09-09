@@ -4,7 +4,8 @@
 
 *Time worked: exact prompt timestamps were unavailable. First clock check was
 12:15 AM; the redesign direction was recorded at 12:18 AM. The latest palette refinement was
-recorded at 12:32 AM. These are clock checks, not an estimated active duration.*
+recorded at 12:32 AM. The user resumed at the 6:38 AM clock check. These
+are clock checks, not an estimated active duration, and include an interruption.*
 
 ## Timeline
 
@@ -53,6 +54,15 @@ navy as the main accent in route lines, small brand surfaces and secondary
 actions, with orange limited to small markers and unverified indicators.
 The final system is black and white first, navy second, orange sparingly.
 Refreshed the same preview and reran the checks.
+
+**6:38 AM - Saving Resumed After the Usage Limit.** The user asked to
+continue. Automatic approval review had blocked the final Git save because
+of a usage limit. The retry succeeded: the design is committed as c8fbbbd
+on codex/monochrome-redesign and its isolated checkout is now in a permanent
+sibling project folder. The exact original snapshot remains 477ed1e.
+Moving the checkout left the preview pointing at its old directory and
+produced a 404; restarted the same preview against the permanent folder.
+No application code or production deployment changed.
 
 ## Validation and Rollback
 

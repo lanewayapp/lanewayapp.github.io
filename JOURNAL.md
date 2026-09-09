@@ -107,6 +107,15 @@ and confirmed it is an ancestor. No PR is open for this branch. The proposed
 PR includes the earlier activity-feed, opening and loading-state work already
 on the branch, plus this redesign, since those commits are not on main.
 
+**2:31 PM - Pull Request Submitted.** Opened website PR #5:
+https://github.com/lanewayapp/lanewayapp.github.io/pull/5. It targets main,
+is open and mergeable, and has no reported status checks. Direct organization
+pushes returned 403 for the current account, so the first PR creation attempt
+had no remote head. Pushed the branch and both rollback tags to the existing
+fork instead and successfully submitted the cross-fork PR. No permissions
+were changed and nothing was merged or deployed. Issue #140 is linked for
+closure when the PR lands.
+
 ## Validation and Rollback
 
 All six inline scripts parse. Local links, fragment targets, unique IDs and

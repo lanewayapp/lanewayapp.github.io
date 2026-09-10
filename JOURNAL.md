@@ -1,3 +1,87 @@
+# The Masthead Height Lost Its Variable - Thursday Sep 10
+
+### Baron's Work
+
+*Time worked: continued from the large-screen session above, to 5:15 PM. Same
+cloud container, same UTC clock caveat.*
+
+## Timeline
+
+**Reviewed #6 before merging it.** Three changes in one pull request: nine
+public dev log entries, the metrics band moved onto `status.js`, and the
+same three navigation links on all five pages. Merged it against current
+main in a scratch worktree and drove it in headless Chromium rather than
+reading the diff alone.
+
+**Most of it checked out.** The markdown metrics band matches `status.js`
+on all four values, so the one number that can still go stale did not. The
+ASCII check passes, every inline script parses, every local link resolves,
+no third-party request was added, and nothing private crossed over. The
+iPhone Duo work from earlier survived the merge intact: the scroll anchor
+is still there and `.pipe` is still one column at 375 and 466.
+
+**One regression, and it was a breakpoint disagreement.** The navigation
+block appended to each sheet set `height:76px` on `.top .wrap`, overriding
+the `height:var(--bar)` that was there. But `--bar` drops to 64px at
+`max-width:760px` while the new block's own override starts at
+`max-width:600px`. Between 601 and 760 the header painted at 76px while the
+four rules that read `--bar` still assumed 64px:
+
+- `main{padding-top:calc(var(--bar) + 2px)}`
+- `.opening-sticky{top:var(--bar);height:calc(100vh - var(--bar))}`
+- `[id]{scroll-margin-top:calc(var(--bar) + 18px)}`
+- the absolute `top:calc(var(--bar) + clamp(20px,4vh,40px))` on the opening beat
+
+Header against `--bar` should read a 2px delta, which is the progress
+strip. It read 14px. Opened #145 with the measurements and merged #6
+separately, since the content half of it was sound and the fix is one
+token.
+
+**The fix is a variable with a fallback, not a second breakpoint.**
+`height:var(--bar,76px)`. The landing page tracks its own `--bar` at both
+76 and 64, and the other four pages never define it, so they keep 76 from
+the fallback and do not change. Chasing it with a matching `max-width:760px`
+block would have left two numbers to keep in sync, which is the bug.
+
+**The headline gap was asked about and turned out to be load-bearing.**
+The first line of the landing page headline sits about 22px further from
+the second than the second does from the third. The cause is real:
+`.opening-accent` wraps the word "destination", is `display:inline-block`,
+and carries `padding-bottom:.34em`, and an inline-block charges its whole
+margin box to the line box. Measured at three widths the extra is exactly
+`.34em` every time: 16.3px at 48px type, 20.2px at 59.5px, 22.4px at 66px.
+
+It is not a mistake. That gap is where the bike parks. `.accent-route` is
+absolutely positioned against the same padding box and draws a dashed track
+with a bicycle on it under the word. It is invisible at rest because it is
+`opacity:var(--line-draw,0)` and only draws in on scroll, which is why the
+space reads as unexplained on first paint.
+
+**Tested the two obvious fixes and rejected both.** `display:inline` and
+`margin-bottom:-.34em` each recover the 22.4px, and each puts the bicycle
+and its track straight through the middle of "more important", because the
+padding and the decoration's position are the same measurement. Rendered
+both with `--line-draw` forced to 1 and looked at them before deciding.
+Left the headline alone.
+
+**Verified after the fix** on all five pages at 375, 466, 560, 601, 700,
+760, 768, 1280, 1600 and 2560, light and dark: the landing page reads a 2px
+delta at every width, the masthead still agrees with the content column
+that #144 widened, all three navigation links are present, and there is no
+horizontal overflow anywhere.
+
+## Open
+
+- The headline gap is still 22.4px at full size and still looks unexplained
+  until the reader scrolls and the bicycle appears. Tightening it means
+  redrawing or rescaling the decoration, not editing the padding, so it was
+  left as it is rather than half-changed.
+- #145 is fixed here but the same appended-block pattern put a literal where
+  a token belonged twice now, counting the masthead width in 8a980a7. Both
+  came from a stylesheet block appended after the rules it overrides.
+
+---
+
 # Large Screens Stopped Scaling - Thursday Sep 10
 
 ### Baron's Work

@@ -6,7 +6,7 @@
 12:15 AM; the redesign direction was recorded at 12:18 AM. The latest palette refinement was
 recorded at 12:32 AM. The user resumed at the 6:38 AM clock check. These
 are clock checks, not an estimated active duration, and include interruptions.
-The latest requests were recorded at 10:14 AM and on resuming at 2:28 PM.*
+The latest request was recorded at the 6:51 PM clock check.*
 
 ## Timeline
 
@@ -115,6 +115,41 @@ had no remote head. Pushed the branch and both rollback tags to the existing
 fork instead and successfully submitted the cross-fork PR. No permissions
 were changed and nothing was merged or deployed. Issue #140 is linked for
 closure when the PR lands.
+
+**6:57 PM - Public Updates Refreshed and Navigation Unified.** The user
+asked for current dev log and status information and the same two top-right
+buttons on every page. The first clock check for that request was 6:51 PM.
+Found that website PR #5 had been merged and issue #140 closed, then started
+a follow-up branch from the merged main and opened #141 before editing.
+
+The local product checkout is old and conflicted, so its version and test
+count were not used. Created a clean checkout of current committed product
+main and ran its existing sanitizing status exporter. The environment did
+not provide uv. Reused the installed Python environment with imports pointed
+explicitly at the clean source and verified that module path before collecting
+358 tests successfully. This was collection, not a test-suite pass. The export
+reports app 0.29.0, engine 0.2.0, 23 modules and 230 commits; the last product
+commit is still September 4. The snapshot date is September 9.
+
+Added nine curated public updates covering the website, profile and saved
+plans, Vehicles, rideshare handoff, account foundations, system integration,
+destination clarification, navigation fixes and planner grounding. No private
+locations, costs, credentials or engine source were copied. Incomplete phone
+account integration, unconfirmed feed coverage and outstanding device checks
+remain explicit. Status now includes a concise product summary.
+
+The dev log renders its headline metrics from status.js, with a dated
+markdown fallback. Both surfaces identify counts as collected tests. Updated
+the documented editing workflow so the duplicate manual metric band does not
+become the primary source again. Header navigation is always Dev log followed
+by Status, with identical button styling, including mobile and the 404 page.
+The brand still returns home; the legal document TOC remains separate.
+
+Checks pass for all seven inline scripts, local links and fragments, unique
+IDs, font assets, snapshot integrity and commit totals. Renderer checks pass
+with the snapshot, with its absence, and with a changed count to confirm the
+shared source wins. All five header link lists match. No application code
+changed; no engine benchmark or visual browser test was run.
 
 ## Validation and Rollback
 

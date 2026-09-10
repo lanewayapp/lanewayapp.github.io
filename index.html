@@ -437,8 +437,6 @@ footer .right{margin-left:auto;display:flex;gap:20px}
 .brand{font-size:23px;font-weight:600;letter-spacing:-.045em;gap:10px}
 .brand svg{width:28px;height:28px}
 .top nav a{font-size:13px;color:var(--ink)}
-.top nav .nav-cta{padding:9px 17px;border:1px solid var(--hair);border-radius:999px;display:flex;align-items:center;gap:22px}
-.nav-cta:hover{background:var(--surface)}
 .opening-beat[data-opening-beat="0"]{padding:0;text-align:left}
 .intro-grid{width:100%;display:grid;grid-template-columns:1.12fr 1fr;gap:clamp(32px,5vw,76px);align-items:center}
 .intro-copy h1{max-width:15ch;font-size:clamp(40px,4.65vw,66px);line-height:1.08;letter-spacing:-.055em}
@@ -510,8 +508,6 @@ section.opening{padding:0}
 .light-section .section-index,.light-section .pipe .k{color:#243F64}
 .light-section .btn{background:#172133;border-color:#172133;color:#FFFFFF}
 .light-section .btn:hover{background:#243F64;border-color:#243F64}
-.top nav .nav-cta{background:#172133;border-color:#3D506B;color:#FFFFFF}
-.top nav .nav-cta:hover,.top nav .nav-cta:focus-visible{background:#243F64;color:#FFFFFF}
 .contrast-section{--bg:#101010;--ink:#F5F5F5;--muted:#A6A6A6;--hair:rgba(255,255,255,.16);--accent:#D9E5F5;--verified:#53C68B;--contradicted:#F08073;background:var(--bg);color:var(--ink)}
 .ledger{margin-top:56px;border-color:var(--hair)}
 .ledger summary{padding:26px 0;grid-template-columns:160px 1.15fr 1fr}
@@ -562,8 +558,7 @@ footer .wrap{align-items:center;gap:24px}
 }
 @media (max-width:760px){
   :root{--bar:64px}.top .wrap{gap:14px}.brand{font-size:21px}
-  .top nav{gap:16px}.top nav a{font-size:12px}.top nav a[href="#route"],.top nav a[href="status.html"]{display:none}
-  .top nav .nav-cta{padding:8px 12px;gap:8px}
+  .top nav{gap:16px}.top nav a{font-size:12px}
   .intro-grid{grid-template-columns:1fr;gap:24px;padding-top:16px;padding-bottom:50px}
   .intro-copy h1{font-size:clamp(34px,7.7vw,53px);max-width:18ch}
   .intro-copy .eyebrow{font-size:11px;margin-bottom:18px}
@@ -618,6 +613,14 @@ footer .wrap{align-items:center;gap:24px}
   .panels{min-height:0}
   .panel{position:static;opacity:1;margin-bottom:36px}
 }
+
+/* The same two links, order and button treatment on every page. */
+.top .wrap{max-width:1320px;width:100%;margin:0 auto;padding:0 clamp(20px,5vw,56px);display:flex;align-items:center;height:76px;gap:24px}
+.top nav.site-nav{margin-left:auto;display:flex;align-items:center;gap:10px;font-family:"Geist",sans-serif;letter-spacing:0;text-transform:none}
+.top nav.site-nav a{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:8px 17px;border:1px solid #3D506B;border-radius:999px;background:#172133;color:#FFFFFF;font-size:13px;font-weight:500;line-height:1.5;text-decoration:none;white-space:nowrap;transition:background .2s ease}
+.top nav.site-nav a:hover,.top nav.site-nav a:focus-visible{background:#243F64;color:#FFFFFF}
+.top nav.site-nav a:focus-visible{outline:2px solid var(--accent,var(--accent-deep));outline-offset:3px}
+@media(max-width:600px){.top .wrap{height:64px;gap:12px}.top nav.site-nav{gap:8px}.top nav.site-nav a{font-size:12px;padding:8px 12px}}
 </style>
 <noscript>
 <style>
@@ -749,11 +752,9 @@ footer .wrap{align-items:center;gap:24px}
       </svg>
       Laneway
     </a>
-    <nav aria-label="Main navigation">
-      <a href="#route">Route</a>
-      <a href="#verification">Verification</a>
+    <nav class="site-nav" aria-label="Main navigation">
+      <a href="devlog.html">Dev log</a>
       <a href="status.html">Status</a>
-      <a href="devlog.html" class="nav-cta">Follow the build <span aria-hidden="true">&#8599;</span></a>
     </nav>
   </div>
   <div class="progress"><i id="bar"></i></div>

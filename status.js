@@ -6,9 +6,9 @@
    is no per-commit row of any kind: only per-day counts and per-area
    totals.
 
-   Snapshot taken 2026-09-04. */
+   Snapshot taken 2026-09-09. */
 window.LANEWAY_STATUS = {
- "generated": "2026-09-04",
+ "generated": "2026-09-09",
  "app": "0.29.0",
  "engine": "0.2.0",
  "tests": 358,
@@ -174,6 +174,26 @@ window.LANEWAY_STATUS = {
   [
    "2026-09-04",
    12
+  ],
+  [
+   "2026-09-05",
+   0
+  ],
+  [
+   "2026-09-06",
+   0
+  ],
+  [
+   "2026-09-07",
+   0
+  ],
+  [
+   "2026-09-08",
+   0
+  ],
+  [
+   "2026-09-09",
+   0
   ]
  ],
  "releases": [

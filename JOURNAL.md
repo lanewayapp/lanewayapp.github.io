@@ -101,6 +101,26 @@ He was right, and the diagnosis took a wrong turn first.
   attempts had already missed; a third would have been a coin toss. Worth
   remembering that **an aesthetic call is cheaper to show than to argue**.
 
+- **Reverted, at Baron's request.** "its not even on the dotted line, just undo
+  all the changes." He is right, and it is the worse of the two misses: banking
+  the glyph 26 degrees about its own centre at (13.5,14) swung it up and away
+  from the track at y=16.8, and squashing toward y=14 pulled it further off.
+  **I verified it read as a plane and never verified it still sat on the line**,
+  which is the more basic of the two things that had to stay true. Rendering four
+  candidates and asking which one did not save me, because I was asking the wrong
+  question about all four of them.
+- The path is back to byte identical with what it was before this session. The
+  original glyph still does not read as a plane; that is now a known and accepted
+  state rather than a fixed one, and #146 is open again to say so.
+- **What to take from this.** Three attempts on one decorative glyph, against a
+  brief that was never written down. The scroll anchor and the scaling tier went
+  in cleanly because both had a measurable target: a progress drift in points, a
+  gutter in pixels. This had none, and I substituted my own each time, first
+  legibility, then viewpoint, never position. **When the target is taste, get the
+  brief before touching the file, and when a change moves something, check what
+  it was aligned to.**
+
+
 
 ## Open
 

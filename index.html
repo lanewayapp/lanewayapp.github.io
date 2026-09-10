@@ -597,6 +597,45 @@ footer .wrap{align-items:center;gap:24px}
   .pipe div:last-child{border-bottom:0}
   .pipe div{min-height:0;padding:22px 24px}
 }
+/* Large screens. Every max-width and every clamp ceiling on this page tops out
+   around a 1400px viewport, so past that more screen bought nothing but
+   margin. Measured at 3380 by 2036: the content held about a tenth of the
+   field, 1030px of empty gutter on each side, and the hero floated with
+   roughly 800px of dead space above and below it.
+
+   Raise the ceilings together so the composition scales as one thing rather
+   than one element growing out of proportion. Every new clamp starts at the
+   old ceiling, so nothing jumps at the breakpoint: a 1600px laptop sees what
+   it saw before and grows smoothly from there.
+
+   This sits ahead of the max-height blocks on purpose. Both match on a wide
+   but short window, and there the short-viewport rules are the ones that
+   should win. */
+@media (min-width:1600px){
+  .wrap{max-width:clamp(1320px,78vw,2200px)}
+  section{padding:clamp(128px,8.4vw,196px) 0}
+
+  .intro-grid{gap:clamp(76px,4.4vw,112px)}
+  .intro-copy h1{font-size:clamp(66px,4.2vw,118px)}
+  .intro-description{font-size:clamp(16px,1.05vw,20px);max-width:44ch}
+  /* The art is aspect-ratio 1/1.08, so a wider column makes it taller, and
+     that is what actually closes the vertical gap rather than the type doing
+     it alone. Capped against vh because the sticky it sits in clips. */
+  .connection-art{max-height:72vh}
+
+  .opening-beat h2{font-size:clamp(74px,5.2vw,128px)}
+  .section-title,.activity-head h2,.reading h2{font-size:clamp(58px,4.1vw,92px)}
+  .panel h2{font-size:clamp(40px,2.7vw,56px)}
+  .close h2{font-size:clamp(84px,5.8vw,132px)}
+
+  /* Body copy grows, but far less than the display sizes: a measure that
+     tracked the screen would be unreadable at this width. */
+  .reading .body{font-size:clamp(18px,1.15vw,21px)}
+  .pipe div{padding:clamp(30px,2.2vw,44px)}
+  .pipe h3{font-size:22px}
+  .pipe p{font-size:15px}
+  .cols li{font-size:16px}
+}
 @media (max-height:680px) and (min-width:761px){
   .connection-art{max-height:410px;width:100%;aspect-ratio:auto;height:65vh}
   .intro-copy h1{font-size:clamp(36px,4vw,52px)}

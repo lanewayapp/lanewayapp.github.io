@@ -258,6 +258,19 @@ footer .right{margin-left:auto;display:flex;gap:18px}
   .area{grid-template-columns:100px 1fr 54px;gap:10px}
   .area .l{grid-column:2 / -1;text-align:left}
 }
+/* Large screens. Same problem the landing page had: every ceiling topped out
+   near a 1400px viewport, so past that the page only grew its margins. More
+   restrained than index.html's tier, because this page is charts and prose
+   rather than a hero. Safe to widen because every paragraph here is already
+   capped in ch, so the measure does not stretch with the container; what
+   gains the width is the per-day chart, which wants it. */
+@media (min-width:1600px){
+  .wrap{max-width:clamp(1120px,64vw,1760px)}
+  .masthead h1{font-size:clamp(64px,4vw,92px)}
+  .metric .v{font-size:clamp(46px,3vw,64px)}
+  .head h2{font-size:clamp(30px,2.1vw,42px)}
+  .beat .v{font-size:clamp(86px,5.4vw,120px)}
+}
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   *{transition:none!important}

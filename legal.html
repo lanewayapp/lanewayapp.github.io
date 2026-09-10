@@ -139,6 +139,14 @@ footer .right{margin-left:auto;display:flex;gap:18px}
   .doc .side{position:static;display:flex;align-items:baseline;gap:12px}
   .doc .side .eff{margin-top:0}
 }
+/* Large screens. See the note in index.html. The most restrained of the four
+   tiers on purpose: this page is nothing but prose, and terms are read rather
+   than scanned, so readability wins over filling the screen. */
+@media (min-width:1600px){
+  .wrap{max-width:clamp(1120px,52vw,1440px)}
+  .masthead h1{font-size:clamp(64px,4vw,88px)}
+  .doc h2{font-size:clamp(30px,2.1vw,40px)}
+}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
 @media(max-width:600px){.top .wrap{gap:12px;height:64px}.brand{font-size:21px}.top nav{gap:14px;font-size:12px}}
 </style>

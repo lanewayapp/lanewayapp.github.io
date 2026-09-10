@@ -201,23 +201,39 @@ footer .right{margin-left:auto;display:flex;gap:18px}
 .fallback{color:var(--subtle);font-size:15px;max-width:60ch;margin:0}
 .fallback a{color:var(--accent-deep)}
 @media(max-width:600px){.top .wrap{gap:12px;height:64px}.brand{font-size:21px}.top nav{gap:14px;font-size:12px}}
+
+/* The same three links, order and button treatment on every page. */
+.top .wrap{max-width:1320px;width:100%;margin:0 auto;padding:0 clamp(20px,5vw,56px);display:flex;align-items:center;height:76px;gap:24px}
+.top nav.site-nav{margin-left:auto;display:flex;align-items:center;gap:10px;font-family:"Geist",sans-serif;letter-spacing:0;text-transform:none}
+.top nav.site-nav a{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:8px 17px;border:1px solid #3D506B;border-radius:999px;background:#172133;color:#FFFFFF;font-size:13px;font-weight:500;line-height:1.5;text-decoration:none;white-space:nowrap;transition:background .2s ease}
+.top nav.site-nav a:hover,.top nav.site-nav a:focus-visible{background:#243F64;color:#FFFFFF}
+.top nav.site-nav a:focus-visible{outline:2px solid var(--accent,var(--accent-deep));outline-offset:3px}
+@media(max-width:600px){
+  .top .wrap{height:auto;min-height:64px;gap:12px;padding-block:10px}
+  .top .brand{flex:none}
+  .top .brand-name{display:none}
+  .top nav.site-nav{gap:6px;flex-wrap:wrap;justify-content:flex-end;min-width:0}
+  .top nav.site-nav a{min-height:44px;font-size:12px;padding:8px 10px}
+}
+.snapshot-note{margin:16px 0 28px;color:var(--subtle);font-size:13px;line-height:1.6}
 </style>
 </head>
 <body>
 
 <header class="top">
   <div class="wrap">
-    <a class="brand" href="./">
+    <a class="brand" href="./" aria-label="Laneway home">
       <svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true">
         <rect width="32" height="32" rx="7" fill="#172133"/>
         <path d="M9 25 Q9 13 16 13 Q23 13 23 7" stroke="#E89E2E" stroke-width="3.2" fill="none" stroke-linecap="round"/>
         <circle cx="9" cy="25" r="2.6" fill="#E89E2E"/>
       </svg>
-      Laneway
+      <span class="brand-name">Laneway</span>
     </a>
-    <nav class="mono">
+    <nav class="site-nav" aria-label="Main navigation">
       <a href="./">Overview</a>
-      <a href="devlog.html" aria-current="page">Dev log</a>
+      <a href="status.html">Status</a>
+      <a href="devlog.html" aria-current="page">Follow Build</a>
     </nav>
   </div>
 </header>
@@ -235,6 +251,7 @@ footer .right{margin-left:auto;display:flex;gap:18px}
 
 <div class="wrap">
   <div class="metrics" id="metrics"></div>
+  <p class="snapshot-note" id="snapshot-note">Metrics use the dated snapshot in the development log.</p>
 </div>
 
 <div class="wrap log" id="log">
@@ -258,6 +275,7 @@ footer .right{margin-left:auto;display:flex;gap:18px}
   </div>
 </footer>
 
+<script src="status.js"></script>
 <script>
 /* ============================================================
    The dev log lives in devlog.md. This reads it and builds the
@@ -385,7 +403,18 @@ footer .right{margin-left:auto;display:flex;gap:18px}
   }
 
   function render(doc) {
-    var m = doc.metrics.map(function (x) {
+    var snapshot = window.LANEWAY_STATUS;
+    var metrics = snapshot ? [
+      { value: String(snapshot.app), label: "Current app build" },
+      { value: String(snapshot.tests), label: "Tests collected" },
+      { value: String(snapshot.modules), label: "Engine modules" },
+      { value: String(snapshot.releases.length), label: "Numbered builds" }
+    ] : doc.metrics;
+    if (snapshot) {
+      var date = new Date(snapshot.generated + "T00:00:00");
+      document.getElementById("snapshot-note").textContent = "Product snapshot: " + date.toLocaleDateString("en-CA", { weekday:"long", month:"long", day:"numeric", year:"numeric" }) + ". Test counts describe collection, not a test-run result.";
+    }
+    var m = metrics.map(function (x) {
       return '<div class="metric"><span class="v num">' + inline(x.value) +
              '</span><span class="k mono">' + inline(x.label) + "</span></div>";
     }).join("");

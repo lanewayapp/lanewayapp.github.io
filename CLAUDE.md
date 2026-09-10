@@ -14,8 +14,10 @@ Three pages, all self-contained:
   with `#terms`, `#privacy`, `#eula` anchors. Canonical copies live in the product
   repo under `docs/legal/`; a change there gets mirrored here.
 
-`devlog.md` is the source of truth for the dev log's entries and its metrics
-band. `devlog.html` reads that file at load time and builds the page from it,
+`devlog.md` is the source of truth for the dev log's entries. Its live metrics
+band reads the same `status.js` snapshot as the status page; the markdown
+metrics are a fallback for direct readers or a missing snapshot.
+`devlog.html` reads the markdown at load time and builds the entries from it,
 so an entry is written once, in markdown, and committing the markdown is the
 whole publishing step. Never write entries into the HTML.
 
@@ -64,9 +66,10 @@ Three rules about it:
   is the habit this file exists to prevent. If a section is ever cut again,
   check whether it was the only consumer of a field.
 
-The `# Metrics` band in `devlog.md` is still typed by hand and is the one place
-a stale number can still appear. Check it against `status.js` when writing an
-entry.
+The `# Metrics` band in `devlog.md` is a readable fallback. Refresh it from
+`status.js` when writing an entry. The rendered dev log uses `status.js` as
+the primary metrics source and shows its snapshot date. Label test counts as
+collected tests, not as a claim that a test run passed.
 
 ## The one rule, inherited
 
@@ -194,9 +197,9 @@ A paragraph, optional.
 Inline marks are `**bold**` and `*italic*`, and that is the whole list. A
 version beginning with a digit is set as a display figure; anything else, like
 `Direction` or `Day zero`, is set as a mono label, because it is a label and
-not a release. The metrics band at the top of the page comes from the
-`# Metrics` section of the same file, so the numbers `CLAUDE.md` warns about
-going stale live beside the entries that would make them stale.
+not a release. The metrics band reads `status.js`, shared with the status
+page. Keep the `# Metrics` fallback in the markdown aligned with the latest
+export so direct readers see the same values.
 
 There is nothing to run. Commit `devlog.md` and the published page shows the
 new entry as soon as Pages has served the file.

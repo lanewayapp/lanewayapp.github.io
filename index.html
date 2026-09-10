@@ -583,6 +583,20 @@ footer .wrap{align-items:center;gap:24px}
   .cols{gap:36px}.coverage ul{gap:10px 0}
   footer .right{margin-left:0;gap:20px;flex-wrap:wrap}
 }
+/* The monochrome redesign re-declared .pipe further down the sheet than the
+   original ladder, so the single-column rule written for narrow screens
+   stopped winning and never applied again. Every phone, and the folded Duo
+   at 466, got two columns about twenty characters wide. Restored at the
+   width it was written for, with the borders one column actually needs:
+   the rules above paint the right-hand edge on the odd cells and the bottom
+   edge on the first four, and both are wrong once the cells are stacked. */
+@media (max-width:560px){
+  .pipe{grid-template-columns:1fr}
+  .pipe div,.pipe div:nth-child(odd),.pipe div:not(:nth-child(3n)){border-right:0}
+  .pipe div,.pipe div:nth-child(-n+4){border-bottom:1px solid var(--hair)}
+  .pipe div:last-child{border-bottom:0}
+  .pipe div{min-height:0;padding:22px 24px}
+}
 @media (max-height:680px) and (min-width:761px){
   .connection-art{max-height:410px;width:100%;aspect-ratio:auto;height:65vh}
   .intro-copy h1{font-size:clamp(36px,4vw,52px)}
@@ -1657,6 +1671,77 @@ footer .wrap{align-items:center;gap:24px}
       closeAll();
     }
   });
+}());
+</script>
+
+<script>
+/* ============================================================
+   Hold your place when the device changes shape.
+
+   The two scroll-driven sections are sized in viewport heights,
+   so their pixel length is a function of the window. A foldable
+   changes the window mid-visit: the iPhone Duo goes from 466x678
+   closed to 626x890 open. The browser keeps the scroll offset in
+   pixels, but 340vh of journey grew by 720px underneath it, so
+   the same offset now points at a different moment. Measured on
+   the Duo's two sizes, opening the phone halfway through the
+   journey threw the map from 49.8% back to 8.2%: the traveller
+   opens the screen to see more and the animation restarts.
+
+   So anchor to progress through the section rather than to the
+   offset. Read the progress on scroll, and after the viewport
+   settles put the offset back where that progress now lives.
+   This is orientation and desktop resize too; the fold is only
+   the case that makes it obvious.
+   ============================================================ */
+(function () {
+  var SECTIONS = "#opening,.journey";
+  var MIN_SPAN = 40;   /* Ignore a section not actually driving a scroll. */
+  var anchor = null;
+  var restoring = false;
+
+  function span(rect) { return rect.height - window.innerHeight; }
+
+  /* The section currently filling the viewport, and how far through it. */
+  function read() {
+    var found = null;
+    var list = document.querySelectorAll(SECTIONS);
+    for (var i = 0; i < list.length; i++) {
+      var el = list[i];
+      var r = el.getBoundingClientRect();
+      var s = span(r);
+      if (s < MIN_SPAN) continue;
+      if (r.top > 1 || r.bottom < window.innerHeight) continue;
+      found = { el: el, progress: Math.min(1, Math.max(0, -r.top / s)) };
+    }
+    return found;
+  }
+
+  window.addEventListener("scroll", function () {
+    if (restoring) return;
+    anchor = read();
+  }, { passive: true });
+
+  window.addEventListener("resize", function () {
+    /* Snapshot first: a resize that shrinks the document makes the browser
+       clamp the offset and fire scroll, which would overwrite the reading
+       we are here to restore. */
+    var held = anchor;
+    if (!held || !held.el.isConnected) return;
+    restoring = true;
+    requestAnimationFrame(function () {
+      var r = held.el.getBoundingClientRect();
+      var s = span(r);
+      if (s >= MIN_SPAN) {
+        window.scrollTo(0, Math.round(r.top + window.scrollY + held.progress * s));
+      }
+      /* Let the sections re-render against the corrected offset before
+         listening again, or the restore reads as a scroll and is lost. */
+      requestAnimationFrame(function () { restoring = false; });
+    });
+  });
+
+  anchor = read();
 }());
 </script>
 

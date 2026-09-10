@@ -61,6 +61,31 @@ hero art 577px to 1007px tall. Verified on all five pages at 375, 466, 626,
 768, 1280, 1599, 1600, 1920, 2560 and 3380, light and dark: no horizontal
 overflow anywhere, and no change at all below 1600.
 
+**The plane in the hero accent was not a plane.** Baron, looking at the bigger
+type: "I know it's supposed to be a plane but that barely looks like a plane."
+He was right, and the diagnosis took a wrong turn first.
+
+- **The wrong read.** The glyph's geometry runs past its `viewBox`, reaching
+  x=130 in a 120 wide box, so the first conclusion was that the nose was being
+  clipped. It is not: `.accent-route` sets `overflow:visible`, so it renders in
+  full. **Measuring overflow and calling it clipping** sent the fix in the wrong
+  direction for a few minutes. Worth recording because the arithmetic looked
+  conclusive and was answering a different question.
+- **The actual cause was the drawing.** Ten points, no symmetry about any axis,
+  and a vertex order that doubles back: out to x=29 at the top, in to x=24, out
+  to x=29 again at the bottom. No fuselage and no tail, so it read as a dart
+  with a notch.
+- **My change made it visible, not broken.** The glyph is sized in `em`, so the
+  large screen tier took it from a 74px ceiling to 118px. The shape was
+  identical at 626, 1280 and 3380. Capping the size would have hidden it.
+- **Redrawn** as a top-down jet with a pointed nose, a real fuselage, swept
+  wings and a tailplane, symmetric about its centreline. Kept the old path's
+  y 6 to 22 footprint so it lands in the same place against the track after the
+  existing `scale(1.25)`, and neither the layout nor the scroll animation
+  changes. Only the `d` attribute moved. Compared against the old path side by
+  side at three sizes before committing to it, then checked on the page.
+- The bicycle in the same treatment was left alone. It already reads.
+
 ## Open
 
 - The gutter at 3380 is still 590px on the landing page. A single column

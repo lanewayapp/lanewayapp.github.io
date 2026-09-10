@@ -86,6 +86,22 @@ He was right, and the diagnosis took a wrong turn first.
   side at three sizes before committing to it, then checked on the page.
 - The bicycle in the same treatment was left alone. It already reads.
 
+- **Then the redraw threw away the thing worth keeping.** Baron: "I like how it
+  looked like you were looking at it from the ground on an angle, now its like a
+  birds eye view." The original was a three-quarter view; the replacement was a
+  flat plan view, which is why it read as generic even though it was legible.
+  **The bug was the silhouette, not the viewpoint, and the fix replaced both.**
+- **Resolved by foreshortening rather than redrawing again**: the jet is squashed
+  to .48 about its own centreline and banked 26 degrees, as an inner group inside
+  the vehicle group so the transform the scroll animation writes to the outer one
+  is untouched. A plan view compressed and tilted reads as the same shape seen
+  from below at an angle, which is what the original was doing by hand.
+- **Stopped guessing and rendered four angles side by side**, each at display
+  size and at the size it renders on a phone, and let Baron pick. Two blind
+  attempts had already missed; a third would have been a coin toss. Worth
+  remembering that **an aesthetic call is cheaper to show than to argue**.
+
+
 ## Open
 
 - The gutter at 3380 is still 590px on the landing page. A single column

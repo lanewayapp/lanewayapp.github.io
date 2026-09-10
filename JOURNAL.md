@@ -1,3 +1,78 @@
+# Large Screens Stopped Scaling - Thursday Sep 10
+
+### Baron's Work
+
+*Time worked: continued from the iPhone Duo session above, to 4:48 PM. Same
+cloud container, same UTC clock caveat.*
+
+## Timeline
+
+**Reported from a large display: too much white space.** A screenshot at
+3380 by 2036 showing the landing page hero as a small island in an empty
+field.
+
+**Reproduced and measured before changing anything.** Opened #144 first.
+The cause was not one bad value, it was that **every** value was capped and
+all the caps topped out around a 1400px viewport:
+
+- `.wrap` at `max-width:1320px`, leaving **1030px of empty gutter on each side**
+- `.intro-copy h1` pinned at its 66px ceiling
+- `.opening-beat h2` at 74px, `.section-title` at 58px, `.close h2` at 84px
+- `section` padding at 128px
+
+The hero content measured about 1320 by 340 inside a 3380 by 2036 field,
+so roughly a tenth of the screen was doing any work, and the
+`.opening-sticky` centred that small island with about 800px of dead space
+above and below it. Nothing overflowed and nothing was broken. It simply
+looked like a phone layout that had been stretched.
+
+**The fix is one large-screen tier per page, not a bigger number.** Raising
+`.wrap` alone would have left the type pinned and looked worse. The tier at
+`min-width:1600px` raises the ceilings together so the composition scales as
+one thing.
+
+**Two details worth keeping.**
+
+- **Every new clamp starts at the old ceiling**, so nothing jumps at the
+  breakpoint. Verified by measuring 1599 and 1600 side by side: gutter 140px
+  at both. A tier that snaps at its own breakpoint is worse than no tier.
+- **The tier sits ahead of the `max-height` blocks** in source order. Both
+  match on a wide but short window, and there the short-viewport rules are
+  the ones that should win. Putting it last would have let a 3380 by 800
+  window blow the hero art past the sticky's `overflow:hidden`.
+
+**Widening the container is what fixed the vertical gap**, which was not
+obvious. `.connection-art` is `aspect-ratio:1/1.08`, so a wider hero column
+makes it taller: 577px to 1007px. Bigger type alone would not have filled
+the height. It needed a `72vh` cap for the wide-but-short case.
+
+**Four different tiers, because the pages are different.** Landing page
+widest, status wide because the per-day chart wants the room, dev log
+narrower, legal narrowest, because terms are read rather than scanned. Safe
+to widen all four only because every paragraph on these pages is already
+capped in `ch`, so no measure stretches with its container. Checked that
+before touching the widths rather than after.
+
+**404 was left alone.** It is a centred error page with a 650px content
+block. Centring is correct there; it is not the stretched-layout bug.
+
+**Result at 3380 by 2036:** gutter 1030px to 590px, headline 66px to 118px,
+hero art 577px to 1007px tall. Verified on all five pages at 375, 466, 626,
+768, 1280, 1599, 1600, 1920, 2560 and 3380, light and dark: no horizontal
+overflow anywhere, and no change at all below 1600.
+
+## Open
+
+- The gutter at 3380 is still 590px on the landing page. A single column
+  cannot honestly fill a 3380px screen, and pushing the cap higher would
+  start separating the headline from the art. Left as a deliberate stop
+  rather than chased further.
+- The `.ledger` rows spread wide at 2560 and up, so a claim sits some
+  distance from its source. It reads as a table, which is defensible, but
+  it is the next thing to look at if the wide layout gets more attention.
+
+---
+
 # iPhone Duo, Folded and Unfolded - Thursday Sep 10
 
 ### Baron's Work

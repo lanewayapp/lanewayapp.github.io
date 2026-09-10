@@ -1,3 +1,130 @@
+# iPhone Duo, Folded and Unfolded - Thursday Sep 10
+
+### Baron's Work
+
+*Time worked: 24m (2:16 PM to 2:36 PM). This session ran in a cloud container
+whose clock is UTC, not the Mac's wall clock, so these times will not line up
+with the local times in the entries above. Recorded as read rather than
+shifted to a guess.*
+
+## Timeline
+
+**2:16 PM - Make the Site Work on the New Foldable.** Apple announced the
+iPhone Duo yesterday, Wednesday Sep 9. The ask was to check the site at both
+screen sizes and then research an animation for the unfold.
+
+**2:18 PM - Got the Real Numbers Before Touching Anything.** The knowledge
+cutoff predates the announcement, so the dimensions had to be looked up rather
+than recalled. Apple publishes physical pixels; what CSS needs is logical
+points, which is physical over the 3x scale.
+
+- Folded, outer display, 5.4 inch: 1398 by 2034 at 460 ppi, so **466 by 678**.
+- Unfolded, inner display, 7.6 inch: 1878 by 2670 at 430 ppi, so **626 by 890**.
+- Both displays are the same **1.42** ratio, which Apple did deliberately so
+  content scales rather than reflows between the two.
+
+Confirmed the point sizes against a second source rather than trusting the
+division. apple.com and gsmarena are both blocked by this container's egress
+proxy, so the numbers came through search results and developer.apple.com.
+
+**2:20 PM - Measured Before Changing Anything.** Opened issue #142 first,
+before the first edit. Drove headless Chromium over all five pages at the four
+Duo viewports, light and dark, with 375, 768 and 1280 as controls, probing for
+horizontal overflow and elements past the right edge.
+
+**The expected bug was not there.** No horizontal overflow on any page at any
+Duo size. The 626 dead zone between the 600 and 760 breakpoints, the width
+least likely to have ever been looked at, renders fine. The first probe run
+looked alarming until it turned out to be reporting SVG paths that extend past
+their own viewBox and are clipped by it, plus sub-11px type that turns up
+identically at 375. Both were noise. **A probe that flags things which are not
+bugs costs more than no probe**, because the real finding hides in the list.
+
+**2:24 PM - The Real Bug, Found by Simulating the Actual Gesture.** Rather than
+screenshotting two sizes, drove the transition itself: park halfway through the
+scroll journey at 466x678, then swap to 626x890 the way opening the phone does.
+
+```
+doc height    10181 -> 11212  (+1031px)
+scrollY        2911 -> 2911   (preserved, as the browser intends)
+journey prog   49.8% -> 8.2%  (-41.6 points)
+```
+
+The scroll-driven sections are sized in viewport heights, so 340vh of
+`.journey` grew by about 720px underneath a scroll offset the browser had
+faithfully preserved. **The traveller opens the phone to see more and the map
+restarts.** Later found that this is a direct violation of Apple's stated
+requirement for the Duo: unfolding must not disturb what the person was doing.
+
+Fixed by anchoring to progress through the section rather than to the offset:
+read progress on scroll, and once the viewport settles put the offset back
+where that progress now lives. The subtlety that cost a rewrite: the handler
+has to snapshot the reading before restoring, because a resize that shrinks the
+document makes the browser clamp the offset and fire a scroll that overwrites
+the very value being restored.
+
+Worst drift across fold, unfold at three points, and both rotations is now
+**1.6 points, down from 41.6**, and that worst case also crosses the
+`max-height:550px` breakpoint that restructures the opening.
+
+This is not really a foldable fix. It is an orientation and desktop resize fix
+that the fold made impossible to ignore.
+
+**2:28 PM - A Second Bug, Older and Not Duo-Specific.** Measuring the grid
+columns showed `.pipe` at two columns at 466, when the sheet plainly contains
+`@media (max-width:560px){.pipe{grid-template-columns:1fr}}`.
+
+The monochrome redesign (#140) re-declared `.pipe` further down the file than
+the original ladder. Same specificity, later in source, so the single-column
+rule stopped winning and has not applied since. **Every phone has been getting
+two columns about twenty characters wide, and 375 is worse than 466.** Dead
+code that reads as live code, which is the kind that survives review.
+
+Restored at the width it was written for, with the borders one column needs:
+the rules above it paint a right edge on odd cells and a bottom edge on the
+first four, and both are wrong once the cells are stacked.
+
+**2:32 PM - Research: Two of the Four Tools Do Not Exist Here.** Opened #143
+for the animation with the findings.
+
+- `@media (device-posture)` and `viewport-segments`, the two CSS features
+  designed for exactly this, are **Chromium and Samsung Internet only**. WebKit
+  has published no position on the Viewport Segments spec.
+- `document.startViewTransition()` **is** supported, Safari 18 and up.
+- So the page cannot ask whether the phone is open. It can only notice the
+  window changed and reason about how.
+
+The detector that follows from that: **a fold scales both axes by nearly the
+same factor and holds the aspect ratio and orientation.** Rotation flips the
+portrait flag; the URL bar and keyboard change height only, so the two factors
+disagree sharply. Deliberately not written as two named widths, which would
+work today and break on the next device.
+
+**2:36 PM - Prototype, and the Honest Limit.** Built a live test rig in
+Laneway's own palette and typefaces: a viewport readout, a log of every change
+and what the detector made of it, and the animation idea drawn as abstract
+route lines. **The fold is the missing edge**: folded, the route runs out of
+canvas and the fourth leg is off the edge, the way a mapping app drops a
+connection it has no data for; opening gives back the width that leg needed.
+Abstract on purpose, because the site's own rule forbids showing an app that
+does not exist.
+
+**None of the detection has run on the hardware.** It is measured against
+published point sizes in a desktop browser, which is not Safari on a Duo.
+Whether Safari fires `resize` on a fold at all, once or repeatedly, is the
+open question, and building the bespoke animation before that is answered
+would be guessing.
+
+## Open
+
+- #142 stays open until the branch is merged; the live site is unchanged.
+- #143 is blocked on someone opening the prototype on a real Duo.
+- The repo's own non-ASCII check in `CLAUDE.md` globs `**/*.*`, which now
+  includes the woff2 files in `fonts/` and the binaries in `assets/`, so it
+  dies on a `UnicodeDecodeError` before it checks anything. Ran a version
+  scoped to text extensions instead, which passes clean. The snippet in
+  `CLAUDE.md` needs a skip for undecodable files.
+
 # A Monochrome Foundation for Laneway - Wednesday Sep 9
 
 ### Session Owner Not Confirmed

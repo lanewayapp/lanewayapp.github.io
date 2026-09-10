@@ -6,7 +6,7 @@
 12:15 AM; the redesign direction was recorded at 12:18 AM. The latest palette refinement was
 recorded at 12:32 AM. The user resumed at the 6:38 AM clock check. These
 are clock checks, not an estimated active duration, and include interruptions.
-The latest request was recorded at the 6:51 PM clock check.*
+The latest request was recorded at the 9:44 PM clock check.*
 
 ## Timeline
 
@@ -156,6 +156,15 @@ https://github.com/lanewayapp/lanewayapp.github.io/pull/6. The refresh is
 committed as 8e11d8f and targets main through the existing fork workflow.
 The local dev log preview is refreshed. Issue #141 remains open until the
 follow-up lands; no production deployment was performed in this session.
+
+**9:44 PM - Public iPhone Navigation Report Confirmed.** The user reported
+that Status was missing on iPhone and confirmed they were using the public
+website. Fetched the public homepage and dev log source: the homepage still
+explicitly hides Status at its mobile breakpoint, and the dev log still has
+Overview and Dev log only. Website PR #6 remains open; its existing change
+removes the hiding rule and includes both links on all five pages. No new CSS
+fix is needed for this report. Public deployment awaits merge of PR #6.
+This was a source comparison, not a visual iPhone test.
 
 ## Validation and Rollback
 

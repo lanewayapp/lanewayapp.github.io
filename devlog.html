@@ -216,6 +216,13 @@ footer .right{margin-left:auto;display:flex;gap:18px}
   .top nav.site-nav a{min-height:44px;font-size:12px;padding:8px 10px}
 }
 .snapshot-note{margin:16px 0 28px;color:var(--subtle);font-size:13px;line-height:1.6}
+/* The masthead pins its own max-width, at a higher specificity than .wrap
+   and later in the sheet than the large-screen tier above, so without this
+   the nav stays at 1320px while the content under it grows and the wordmark
+   stops lining up with the column below it. Matches this page's own cap. */
+@media (min-width:1600px){
+  .top .wrap{max-width:clamp(1120px,58vw,1560px)}
+}
 </style>
 </head>
 <body>

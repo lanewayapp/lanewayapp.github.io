@@ -680,6 +680,14 @@ footer .wrap{align-items:center;gap:24px}
   .top nav.site-nav{gap:6px;flex-wrap:wrap;justify-content:flex-end;min-width:0}
   .top nav.site-nav a{min-height:44px;font-size:12px;padding:8px 10px}
 }
+/* The masthead pins its own max-width, at a higher specificity than .wrap and
+   later in the sheet than the large-screen tier above, so without this the
+   nav stays at 1320px while the content under it grows to 2200px and the
+   wordmark stops lining up with the copy below it. Kept next to the rule it
+   answers rather than up in the tier, because that is where the 1320 lives. */
+@media (min-width:1600px){
+  .top .wrap{max-width:clamp(1320px,78vw,2200px)}
+}
 </style>
 <noscript>
 <style>

@@ -6,7 +6,7 @@
 <title>Laneway status</title>
 <meta name="description" content="The shape of the work on Laneway: commits, releases, tests and coverage, read off the private engine repo and published with the content stripped out.">
 <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#172133" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#101010" media="(prefers-color-scheme: dark)">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Laneway status">
 <meta property="og:description" content="The shape of the work, published with the content stripped out.">
@@ -39,33 +39,34 @@
    because nothing here is a verdict. */
 :root{
   --paper:#FFFFFF;
-  --card:#F5F4F2;
-  --ink:#0A0A0A;
-  --subtle:#65605A;
+  --card:#F6F6F6;
+  --ink:#151515;
+  --subtle:#666666;
   --rail:rgba(10,10,10,.14);
-  --accent:#E89E2E;
-  --accent-deep:#B4761A;
+  --accent:#243F64;
+  --accent-deep:#243F64;
   --guide:rgba(10,10,10,.22);
   --glass:rgba(255,255,255,.62);
   --glass-edge:rgba(10,10,10,.16);
 }
 @media (prefers-color-scheme:dark){
   :root{
-    --paper:#172133;
-    --card:#232D41;
-    --ink:#EDF0F5;
-    --subtle:#9EA8BA;
+    --paper:#101010;
+    --accent:#D9E5F5;
+    --card:#191919;
+    --ink:#F5F5F5;
+    --subtle:#A6A6A6;
     --rail:rgba(237,240,245,.14);
-    --accent-deep:#EFAC3F;
+    --accent-deep:#D9E5F5;
     --guide:rgba(237,240,245,.22);
-    --glass:rgba(23,33,51,.55);
+    --glass:rgba(16,16,16,.8);
     --glass-edge:rgba(237,240,245,.18);
   }
 }
 
 *,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
-[id]{scroll-margin-top:calc(52px + 18px)}
+[id]{scroll-margin-top:calc(76px + 18px)}
 body{
   margin:0;background:var(--paper);color:var(--ink);
   font-family:"Geist",-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif;
@@ -80,11 +81,12 @@ a{color:inherit}
 header.top{
   position:sticky;top:0;z-index:50;
   background:var(--paper);
-  border-bottom:1px solid var(--ink);
+  border-bottom:1px solid var(--rail);
 }
-.top .wrap{display:flex;align-items:center;gap:16px;height:52px}
-.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:700;letter-spacing:.16em;font-size:13px}
+.top .wrap{display:flex;align-items:center;gap:16px;height:76px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:600;letter-spacing:-.045em;font-size:23px}
 .brand svg{flex:none}
+.top nav{font-family:"Geist",sans-serif;font-size:13px;letter-spacing:0;text-transform:none}
 .top nav{margin-left:auto;display:flex;gap:clamp(14px,3vw,26px);align-items:center}
 .top nav a{color:var(--subtle);text-decoration:none;transition:color .15s}
 .top nav a:hover,.top nav a:focus-visible{color:var(--ink)}
@@ -94,7 +96,7 @@ header.top{
 
 .masthead{padding-top:clamp(48px,8vw,96px);padding-bottom:clamp(24px,4vw,40px)}
 .masthead .mono{display:block;margin-bottom:20px}
-.masthead h1{font-size:clamp(28px,4.2vw,44px);line-height:1.1;letter-spacing:-.025em;margin:0;font-weight:700;max-width:19ch}
+.masthead h1{font-size:clamp(36px,5vw,64px);line-height:1.05;letter-spacing:-.055em;margin:0;font-weight:450;max-width:19ch}
 .masthead p{color:var(--subtle);max-width:56ch;font-size:16px;margin:18px 0 0}
 
 /* The snapshot line. This page is a file that was written at a moment, not a
@@ -111,7 +113,7 @@ header.top{
 
 .metrics{
   display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-  border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);
+  border-top:1px solid var(--ink);border-bottom:1px solid var(--rail);
 }
 .metric{padding:16px 16px 18px 0;border-right:1px solid var(--rail)}
 .metric:last-child{border-right:0}
@@ -263,6 +265,7 @@ footer .right{margin-left:auto;display:flex;gap:18px}
   .area .t i{transform:scaleX(1)}
   .step{stroke-dashoffset:0!important}
 }
+@media(max-width:600px){.top .wrap{gap:12px;height:64px}.brand{font-size:21px}.top nav{gap:14px;font-size:12px}}
 </style>
 </head>
 <body>
@@ -275,7 +278,7 @@ footer .right{margin-left:auto;display:flex;gap:18px}
         <path d="M9 25 Q9 13 16 13 Q23 13 23 7" stroke="#E89E2E" stroke-width="3.2" fill="none" stroke-linecap="round"/>
         <circle cx="9" cy="25" r="2.6" fill="#E89E2E"/>
       </svg>
-      LANEWAY
+      Laneway
     </a>
     <nav class="mono">
       <a href="./">Overview</a>

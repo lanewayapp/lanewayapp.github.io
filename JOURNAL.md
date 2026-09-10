@@ -1,3 +1,366 @@
+# A Monochrome Foundation for Laneway - Wednesday Sep 9
+
+### Session Owner Not Confirmed
+
+*Time worked: exact prompt timestamps were unavailable. First clock check was
+12:15 AM; the redesign direction was recorded at 12:18 AM. The latest palette refinement was
+recorded at 12:32 AM. The user resumed at the 6:38 AM clock check. These
+are clock checks, not an estimated active duration, and include interruptions.
+The latest requests were recorded at 10:14 AM and on resuming at 2:28 PM.*
+
+## Timeline
+
+**12:15 AM - Landing Page Work Located.** The initial request was to redesign
+Laneway's landing page. Located the separate public website repository and
+its existing animated redesign. Another task was still modifying the page;
+paused when the user asked to wait. No changes were made in that phase.
+
+**12:18 AM - A New Visual Direction Requested.** The user referenced doss.com
+and asked for white or black backgrounds, navy and orange accents, a cleaner
+startup aesthetic, retained animation, and a way to revert every change.
+Opened issue #140 before editing. Created an isolated branch and committed
+an exact snapshot of the current page, including its in-progress edits. The
+original working branch was left intact.
+
+**12:28 AM - The New Design Was Ready for Review.** Updated index.html with
+a split opening layout, an explicitly illustrative connection diagram,
+neutral surfaces, lighter typography, a compact pill navigation action,
+numbered sections, a charcoal verification section, a more orderly pipeline,
+and a restrained closing statement. Kept the original three opening beats,
+the wordmark drawing, map camera, route sequence, and simulated feed. Orange
+marks route movement; navy remains in small brand elements. Green and red
+remain reserved for verdicts. Matched the dev log, status, legal, and 404
+palettes and shared navigation typography.
+
+The feed footer now says simulated route feed, consistent with its existing
+disclosure. Removed the stale no-voice-guidance exclusion after checking the
+product's spoken-directions setting. No new capability was claimed.
+
+Keyboard focus follows the visible opening scene. Reduced-motion settings
+and short viewports expose the static opening, including when those settings
+change after load. Corrected the miniature trace's dash scaling and made its
+marker follow the curve instead of sliding straight across it.
+
+**12:30 AM - More Navy and White, Less Black and Orange.** The user reviewed
+the preview and asked for more navy and white. Replaced charcoal surfaces
+with navy, shifted light-mode text and route lines to navy, used white and
+pale blue on the dark background, and reserved orange for small dots and
+unverified indicators. Applied the same change to all supporting pages and
+refreshed the existing preview.
+
+**12:32 AM - Black and White Remain the Foundation.** The user clarified
+that navy and white should not replace the neutral foundation. Restored white
+and black page surfaces and neutral typography across all five pages. Kept
+navy as the main accent in route lines, small brand surfaces and secondary
+actions, with orange limited to small markers and unverified indicators.
+The final system is black and white first, navy second, orange sparingly.
+Refreshed the same preview and reran the checks.
+
+**6:38 AM - Saving Resumed After the Usage Limit.** The user asked to
+continue. Automatic approval review had blocked the final Git save because
+of a usage limit. The retry succeeded: the design is committed as c8fbbbd
+on codex/monochrome-redesign and its isolated checkout is now in a permanent
+sibling project folder. The exact original snapshot remains 477ed1e.
+Moving the checkout left the preview pointing at its old directory and
+produced a 404; restarted the same preview against the permanent folder.
+No application code or production deployment changed.
+
+**10:12 AM - Title Card Removed and White Sections Expanded.** The user
+asked to scrap the Laneway title card, add more white sections and increase
+navy accents slightly. Removed its SVG markup, dedicated styles and drawing
+code. The two remaining opening statements now span 300 rather than 480
+viewport heights, with retimed entrances and exits so removing the third
+scene does not leave an empty scroll interval. The map camera is unchanged.
+
+The introduction, problem, pipeline and status sections now stay white in
+both system themes, with a light activity surface. Verification remains a
+black chapter. Navy primary buttons, section labels and navigation details
+add brand emphasis without changing the black-and-white foundation.
+
+All six scripts parse; links, fragments, IDs and font assets pass. Focused
+checks pass for the two-scene transition, hidden-scene keyboard access,
+reduced-motion changes and recovery after viewport changes. The diff is
+clean. Browser visual testing was not performed. Refreshed the same preview.
+A pull was attempted before editing; the isolated branch has no tracking
+branch, so no merge was made. The checkpoint before this refinement is
+codex/before-titlecard-removal at 73aeaee, in addition to the original
+pre-redesign snapshot. Issue #140 stays open pending publication.
+
+**2:30 PM - Route Illustration Disclosures and Pull Request Requested.**
+The hover request was first recorded at the 10:14 AM clock check. The user
+then asked to submit a pull request; the resumed clock check was 2:28 PM.
+These checks span an interruption and are not active work time.
+
+Converted the three illustration stop labels into native details and summary
+controls. Hover or keyboard focus previews contextual information; click or
+tap pins a panel. Another stop, an outside click or Escape dismisses it.
+The cards lift slightly, their icons tilt and the route redraws. Information
+panels use navy with white text and explain the illustration without claiming
+real travel directions. The illustration now has group semantics so its
+controls remain accessible. Native clicks also work without JavaScript.
+
+All seven scripts parse. Local links, fragments, IDs and font assets pass.
+Focused interaction checks pass for hover, focus, touch, pinning, one open
+panel, Escape and outside dismissal, alongside the existing opening tests.
+The diff is clean; visual browser testing was not performed. Fetched main
+and confirmed it is an ancestor. No PR is open for this branch. The proposed
+PR includes the earlier activity-feed, opening and loading-state work already
+on the branch, plus this redesign, since those commits are not on main.
+
+**2:31 PM - Pull Request Submitted.** Opened website PR #5:
+https://github.com/lanewayapp/lanewayapp.github.io/pull/5. It targets main,
+is open and mergeable, and has no reported status checks. Direct organization
+pushes returned 403 for the current account, so the first PR creation attempt
+had no remote head. Pushed the branch and both rollback tags to the existing
+fork instead and successfully submitted the cross-fork PR. No permissions
+were changed and nothing was merged or deployed. Issue #140 is linked for
+closure when the PR lands.
+
+## Validation and Rollback
+
+All six inline scripts parse. Local links, fragment targets, unique IDs and
+CSS font assets pass across all five pages. A focused script check passes
+for keyboard visibility, reduced-motion changes and viewport-mode recovery.
+Primary muted and accent text combinations exceed 4.5:1 contrast in both
+final palettes. The diff and changed HTML are whitespace and ASCII clean. The
+first link check falsely treated root-relative 404 links as filesystem roots;
+corrected the checker and reran successfully. Browser visual and interaction
+testing was not performed, so rendered layout remains for review. No engine
+code changed and no engine benchmark was run.
+
+The saved rollback point is codex/before-monochrome-redesign at 477ed1e.
+The new branch is codex/monochrome-redesign. See Redesign.md for restoration
+instructions. Issue #140 remains open until the design ships. GitHub Pages
+has not been changed.
+
+---
+
+# A Calmer Page That Still Moves - Tuesday Sep 8
+
+### Emilio's Work
+
+*Time worked: 18m (11:52 PM to 12:10 AM)*
+
+## Timeline
+
+**11:52 PM - The polish pass started with less copy and more response.** Emilio
+asked to declutter the landing page, make every table-like surface react on
+hover, hold the Laneway title card longer, and add branded loading and 404
+states. Opened #139 before editing. The loading direction is the route-mark
+logo resolving into a spinning circle, with reduced-motion and no-script
+fallbacks so the introduction never blocks the page.
+
+**11:57 PM - The page became shorter and more tactile.** Rewrote the journey,
+problem, verification, architecture, activity, status, and closing paragraphs
+to preserve their claims in substantially fewer words. Added restrained hover
+motion to journey steps, verification rows, pipeline cells, status rows,
+coverage labels, and activity routes. Static information stays visually honest:
+it responds, but never gains a pointer cursor or pretends to be a link.
+
+**12:01 AM - Loading and not-found states joined the same visual system.** The
+new entry overlay draws the Laneway route mark, carries it into a rotating open
+ring, and clears after the page loads. A timeout prevents the overlay from ever
+trapping the site; reduced-motion and no-script visitors skip it. Added a
+self-contained `404.html` with a broken map route, a clear explanation, and a
+direct return to Laneway. It uses only local assets and has its own responsive
+and reduced-motion treatment.
+
+**12:10 AM - The interaction pass was verified.** The opening now spans 480
+viewport heights. Browser measurements show the title entering at 2.25 page
+heights and remaining fully visible after another full-page scroll. The loader
+was captured both while the route mark was drawing and after it became the
+spinner. Desktop and 360 px renders of the landing page and 404 page have no
+horizontal overflow. The browser logged no warnings or errors, all four inline
+scripts parse, and the diff passes whitespace checks.
+
+## Open
+
+- Issue #139 remains open until this local branch is merged into the public
+  site.
+
+---
+
+# Three Beats Before the Map - Tuesday Sep 8
+
+### Emilio's Work
+
+*Time worked: 10:48 PM to 11:49 PM*
+
+## Timeline
+
+**10:48 PM - The opening was reduced to two beliefs and a name.** Emilio asked
+to replace the conventional hero with three centered, scroll-driven moments:
+`The destination is more important than the journey.`, then `The most
+efficient way is the best way.`, then a large animated gradient title card.
+The existing map journey stays immediately after this opening and keeps its
+current camera and route choreography. Opened #138 before editing.
+
+**10:55 PM - The title card became the brand in motion.** Emilio refined the
+third beat: it should begin as the route-mark tile, then stretch into the full
+Laneway wordmark on one line. The animation now uses the existing logo artwork,
+an extending amber route line, and a clipped word reveal instead of dropping a
+finished word onto the screen.
+
+**10:58 PM - One brushstroke replaced the assembled lockup.** Emilio clarified
+that the logo should not merely move beside typeset letters. The reference is a
+painted studio-opening signature: one continuous line draws the route mark and
+keeps moving through a handwritten Laneway word. Replaced the separate icon,
+line, and text layers with one scroll-driven SVG path.
+
+**11:02 PM - The opening was verified in the browser.** The three beats fade
+and travel cleanly at desktop size. The continuous brush path resolves into a
+legible Laneway signature, the existing journey still follows it, and the
+browser logged no warnings or errors. At a 360 px viewport the signature stays
+on one line with no horizontal overflow. Inline scripts parse, the diff passes
+whitespace checks, and the Markdown non-ASCII check is clean. Reduced-motion
+and no-script fallbacks show all three beats and the completed signature.
+
+**11:04 PM - The signature became a transport story.** Emilio asked for more
+legibility and more character: a normal L; a cyclist riding a hill that resolves
+into the rounded second letter; a car revealing ne along a road; then way drawn
+by an arrow that finishes as a check. The final held frame is now a conventional
+Laneway wordmark rather than cursive, while the vehicles remain temporary motion
+layers. The sequence is spread across a longer scroll stage so each idea has
+room to register. The decorative check stays amber because verifier green is
+reserved for real supported claims.
+
+**11:13 PM - The handoffs were separated.** Browser review found that rotating
+the cyclist to the full hill slope made the rider hard to recognise, and the
+bike and car briefly collided at the second-letter transition. The rider now
+stays within 18 degrees of upright, renders larger, and clears before the car
+enters its own road beat.
+
+**11:35 PM - The explorations resolved into one orange script.** Emilio first
+clarified that the vehicle trails, not separate roads, should form the letters.
+A working version let the bike paint a, the car paint ne, and an arrow paint
+way. He then briefly asked for fixed-speed playback before reversing that call:
+the title is scroll-controlled after all. The final aesthetic direction is a
+vintage connected-script wordmark in the spirit of early hand-lettered social
+logos, without copying one. The real Laneway route mark draws first, a heavier
+branch grows from its upper end into the L, and separate overlapping paths form
+the rest of Laneway before the terminal check. Those distinct paths keep the
+brush lettering organic without reducing it to one uniform wire. Every stroke,
+including the check, now uses the single Laneway orange; the gradient and the
+literal bike and car drawings were removed. Desktop and 360 px browser renders
+show the full word on one line without horizontal page overflow.
+
+**11:43 PM - The two beliefs received an editorial voice.** Emilio called the
+bold opening copy bland and asked for a different font, lighter weight, colour,
+and motion. Both statements now use a regular-weight Iowan-style serif stack
+instead of the site sans. Destination, efficient, and best use Laneway orange;
+journey receives a quieter orange-ink italic. Thin orange route lines draw under
+the key words with each scroll beat. Browser inspection confirms the resolved
+weight is 400, the first composition remains centered, and the script title
+still takes over without competing type styles.
+
+**11:44 PM - Simple type won over the editorial experiment.** Emilio asked to
+keep the statements simple. The serif treatment was rendered and discarded
+rather than shipped. The statements now use the site's existing Geist face at
+regular weight, with no italics. Laneway orange on the key words and the moving
+underline remain the personality layer.
+
+**11:49 PM - The underline became a route.** Emilio asked for a bike or plane
+instead of a generic rule. Each accent word now contains its own small orange
+route scene: a bike under destination, a plane under efficient, and a bike under
+best. The dotted track and vehicle position share the existing scroll progress,
+so the icon travels under the word as that beat enters.
+
+## Open
+
+- Issue #138 remains open until this local branch is merged into the public
+  site.
+
+---
+
+# A Simulated Activity Feed That Says It Is Simulated - Tuesday Sep 8
+
+### Emilio's Work
+
+*Time worked: 9:33 PM to 10:46 PM*
+
+## Timeline
+
+**9:33 PM - Landing page work resumed.** Pulled both remotes before touching
+the page. The local map-first branch was clean and 25 commits behind
+`origin/main`, so it fast-forwarded to the latest public site, including the
+status and legal pages, refreshed assets, and subsequent map corrections.
+
+The requested live user table would have displayed generated people as if they
+had just planned real trips. That conflicts directly with the site's rule
+against invented users and unsupported traction. Opened engine tracker issue
+#137 for the honest version: the same changing, local-only activity treatment,
+explicitly labelled as a simulation and never described as customer telemetry.
+
+**10:21 PM - The table became a route board.** The first implementation was a
+plain three-column table with six rotating prose updates. Emilio asked for the
+information to move like travel information instead: airport codes, a gate,
+the carrier, a drawn arrow, the destination, and real fade transitions. The
+requested example, YYC Gate 83 on WestJet to YEG, is the first route a new
+browser sees. Commented the changed approach on #137 before replacing the
+table.
+
+**10:32 PM - The route board became genuinely multimodal.** Emilio pointed out
+that a board of only airline movements was still too narrow: a useful travel
+plan also has a Lime scooter from a subway exit to a saved place, a Calgary
+Transit bus 38 to Brentwood Station, a train, and a walking connector. The
+generator now chooses a different mode from the previous update and gives each
+one its own route vocabulary and inline SVG icon. The airplane example remains
+possible, but it is no longer privileged or fixed.
+
+**10:39 PM - Mixed modes were read back from the live page.** A timed browser
+observation produced a city bus, a flight, a Lime scooter, and a walking
+connector in the same four-row board. A fresh 360px render measured 304px for
+the route graphic inside a 360px document, with no overflow, no `undefined`
+labels, and no console warnings. The source includes the bus 38 and Brentwood
+example as a reachable generated case, alongside the requested YYC, Gate 83,
+WestJet, YEG vocabulary.
+
+## What Changed
+
+- `index.html` now has a four-row activity board rather than a text table. Each
+  row draws its route as origin, detail, mode icon, carrier, moving line, SVG
+  arrow, and destination; flights, scooters, buses, trains, and walks all use
+  the same visual grammar without pretending they are one data source.
+- Rows fade out before the replacement arrives, then the new route drops in
+  and traces its own baseline. The route line, board rail, and status marker
+  carry slower ambient motion. The existing reduced-motion rule switches all
+  of it off.
+- The source contains 200 unique first names and 200 unique last names. Seven
+  username patterns rotate without repeating consecutively, and each block of
+  ten generated identities contains exactly three `Anonymous` entries.
+- Route signatures persist in `localStorage` for one hour. The generator checks
+  that rolling history before display and prunes it as the hour moves, so a
+  route does not replay after a refresh in the same browser. A static site
+  cannot coordinate that history between different visitors.
+- The label reads `Live user feed`, as requested, but the adjacent copy says
+  `Simulated activity` and `Simulated preview`. It also names what the feed is
+  not: real users, airline movement, telemetry, or traction. Motion is not
+  allowed to turn demonstration data into a marketing claim.
+
+## Checked
+
+The feed rendered flight, scooter, bus, and walking examples during a timed
+browser observation, including Lime and a city-bus route, with no browser
+warnings or errors. Reloading generated four new route signatures with no
+overlap against the four displayed before the refresh. At a 360px viewport,
+the mobile breakpoint was active, the board measured 304px in a 360px
+document, and the document had no horizontal overflow. The requested route
+vocabulary, including YYC, Gate 83, WestJet, YEG, was read back from the
+rendered DOM rather than inferred from the source. Both name lists contain
+exactly 200 unique values, every inline script parses, `git diff --check` passes,
+and the repo-wide
+non-ASCII check is clean.
+
+## Open
+
+- Light mode was checked structurally through the existing colour tokens, but
+  the machine was in dark mode and the finished animation was watched only
+  there.
+- The public main branch still needs the review branch merged before GitHub
+  Pages serves the board.
+
+---
+
 # The Status Page - Thursday Sep 3
 
 *Written 6:41 PM.*

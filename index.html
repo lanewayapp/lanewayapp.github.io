@@ -6,7 +6,7 @@
 <title>Laneway - the legs no map has indexed</title>
 <meta name="description" content="Verified, multi-modal trip plans including the shuttles, terminal walks and connectors no mapping app has in its graph. Every fact carries a source. In development for iOS.">
 <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#172133" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#101010" media="(prefers-color-scheme: dark)">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Laneway - the legs no map has indexed">
 <meta property="og:description" content="Verified, multi-modal trip plans including the shuttles, terminal walks and connectors no mapping app has in its graph.">
@@ -32,66 +32,27 @@
   font-weight:100 900;font-style:normal;font-display:swap;
 }
 
-/* The map is the product, so the map is the page. Everything else is set in
-   one typeface at three weights, on hairlines, with no cards, no shadows and
-   no decoration. Three colours do the work; amber marks the route and the
-   single action. The verifier's green and red appear only on real verdicts.
-
-   The map is drawn here in SVG rather than fetched from a tile server: this
-   page makes no third-party request, so it renders offline and cannot break
-   at load. It is a diagram of the anchor case, not a claimed screenshot. */
-
+/* Neutral surfaces let the route carry the brand. Green and red remain
+   reserved for verification verdicts. The map is an illustration, not a
+   screenshot or a live source of directions. */
 :root{
-  /* The bar's height, and the four things that have to agree with it: the
-     bar itself, the room main leaves for it, where an anchored heading
-     lands, and where the journey's counter sits. The bar's full height is
-     this plus 2px, the progress rail and the hairline under it. */
-  --bar:65px;
-
-  --bg:#FFFFFF;
-  --ink:#0A0A0A;
-  --muted:#6B665F;
-  --hair:rgba(10,10,10,.13);
-  --accent:#B4761A;
-  --verified:#1E7A48;
-  --contradicted:#B23A2A;
-
-  --land:#F4F3F0;
-  /* The bar's own surface: the page held back to 80%, both themes. Night was
-     lifted off the navy for a while so the pane would read against a land
-     that is the same colour as the page, and it read as a lighter blue slab
-     instead of as glass. Owner's call at 5:29 PM: back to the page colour.
-     At night that means the pane has no tint of its own, and the bar is told
-     apart by its hairline and by the blur of what passes under it. */
-  --glass:color-mix(in srgb,var(--bg) 80%,transparent);
-  --road:rgba(10,10,10,.26);
-  --road-minor:rgba(10,10,10,.12);
-  --built:rgba(10,10,10,.055);
-  --route:#C9871E;
+  --bar:76px;
+  --bg:#FFFFFF;--ink:#151515;--muted:#666666;
+  --hair:rgba(23,33,51,.13);--accent:#243F64;
+  --verified:#1E7A48;--contradicted:#B23A2A;
+  --land:#FFFFFF;--surface:#F6F6F6;--navy:#172133;
+  --glass:color-mix(in srgb,var(--bg) 94%,transparent);
+  --road:rgba(21,21,21,.22);--road-minor:rgba(21,21,21,.10);
+  --built:rgba(23,33,51,.04);--route:#243F64;
 }
-/* Night is the Laneway navy again, owner call Saturday Aug 29, reversing the
-   neutral grey recorded on Aug 26. The background is the brand ink #172133,
-   the tile behind the wordmark; ink and muted come from Theme.swift's night
-   set. The land is IDENTICAL to the background on purpose: the scrims fade
-   the page colour over the map, and a 300px fade between two navys a few RGB
-   units apart quantises into a handful of 100px bands whose edges read as
-   hard lines. With land equal to bg the scrims fade only the drawn details,
-   which cannot band. Do not "fix" the land back to a surface tint. */
 @media (prefers-color-scheme:dark){
   :root{
-    --bg:#172133;
-    --ink:#EDF0F5;
-    --muted:#9EA8BA;
-    --hair:rgba(237,240,245,.14);
-    --accent:#E8A33C;
-    --verified:#3FBE7C;
-    --contradicted:#E9695A;
-
-    --land:#172133;
-    --road:rgba(237,240,245,.24);
-    --road-minor:rgba(237,240,245,.10);
-    --built:rgba(237,240,245,.05);
-    --route:#E8A33C;
+    --bg:#101010;--ink:#F5F5F5;--muted:#A6A6A6;
+    --hair:rgba(255,255,255,.16);--accent:#D9E5F5;
+    --verified:#53C68B;--contradicted:#F08073;
+    --land:#101010;--surface:#191919;--navy:#172133;
+    --road:rgba(245,245,245,.22);--road-minor:rgba(245,245,245,.10);
+    --built:rgba(255,255,255,.04);--route:#D9E5F5;
   }
 }
 
@@ -111,15 +72,37 @@ body{
   font-family:"Geist",-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
   font-weight:400;-webkit-font-smoothing:antialiased;line-height:1.6;overflow-x:hidden;
 }
+/* The first frame is part of the product. The route mark draws once, then its
+   endpoint carries forward into an open ring. The overlay leaves on load and
+   has a timeout as a defensive fallback, so it can never trap the page. */
+.site-loader{
+  position:fixed;inset:0;z-index:1000;display:grid;place-items:center;
+  background:var(--bg);opacity:1;visibility:visible;
+  transition:opacity .42s ease,visibility .42s ease;
+}
+.site-loader.is-leaving{opacity:0;visibility:hidden;pointer-events:none}
+.loader-symbol{width:76px;height:76px;overflow:visible;transition:transform .42s ease}
+.site-loader.is-leaving .loader-symbol{transform:scale(.82)}
+.loader-route,.loader-ring{fill:none;stroke:var(--accent);stroke-linecap:round;vector-effect:non-scaling-stroke}
+.loader-route{stroke-width:4.5;stroke-dasharray:1;stroke-dashoffset:1;animation:loader-route 1.05s cubic-bezier(.4,0,.2,1) forwards}
+.loader-route-dot{fill:var(--accent);transform-box:fill-box;transform-origin:center;animation:loader-dot 1.05s ease forwards}
+.loader-orbit{opacity:0;transform-origin:32px 32px;animation:loader-orbit-in .38s .62s ease forwards,loader-spin .82s .84s linear infinite}
+.loader-ring{stroke-width:3.5;stroke-dasharray:.72 .28;stroke-dashoffset:1;animation:loader-ring .48s .56s ease forwards}
+.loader-orbit-dot{fill:var(--accent)}
+@keyframes loader-route{0%{stroke-dashoffset:1;opacity:1}58%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}
+@keyframes loader-dot{0%{opacity:0;transform:scale(0)}20%,62%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(.5)}}
+@keyframes loader-ring{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+@keyframes loader-orbit-in{to{opacity:1}}
+@keyframes loader-spin{to{transform:rotate(360deg)}}
 /* Three weights. 400 reads, 500 labels, 700 leads. Nothing else. */
-h1,h2,h3{font-weight:700;letter-spacing:-.022em;margin:0}
+h1,h2,h3{font-weight:500;letter-spacing:-.045em;margin:0}
 .mono{
   font-family:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-  font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+  font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);
 }
 .num{font-variant-numeric:tabular-nums}
 a{color:inherit}
-.wrap{max-width:1120px;margin:0 auto;padding:0 clamp(20px,5vw,56px)}
+.wrap{max-width:1320px;margin:0 auto;padding:0 clamp(20px,5vw,56px)}
 .measure{max-width:58ch}
 
 /* ---------------- the map ---------------- */
@@ -175,37 +158,46 @@ header.top{
 
 main{position:relative;z-index:1;padding-top:calc(var(--bar) + 2px)}
 
-/* ---------------- hero ---------------- */
-.hero{padding:clamp(72px,11vw,150px) 0 clamp(72px,12vw,160px);position:relative}
-/* The map runs under the words. A flat scrim from the reading edge, not a
-   blob. It overhangs the hero's bottom edge and a mask fades the last 300px,
-   so scrolling reveals the map through a soft edge instead of a hard stop.
-   It overhangs the top by half a window as well. The scrim used to start at
-   the hero's top edge, which sits exactly under the pinned bar, so an elastic
-   pull dragged that edge into view and left a hard line of bare map between
-   the bar and the words. There is nothing above the hero to hide behind, so
-   the scrim reaches up past the bar instead and the pull finds more scrim. */
-.hero::before{
-  content:"";position:absolute;z-index:-1;pointer-events:none;
-  top:-50vh;bottom:-160px;left:-50vw;right:32%;
-  background:linear-gradient(to right,
-    var(--bg) 62%, color-mix(in srgb,var(--bg) 80%,transparent) 84%, transparent 100%);
-  -webkit-mask-image:linear-gradient(to bottom,
-    #000 calc(100% - 300px), rgba(0,0,0,.92) calc(100% - 240px),
-    rgba(0,0,0,.7) calc(100% - 180px), rgba(0,0,0,.42) calc(100% - 120px),
-    rgba(0,0,0,.18) calc(100% - 60px), transparent 100%);
-  mask-image:linear-gradient(to bottom,
-    #000 calc(100% - 300px), rgba(0,0,0,.92) calc(100% - 240px),
-    rgba(0,0,0,.7) calc(100% - 180px), rgba(0,0,0,.42) calc(100% - 120px),
-    rgba(0,0,0,.18) calc(100% - 60px), transparent 100%);
+/* ---------------- opening ---------------- */
+/* Two full-screen beats precede the map journey. The map remains fixed
+   behind them and keeps its existing load animation, while this layer owns
+   only the words and their scroll progress. */
+.opening{position:relative;height:300vh;padding:0}
+.opening-sticky{position:sticky;top:var(--bar);height:calc(100vh - var(--bar));display:grid;place-items:center;overflow:hidden}
+.opening-sticky::before{
+  content:"";position:absolute;inset:0;background:var(--bg);
 }
-.hero-inner{position:relative;max-width:52ch}
-.hero .mono{display:block;margin-bottom:22px}
-.hero h1{font-size:clamp(36px,5.4vw,60px);line-height:1.06;letter-spacing:-.03em;max-width:15ch}
-.hero p{font-size:clamp(16px,1.7vw,18px);color:var(--muted);max-width:46ch;margin:20px 0 0}
-.hero-act{display:flex;flex-wrap:wrap;align-items:center;gap:20px;margin-top:32px}
+.opening-beat{
+  position:absolute;inset:0;display:grid;place-items:center;padding:clamp(24px,7vw,96px);
+  text-align:center;opacity:0;transform:translateY(28px) scale(.97);will-change:opacity,transform;
+}
+.opening-beat h1,.opening-beat h2{
+  max-width:19ch;font-family:"Geist",-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  font-size:clamp(40px,5.5vw,74px);font-weight:450;line-height:1.05;letter-spacing:-.045em;
+  color:var(--ink);text-wrap:balance;
+}
+.opening-accent,.opening-turn{display:inline-block}
+.opening-accent{
+  position:relative;display:inline-block;padding-bottom:.34em;color:var(--ink);
+  font-style:normal;letter-spacing:-.055em;
+}
+.accent-route{
+  position:absolute;left:0;bottom:-.02em;width:100%;height:.52em;overflow:visible;
+  opacity:var(--line-draw,0);pointer-events:none;
+}
+.accent-track{
+  fill:none;stroke:var(--accent);stroke-width:1.6;stroke-linecap:round;stroke-dasharray:2 4;opacity:.46;
+}
+.accent-bike,.accent-plane{fill:none;stroke:var(--accent);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.accent-bike circle{fill:var(--bg);stroke:var(--accent);stroke-width:1.8}
+.accent-plane{fill:var(--accent);stroke:none}
+.accent-route circle,.accent-route path{vector-effect:non-scaling-stroke}
+.accent-route .accent-bike,.accent-route .accent-plane{will-change:transform}
+.accent-route .accent-bike,.accent-route .accent-plane{transform-box:fill-box;transform-origin:center;
+}
+.opening-turn{font-style:normal;color:var(--muted)}
 .btn{
-  display:inline-flex;align-items:center;padding:9px 16px;border-radius:4px;
+  display:inline-flex;align-items:center;padding:12px 22px;border-radius:999px;
   background:var(--ink);color:var(--bg);
   font-size:14px;font-weight:500;text-decoration:none;border:1px solid var(--ink);
   transition:opacity .15s;
@@ -264,13 +256,39 @@ section{padding:clamp(64px,9vw,132px) 0}
 
 /* Verification: a ledger, which is what a verifier produces. */
 .ledger{margin-top:40px;border-top:1px solid var(--ink)}
-.ledger .row{
+.ledger .row{border-bottom:1px solid var(--hair)}
+.ledger summary{
   display:grid;grid-template-columns:150px minmax(0,1fr) minmax(0,.85fr);
-  gap:clamp(14px,3vw,36px);padding:22px 0;border-bottom:1px solid var(--hair);align-items:start;
+  gap:clamp(14px,3vw,36px);padding:22px 0;align-items:start;cursor:pointer;list-style:none;
 }
+.ledger summary::-webkit-details-marker{display:none}
 .ledger .claim{font-size:16px;line-height:1.45}
-.ledger .src{font-size:13.5px;color:var(--muted)}
+.ledger .src{font-size:13.5px;line-height:1.6;color:var(--muted)}
 .ledger .src b{display:block;color:var(--ink);font-weight:500}
+.ledger-route-map{
+  height:0;opacity:0;overflow:hidden;color:var(--accent);transform:translateY(-8px);
+  transition:height .35s cubic-bezier(.2,.8,.2,1),opacity .25s ease,transform .35s cubic-bezier(.2,.8,.2,1);
+}
+.ledger-route-map svg{display:block;width:100%;height:82px}
+.ledger-map-road{fill:none;stroke:var(--hair);stroke-width:1.2;vector-effect:non-scaling-stroke}
+.ledger-map-route{
+  fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;
+}
+.ledger-map-node{fill:var(--bg);stroke:currentColor;stroke-width:2;vector-effect:non-scaling-stroke}
+.ledger-map-vehicle{fill:currentColor;opacity:0;offset-path:path("M72 54 C190 20 340 64 552 26");offset-anchor:center;offset-rotate:auto}
+.ledger .row[data-verdict="supported"] .ledger-route-map{color:var(--verified)}
+.ledger .row[data-verdict="contradicted"] .ledger-route-map{color:var(--contradicted)}
+.ledger .row:hover .ledger-route-map,.ledger .row[open] .ledger-route-map,.ledger .row:focus-within .ledger-route-map{
+  height:82px;opacity:1;transform:none;
+}
+.ledger .row:hover .ledger-map-route,.ledger .row[open] .ledger-map-route,.ledger .row:focus-within .ledger-map-route{
+  animation:ledger-map-draw .85s ease-out forwards;
+}
+.ledger .row:hover .ledger-map-vehicle,.ledger .row[open] .ledger-map-vehicle,.ledger .row:focus-within .ledger-map-vehicle{
+  animation:ledger-map-travel 1.05s .18s cubic-bezier(.2,.8,.2,1) forwards;
+}
+@keyframes ledger-map-draw{to{stroke-dashoffset:0}}
+@keyframes ledger-map-travel{0%{opacity:0;offset-distance:0%}18%{opacity:1}100%{opacity:1;offset-distance:100%}}
 .mark{
   display:inline-flex;align-items:center;gap:7px;
   font-family:"Geist Mono",ui-monospace,Menlo,monospace;
@@ -279,9 +297,9 @@ section{padding:clamp(64px,9vw,132px) 0}
 .mark::before{content:"";width:6px;height:6px;flex:none;background:currentColor}
 .mark.ok{color:var(--verified)}
 .mark.bad{color:var(--contradicted)}
-.mark.warn{color:var(--accent)}
+.mark.warn{color:#F2AC53}
 @media (max-width:760px){
-  .ledger .row{grid-template-columns:1fr;gap:8px;padding:20px 0}
+  .ledger summary{grid-template-columns:1fr;gap:8px;padding:20px 0}
 }
 
 /* Pipeline: dense and technical on purpose, small type, no boxes. */
@@ -323,6 +341,77 @@ section{padding:clamp(64px,9vw,132px) 0}
 .pulse-foot a{color:var(--accent);text-decoration:none;border-bottom:1px solid transparent}
 .pulse-foot a:hover,.pulse-foot a:focus-visible{border-bottom-color:currentColor}
 
+/* Simulated activity. The route board moves like a departures display, but
+   the disclosure stays beside the heading so motion never becomes a claim
+   that these are real users or real airline movements. */
+.activity-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(240px,.7fr);gap:clamp(28px,6vw,80px);align-items:end}
+.activity-head h2{font-size:clamp(24px,3.2vw,34px);line-height:1.16;max-width:19ch}
+.activity-note{margin:0;color:var(--muted);font-size:14px;line-height:1.55}
+.activity-note b{color:var(--ink);font-weight:500}
+.activity-stage{position:relative;margin-top:40px;border-top:1px solid var(--ink);overflow:hidden}
+.activity-stage::before{
+  content:"";position:absolute;z-index:2;left:0;top:0;width:3px;height:100%;
+  background:var(--accent);transform-origin:50% 0;animation:feed-scan 4.8s ease-in-out infinite;
+}
+.activity-stream{list-style:none;margin:0;padding:0}
+.activity-item{
+  display:grid;grid-template-columns:minmax(150px,.7fr) minmax(350px,1.6fr) minmax(145px,.7fr);
+  gap:clamp(18px,4vw,54px);align-items:center;min-height:118px;padding:20px 0 20px 22px;
+  border-bottom:1px solid var(--hair);position:relative;
+}
+.activity-item::after{
+  content:"";position:absolute;left:3px;right:0;bottom:-1px;height:1px;
+  background:var(--accent);transform:scaleX(0);transform-origin:0 50%;opacity:.72;
+}
+.activity-item.activity-enter{animation:feed-enter .62s cubic-bezier(.2,.8,.2,1) both}
+.activity-item.activity-enter::after{animation:feed-trace 1.2s ease-out both}
+.activity-item.activity-exit{animation:feed-exit .48s ease-in both}
+.activity-person{min-width:0}
+.activity-person strong{display:block;font-size:14px;font-weight:500;overflow-wrap:anywhere}
+.activity-person span,.activity-state span{display:block;margin-top:5px;color:var(--muted);font-size:12px}
+.activity-route{display:grid;grid-template-columns:auto minmax(95px,1fr) auto;gap:clamp(12px,2.5vw,28px);align-items:center;min-width:0}
+.activity-airport strong{display:block;font-size:clamp(25px,3.1vw,34px);line-height:1;font-weight:700;letter-spacing:-.035em;white-space:nowrap}
+.activity-airport small{display:block;margin-top:7px;color:var(--muted);font-size:11px;white-space:nowrap}
+.activity-airport.to{text-align:right}
+.activity-line{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:9px;min-width:0;color:var(--accent);position:relative}
+.activity-line .carrier{font-family:"Geist Mono",ui-monospace,Menlo,monospace;font-size:10px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.activity-line .mode-icon{display:inline-block;vertical-align:-3px;margin-right:6px}
+.activity-line i{display:block;height:1px;background:currentColor;position:relative;overflow:hidden}
+.activity-line i::after{content:"";position:absolute;top:0;bottom:0;width:34%;background:var(--bg);animation:route-pulse 2.4s ease-in-out infinite}
+.activity-line svg{display:block;flex:none}
+.activity-runner{
+  position:absolute;z-index:2;left:28%;top:50%;display:block;opacity:0;pointer-events:none;
+  transform:translate(-50%,-50%);color:var(--accent);
+}
+.activity-runner-icon{display:block;width:20px;height:18px}
+.activity-item:hover .activity-runner{animation:activity-travel 1.05s cubic-bezier(.2,.8,.2,1) both}
+.activity-item:hover .activity-line i{animation:activity-track 1.05s ease both}
+.activity-item:hover .activity-arrow{animation:activity-arrow .55s .68s ease both}
+.activity-state{text-align:right}
+.activity-state strong{display:inline-flex;align-items:center;gap:7px;color:var(--accent);font-family:"Geist Mono",ui-monospace,Menlo,monospace;font-size:10px;font-weight:500;letter-spacing:.09em;text-transform:uppercase}
+.activity-state strong::before{content:"";width:6px;height:6px;background:currentColor;animation:state-pulse 2.4s ease-in-out infinite}
+@keyframes feed-enter{from{opacity:0;transform:translateY(-22px)}to{opacity:1;transform:none}}
+@keyframes feed-exit{to{opacity:0;transform:translateY(18px)}}
+@keyframes feed-trace{0%{transform:scaleX(0)}55%,100%{transform:scaleX(1)}}
+@keyframes feed-scan{0%,100%{transform:scaleY(.1);opacity:.4}50%{transform:scaleY(1);opacity:1}}
+@keyframes route-pulse{0%{transform:translateX(-130%)}60%,100%{transform:translateX(340%)}}
+@keyframes state-pulse{0%,100%{opacity:.35;transform:scale(.75)}50%{opacity:1;transform:scale(1)}}
+@keyframes activity-travel{0%{left:28%;opacity:0;transform:translate(-50%,-50%) scale(.75)}15%{opacity:1}88%{opacity:1}100%{left:calc(100% - 26px);opacity:0;transform:translate(-50%,-50%) scale(1.12)}}
+@keyframes activity-track{0%,100%{height:1px}45%{height:3px}}
+@keyframes activity-arrow{0%,100%{transform:none}50%{transform:translateX(7px)}}
+.activity-foot{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;margin:14px 0 0;color:var(--muted);font-size:12px}
+.activity-foot .mono{color:var(--accent)}
+@media (max-width:760px){
+  .activity-head{grid-template-columns:1fr;gap:18px}
+  .activity-item{grid-template-columns:1fr auto;gap:16px;padding:20px 0 20px 16px}
+  .activity-route{grid-column:1/-1;grid-row:1}
+  .activity-route{grid-template-columns:minmax(0,auto) minmax(40px,1fr) minmax(0,auto);gap:8px}
+  .activity-airport strong{font-size:26px}
+  .activity-airport small{font-size:10px;white-space:normal;max-width:110px;line-height:1.25}
+  .activity-person{grid-column:1;grid-row:2}
+  .activity-state{grid-column:2;grid-row:2}
+}
+
 /* Close: one line and one link. */
 .close{padding:clamp(56px,8vw,110px) 0;border-top:1px solid var(--hair)}
 .close h2{font-size:clamp(22px,2.8vw,30px);line-height:1.2;max-width:24ch}
@@ -342,9 +431,186 @@ footer .right{margin-left:auto;display:flex;gap:20px}
   .reading .body{margin-left:0}
 }
 
+/* Monochrome editorial layout. Shared tokens stay aligned with the other pages. */
+.eyebrow{font-size:13px;line-height:1.6;font-weight:500;letter-spacing:.015em;color:var(--muted);margin:0 0 26px}
+.status-dot{display:inline-block;width:6px;height:6px;margin:0 8px 2px 0;border-radius:50%;background:#E89E2E}
+.brand{font-size:23px;font-weight:600;letter-spacing:-.045em;gap:10px}
+.brand svg{width:28px;height:28px}
+.top nav a{font-size:13px;color:var(--ink)}
+.top nav .nav-cta{padding:9px 17px;border:1px solid var(--hair);border-radius:999px;display:flex;align-items:center;gap:22px}
+.nav-cta:hover{background:var(--surface)}
+.opening-beat[data-opening-beat="0"]{padding:0;text-align:left}
+.intro-grid{width:100%;display:grid;grid-template-columns:1.12fr 1fr;gap:clamp(32px,5vw,76px);align-items:center}
+.intro-copy h1{max-width:15ch;font-size:clamp(40px,4.65vw,66px);line-height:1.08;letter-spacing:-.055em}
+.intro-description{max-width:38ch;margin:22px 0 28px;font-size:16px;line-height:1.65;color:var(--muted)}
+.intro-actions{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.btn{gap:26px;font-weight:500;transition:background .2s,color .2s,transform .2s}
+.btn:hover{opacity:1;background:var(--navy);color:#fff;transform:translateY(-2px)}
+.intro-actions .link{font-size:13px}
+.connection-art{position:relative;aspect-ratio:1/1.08;background:var(--surface);border:1px solid var(--hair);border-radius:4px;overflow:hidden;isolation:isolate}
+.art-heading,.art-footer{position:absolute;z-index:2;left:24px;right:24px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.art-heading{top:22px}.art-footer{bottom:20px;padding-top:16px;border-top:1px solid var(--hair)}
+.art-heading .mono,.art-footer .mono{font-size:10px;letter-spacing:.06em}
+.art-status{color:var(--muted);font-size:11px}
+.connection-grid{position:absolute;inset:20px 0 0;width:100%;height:calc(100% - 40px);color:var(--muted)}
+.art-streets{fill:none;stroke:var(--hair);stroke-width:1}
+.art-line-base{fill:none;stroke:var(--bg);stroke-width:14}
+.art-line{fill:none;stroke:var(--route);stroke-width:2.5;stroke-dasharray:1;animation:connect-line 2s cubic-bezier(.2,.7,.2,1) both}
+.art-unknown{fill:none;stroke:var(--muted);stroke-width:1.5;stroke-dasharray:4 5}
+.art-end{fill:var(--bg);stroke:var(--route);stroke-width:2}
+.art-end.unknown{stroke:var(--muted)}
+.art-traveller-ring{fill:#E89E2E;fill-opacity:.12}
+.connection-label{position:relative;display:flex;align-items:center;gap:12px;padding:14px 17px;background:var(--bg);border:1px solid var(--hair);border-radius:5px;box-shadow:0 4px 16px rgba(0,0,0,.025)}
+.connection-label b{display:block;font-size:13px;line-height:1.4;font-weight:500;letter-spacing:-.02em}
+.connection-label .connection-copy > span{display:block;font-size:11px;line-height:1.5;color:var(--muted);margin-top:4px}
+.connection-symbol{display:grid;place-items:center;flex:none;width:28px;height:28px;background:var(--navy);color:#fff;border-radius:50%;font-size:12px}
+.rail-icon{display:grid;place-items:center;color:var(--accent);width:28px}
+.rail-icon svg{fill:none;stroke:currentColor;stroke-width:1.4;stroke-linecap:round}
+.label-a{left:10%;top:16%}.label-rail{right:8%;top:44%}.label-b{left:15%;bottom:17%}
+/* Native disclosures provide the same information by hover, focus or tap.
+   Their padded panel bridge keeps the popover hoverable without a dead gap. */
+.connection-stop{position:absolute;z-index:3;max-width:86%}
+.connection-stop[open]{z-index:5}
+.connection-label{cursor:pointer;list-style:none;transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease}
+.connection-label::-webkit-details-marker{display:none}
+.connection-label:focus-visible{outline:2px solid #243F64;outline-offset:4px}
+.connection-stop[open] .connection-label{transform:translateY(-3px);border-color:#647D9E;box-shadow:0 8px 24px rgba(23,33,51,.12)}
+.connection-expand{font-size:18px;line-height:1;color:#243F64;margin-left:6px;transition:transform .22s ease}
+.connection-stop[open] .connection-expand{transform:rotate(45deg)}
+.connection-symbol,.rail-icon{transition:transform .22s ease}
+.connection-stop[open] .connection-symbol,.connection-stop[open] .rail-icon{transform:rotate(-7deg)}
+.connection-info{position:absolute;top:100%;left:0;width:270px;max-width:100%;padding-top:9px}
+.label-rail .connection-info{left:auto;right:0;top:auto;bottom:100%;padding-top:0;padding-bottom:9px}
+.label-b .connection-info{top:auto;bottom:100%;padding-top:0;padding-bottom:9px}
+.connection-info-box{padding:17px;background:#172133;color:#fff;border:1px solid #314562;border-radius:6px;box-shadow:0 12px 26px rgba(23,33,51,.16);animation:connection-info-in .2s ease both}
+.connection-info h3{font-size:14px;font-weight:500;letter-spacing:-.02em;line-height:1.4;margin:0 0 8px}
+.connection-info p{font-size:14px;line-height:1.55;color:#D9E5F5;margin:0}
+.connection-art:has(.connection-stop[open]) .art-line{animation:connection-route-focus .8s ease both}
+@keyframes connection-info-in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+@keyframes connection-route-focus{from{stroke-dashoffset:1;stroke-width:2.5}to{stroke-dashoffset:0;stroke-width:3.5}}
+.beat-eyebrow{position:absolute;top:15%;left:24px;right:24px;text-align:center}
+.opening-footer{position:absolute;bottom:24px;width:100%;display:flex;justify-content:space-between;gap:16px;color:var(--muted);font-size:12px;z-index:3;pointer-events:none}
+.scroll-arrow{display:inline-block;margin-left:14px;animation:scroll-cue 2s ease-in-out infinite}
+.jhud{background:var(--glass);border:1px solid var(--hair);padding:12px 16px;border-radius:999px}
+.panel h2{font-weight:500;letter-spacing:-.04em;font-size:clamp(28px,3vw,40px)}
+section{padding:clamp(72px,9vw,128px) 0}
+section.opening{padding:0}
+.section-index{margin-bottom:28px;font-family:"Geist Mono",ui-monospace,monospace;font-size:12px;letter-spacing:.02em}
+.section-title,.activity-head h2,.reading h2{font-size:clamp(36px,4.5vw,58px);line-height:1.06;font-weight:450;letter-spacing:-.055em;max-width:22ch}
+.reading .body{max-width:46ch;margin-left:auto;font-size:18px;line-height:1.6}
+.lede{color:var(--muted);font-size:17px}
+/* Selected sections stay white in both system themes; dark chapters retain
+   the black foundation so the page has deliberate light and dark contrast. */
+.light-section{
+  --bg:#FFFFFF;--ink:#151515;--muted:#666666;--surface:#F6F6F6;
+  --hair:rgba(23,33,51,.13);--accent:#243F64;--route:#243F64;
+  --verified:#1E7A48;--contradicted:#B23A2A;
+  background:var(--bg);color:var(--ink);color-scheme:light;
+}
+.light-section .section-index,.light-section .pipe .k{color:#243F64}
+.light-section .btn{background:#172133;border-color:#172133;color:#FFFFFF}
+.light-section .btn:hover{background:#243F64;border-color:#243F64}
+.top nav .nav-cta{background:#172133;border-color:#3D506B;color:#FFFFFF}
+.top nav .nav-cta:hover,.top nav .nav-cta:focus-visible{background:#243F64;color:#FFFFFF}
+.contrast-section{--bg:#101010;--ink:#F5F5F5;--muted:#A6A6A6;--hair:rgba(255,255,255,.16);--accent:#D9E5F5;--verified:#53C68B;--contradicted:#F08073;background:var(--bg);color:var(--ink)}
+.ledger{margin-top:56px;border-color:var(--hair)}
+.ledger summary{padding:26px 0;grid-template-columns:160px 1.15fr 1fr}
+.ledger .claim{margin:0;font-size:17px;letter-spacing:-.015em;line-height:1.5}
+.ledger .src{margin:0;font-size:14px}
+.ledger summary .mark{font-size:12px;padding-top:3px}
+.ledger summary:focus-visible{outline-offset:7px}
+.ledger summary .src::after{content:"Explore the trace +";display:block;font-size:12px;color:var(--ink);margin-top:10px}
+.ledger details[open] summary .src::after{content:"Close the trace -"}
+.pipe{margin-top:52px;grid-template-columns:repeat(3,1fr);border:1px solid var(--hair);border-radius:4px;overflow:hidden}
+.pipe div{padding:30px;border:0;min-height:205px}
+.pipe div:not(:nth-child(3n)){border-right:1px solid var(--hair)}
+.pipe div:nth-child(-n+3){border-bottom:1px solid var(--hair)}
+.pipe .k{font-size:12px;color:var(--muted)}
+.pipe h3{font-size:20px;letter-spacing:-.035em;margin:24px 0 9px}
+.pipe p{font-size:14px;line-height:1.6;max-width:29ch}
+#activity{background:var(--surface);border-block:1px solid var(--hair)}
+.activity-note{font-size:15px;max-width:32ch;margin-left:auto}
+.activity-stage{border-top:1px solid var(--hair)}
+.activity-stage::before,.activity-item::after{display:none}
+.activity-airport strong{font-size:28px;font-weight:500;letter-spacing:-.04em}
+.activity-item{padding-left:0;min-height:130px}
+.activity-person strong{font-size:14px}
+.activity-line{color:var(--muted)}
+.activity-line .mode-icon,.activity-runner{color:var(--accent)}
+.activity-state strong{color:var(--muted)}
+.activity-state strong::before{background:var(--route)}
+.cols{gap:64px}
+.cols h3{font-family:inherit;font-size:20px;letter-spacing:-.03em;text-transform:none;color:var(--ink)}
+.cols li{font-size:15px;padding:17px 0}
+.coverage{margin-top:52px;padding-top:24px;gap:16px 24px}
+.coverage li{font-size:14px}
+.close{padding:80px 0 88px;border-top:1px solid var(--hair);text-align:left}
+.close h2{font-size:clamp(44px,6.5vw,84px);font-weight:450;line-height:1.03;letter-spacing:-.06em;max-width:16ch}
+.close p:not(.eyebrow){font-size:16px;max-width:44ch;color:var(--muted);margin:24px 0 28px}
+.close .eyebrow{font-size:13px;margin-bottom:24px}
+footer{padding:32px 0;border-top:1px solid var(--hair)}
+footer .wrap{align-items:center;gap:24px}
+.footer-brand{font-family:"Geist",sans-serif;font-size:28px;font-weight:500;letter-spacing:-.06em;text-transform:none;color:var(--ink)}
+.footer-dot{color:var(--accent)}
+@keyframes connect-line{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+@keyframes scroll-cue{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+@media (max-width:1000px){
+  .intro-grid{gap:28px}.art-heading .mono{max-width:14ch}.art-status{max-width:10ch;text-align:right}
+  .connection-label{padding:11px;gap:8px}.label-a{left:7%}.label-rail{right:5%}.label-b{left:8%}
+  .intro-copy h1{font-size:clamp(38px,4.8vw,54px)}
+  .intro-actions{gap:16px}.intro-actions .link{font-size:12px}
+}
+@media (max-width:760px){
+  :root{--bar:64px}.top .wrap{gap:14px}.brand{font-size:21px}
+  .top nav{gap:16px}.top nav a{font-size:12px}.top nav a[href="#route"],.top nav a[href="status.html"]{display:none}
+  .top nav .nav-cta{padding:8px 12px;gap:8px}
+  .intro-grid{grid-template-columns:1fr;gap:24px;padding-top:16px;padding-bottom:50px}
+  .intro-copy h1{font-size:clamp(34px,7.7vw,53px);max-width:18ch}
+  .intro-copy .eyebrow{font-size:11px;margin-bottom:18px}
+  .intro-description{font-size:14px;line-height:1.55;margin:14px 0 20px;max-width:44ch}
+  .intro-actions .btn{font-size:13px;padding:10px 16px;gap:14px}
+  .connection-art{display:none}
+  .opening-beat h2{font-size:clamp(38px,8vw,62px)}
+  .opening-footer{font-size:11px;bottom:18px}
+  .reading .body{margin:28px 0 0;font-size:17px}
+  .ledger summary{grid-template-columns:1fr;gap:14px}
+  .ledger .claim{font-size:17px}
+  .pipe{grid-template-columns:repeat(2,1fr)}.pipe div{padding:24px;min-height:190px}
+  .pipe div:not(:nth-child(3n)){border-right:0}
+  .pipe div:nth-child(odd){border-right:1px solid var(--hair)}
+  .pipe div:nth-child(-n+4){border-bottom:1px solid var(--hair)}
+  .activity-note{margin:0;max-width:38ch}.activity-airport strong{font-size:25px}
+  .cols{gap:36px}.coverage ul{gap:10px 0}
+  footer .right{margin-left:0;gap:20px;flex-wrap:wrap}
+}
+@media (max-height:680px) and (min-width:761px){
+  .connection-art{max-height:410px;width:100%;aspect-ratio:auto;height:65vh}
+  .intro-copy h1{font-size:clamp(36px,4vw,52px)}
+  .intro-copy .eyebrow{margin-bottom:16px}.intro-description{margin:14px 0 20px;font-size:14px}
+}
+@media (max-height:550px){
+  .opening{height:auto}
+  .opening-sticky{position:static;height:auto;display:block}
+  .opening-beat{position:relative;min-height:460px;opacity:1!important;transform:none!important;will-change:auto}
+  .opening-footer{display:none}
+  .beat-eyebrow{position:static;grid-row:1;margin-bottom:24px}
+  .intro-grid{padding-block:48px}
+}
+
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   *{transition:none!important;animation:none!important}
+  .ledger-map-route{stroke-dashoffset:0}
+  .ledger-map-vehicle{opacity:1;transform:translateX(430px)}
+  .opening{height:auto}
+  .art-traveller{display:none}
+  .art-line,.ledger-map-route{stroke-dashoffset:0!important}
+  .opening-footer{display:none}
+  .beat-eyebrow{position:static;grid-row:1;margin-bottom:24px}
+  .intro-grid{padding-block:64px}
+  .opening-sticky{position:static;height:auto;display:block}
+  .opening-sticky::before{display:none}
+  .opening-beat{position:relative;min-height:70vh;opacity:1;transform:none}
   .journey{height:auto}
   .journey-sticky{position:static;height:auto;padding:44px 0}
   .journey-sticky::before{display:none}
@@ -357,6 +623,13 @@ footer .right{margin-left:auto;display:flex;gap:20px}
 <style>
 /* No script means no camera and no reveal, so the journey becomes a plain
    readable stack and every word survives. */
+.art-traveller{display:none}
+.opening-footer{display:none}
+.intro-grid{padding-block:64px}
+.opening{height:auto}
+.opening-sticky{position:static;height:auto;display:block}
+.opening-sticky::before{display:none}
+.opening-beat{position:relative;min-height:70vh;opacity:1;transform:none}
 .journey{height:auto}
 .journey-sticky{position:static;height:auto;padding:44px 0}
 .journey-sticky::before{display:none}
@@ -364,10 +637,44 @@ footer .right{margin-left:auto;display:flex;gap:20px}
 .panels{min-height:0}
 .panel{position:static;opacity:1;margin-bottom:36px}
 .atlas{opacity:.45}
+.site-loader{display:none}
 </style>
 </noscript>
 </head>
 <body>
+
+<div class="site-loader" id="siteLoader" aria-hidden="true">
+  <svg class="loader-symbol" viewBox="0 0 64 64" aria-hidden="true">
+    <path class="loader-route" pathLength="1" d="M18 50 Q18 26 32 26 Q46 26 46 10"></path>
+    <circle class="loader-route-dot" cx="18" cy="50" r="3.5"></circle>
+    <g class="loader-orbit">
+      <circle class="loader-ring" pathLength="1" cx="32" cy="32" r="20"></circle>
+      <circle class="loader-orbit-dot" cx="32" cy="12" r="2.2"></circle>
+    </g>
+  </svg>
+</div>
+<script>
+(function () {
+  "use strict";
+  var loader = document.getElementById("siteLoader");
+  if (!loader) return;
+  var started = performance.now();
+  var queued = false;
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function dismiss() {
+    if (queued) return;
+    queued = true;
+    var delay = reduced ? 0 : Math.max(0, 1200 - (performance.now() - started));
+    setTimeout(function () {
+      loader.classList.add("is-leaving");
+      setTimeout(function () { loader.remove(); }, reduced ? 0 : 450);
+    }, delay);
+  }
+  if (document.readyState === "complete") dismiss();
+  else window.addEventListener("load", dismiss, { once:true });
+  setTimeout(dismiss, 3500);
+}());
+</script>
 
 <div class="atlas" id="atlas" aria-hidden="true">
   <svg viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid slice">
@@ -442,11 +749,11 @@ footer .right{margin-left:auto;display:flex;gap:20px}
       </svg>
       Laneway
     </a>
-    <nav>
+    <nav aria-label="Main navigation">
       <a href="#route">Route</a>
       <a href="#verification">Verification</a>
       <a href="status.html">Status</a>
-      <a href="devlog.html">Dev log</a>
+      <a href="devlog.html" class="nav-cta">Follow the build <span aria-hidden="true">&#8599;</span></a>
     </nav>
   </div>
   <div class="progress"><i id="bar"></i></div>
@@ -454,17 +761,53 @@ footer .right{margin-left:auto;display:flex;gap:20px}
 
 <main>
 
-<div class="wrap hero">
-  <div class="hero-inner">
-    <span class="mono">In development, iOS first</span>
-    <h1>Trips that include the legs nothing else will route.</h1>
-    <p>Shuttles with no feed. Walks through terminal interiors. The unmarked post outside door D. Every fact Laneway gives you carries the source it came from.</p>
-    <div class="hero-act">
-      <a href="#route" class="btn">Follow the route</a>
-      <a href="devlog.html" class="link">Read the dev log</a>
+<section class="opening light-section" id="opening" aria-label="Laneway introduction">
+  <div class="opening-sticky">
+    <div class="opening-footer wrap" aria-hidden="true"><span>Built for the whole journey.</span><span>Scroll to connect <span class="scroll-arrow">&#8595;</span></span></div>
+    <div class="opening-beat" data-opening-beat="0">
+      <div class="intro-grid wrap">
+        <div class="intro-copy">
+          <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> Verified routing. In development for iOS.</p>
+      <h1>The <span class="opening-accent" data-accent-mode="bike">destination<svg class="accent-route" viewBox="0 0 120 28" aria-hidden="true"><path class="accent-track" d="M4 21 H116"></path><g class="accent-bike" data-accent-vehicle="bike" transform="translate(94 0) scale(1.45)"><circle cx="7" cy="20" r="4"></circle><circle cx="19" cy="20" r="4"></circle><path d="M7 20 L12 12 L19 20 M9 20 H17 M12 12 L17 11 M12 12 L9 8 M8 8 H12"></path></g></svg></span> is more important than the <span class="opening-turn">journey</span>.</h1>
+          <p class="intro-description">Trip plans that connect the shuttles, terminal walks, and missing links. With the evidence to back them up.</p>
+          <div class="intro-actions"><a class="btn" href="#route">Explore a journey <span aria-hidden="true">&#8599;</span></a><a class="link" href="#verification">How verification works</a></div>
+        </div>
+        <div class="connection-art" role="group" aria-label="Illustration of walking, rail and shuttle connections, with the shuttle connection marked unverified. Not travel directions.">
+          <div class="art-heading"><span class="mono">The space between A and B</span><span class="art-status">Route illustration</span></div>
+          <svg class="connection-grid" viewBox="0 0 500 460" aria-hidden="true">
+            <defs><pattern id="introGrid" width="28" height="28" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".8" fill="currentColor" opacity=".16"/></pattern></defs>
+            <rect width="500" height="460" fill="url(#introGrid)"/>
+            <g class="art-streets"><path d="M-20 310 L180 110 H520 M65 -10 V490 M355 -10 V490 M-20 410 H520 M-20 195 H520"/><path d="M180 0 V85 Q180 110 205 110 H330 Q355 110 355 135 V310 Q355 335 380 335 H520"/></g>
+            <path class="art-line-base" d="M92 98 V176 Q92 218 134 218 H327 Q369 218 369 260 V340"/>
+            <path class="art-line" pathLength="1" d="M92 98 V176 Q92 218 134 218 H327 Q369 218 369 260 V340"/>
+            <path class="art-unknown" d="M369 340 V362 Q369 390 397 390 H437"/>
+            <circle class="art-end" cx="92" cy="98" r="7"/><circle class="art-end" cx="369" cy="340" r="7"/>
+            <circle class="art-end unknown" cx="437" cy="390" r="7"/>
+            <g class="art-traveller"><circle r="12" class="art-traveller-ring"/><circle r="4" fill="#E89E2E"/><animateMotion dur="7s" repeatCount="indefinite" path="M92 98 V176 Q92 218 134 218 H327 Q369 218 369 260 V340"/></g>
+          </svg>
+          <details class="connection-stop label-a">
+            <summary class="connection-label"><span class="connection-symbol">A</span><span class="connection-copy"><b>Arrive.</b><span>Your journey starts here</span></span><span class="connection-expand" aria-hidden="true">+</span></summary>
+            <div class="connection-info"><div class="connection-info-box"><h3>Start With the Arrival Point</h3><p>The airport name is only the beginning. The terminal and arrival details help define the first walking leg.</p></div></div>
+          </details>
+          <details class="connection-stop label-rail">
+            <summary class="connection-label"><span class="rail-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="14" rx="3"/><path d="M6 10h12M9 21l2-4m4 4-2-4M9 13h.01M15 13h.01"/></svg></span><span class="connection-copy"><b>Find the connection.</b><span>Walk. Ride. Keep going.</span></span><span class="connection-expand" aria-hidden="true">+</span></summary>
+            <div class="connection-info"><div class="connection-info-box"><h3>Follow Every Connection</h3><p>Walk, ride, then take the shuttle. Each connection needs evidence before it can be treated as confirmed.</p></div></div>
+          </details>
+          <details class="connection-stop label-b">
+            <summary class="connection-label"><span class="connection-symbol">B</span><span class="connection-copy"><b>Know what is ahead.</b><span class="unverified-label">Shuttle connection unverified</span></span><span class="connection-expand" aria-hidden="true">+</span></summary>
+            <div class="connection-info"><div class="connection-info-box"><h3>Keep the Unknowns Visible</h3><p>If a shuttle pickup cannot be checked, that connection stays unverified. Check the operator before relying on it.</p></div></div>
+          </details>
+          <div class="art-footer"><span class="mono">One connected journey</span><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 10h13m-5-5 5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></div>
+        </div>
+      </div>
     </div>
+    <div class="opening-beat" data-opening-beat="1">
+      <span class="beat-eyebrow mono">Less guesswork. More getting there.</span>
+      <h2>The most <span class="opening-accent" data-accent-mode="plane">efficient<svg class="accent-route" viewBox="0 0 120 28" aria-hidden="true"><path class="accent-track" d="M4 21 H116"></path><g class="accent-plane" data-accent-vehicle="plane" transform="translate(94 0) scale(1.25)"><path d="M2 19 L11 15 L3 10 L5 8 L17 13 L29 6 L24 15 L29 20 L17 16 L5 22 Z"></path></g></svg></span> way is the <span class="opening-accent" data-accent-mode="bike">best<svg class="accent-route" viewBox="0 0 120 28" aria-hidden="true"><path class="accent-track" d="M4 21 H116"></path><g class="accent-bike" data-accent-vehicle="bike" transform="translate(94 0) scale(1.45)"><circle cx="7" cy="20" r="4"></circle><circle cx="19" cy="20" r="4"></circle><path d="M7 20 L12 12 L19 20 M9 20 H17 M12 12 L17 11 M12 12 L9 8 M8 8 H12"></path></g></svg></span> way.</h2>
+    </div>
+
   </div>
-</div>
+</section>
 
 <section class="journey" id="route">
   <div class="journey-sticky">
@@ -477,12 +820,12 @@ footer .right{margin-left:auto;display:flex;gap:20px}
         <div class="panel" data-panel="0">
           <span class="mono">Toronto Pearson</span>
           <h2>You have landed at Terminal 1.</h2>
-          <p>The rental depot is off airport. The shuttle that serves it is in no transit feed, and the walk between terminals is not a mapped footway, so nothing in any graph connects the two.</p>
+          <p>The depot is off airport. Its shuttle and terminal walk exist in no route graph.</p>
         </div>
         <div class="panel" data-panel="1">
           <span class="mono">Every mapping app</span>
           <h2>One leg, no connections.</h2>
-          <p>A 2 h 4 min walk along the airport perimeter road, or a driving route to a car rental depot you have no car to reach. Technically valid, practically useless.</p>
+          <p>Maps return a 2 h 4 min perimeter walk, or a drive to a car you cannot reach.</p>
         </div>
         <div class="panel" data-panel="2">
           <span class="mono">Laneway</span>
@@ -497,7 +840,7 @@ footer .right{margin-left:auto;display:flex;gap:20px}
         <div class="panel" data-panel="3">
           <span class="mono">Verified</span>
           <h2>Checked leg by leg, before you see it.</h2>
-          <p>Three legs traced to a source. The operator shuttle has no published timetable, so Laneway says so and still gives you the leg, because "roughly every 20 minutes, call ahead" is a usable answer and a two hour walk is not.</p>
+          <p>Three legs are sourced. The unpublished shuttle stays visible and clearly unverified.</p>
         </div>
       </div>
     </div>
@@ -506,85 +849,102 @@ footer .right{margin-left:auto;display:flex;gap:20px}
 
 <div class="solid">
 
-<section class="reading">
+<section class="reading light-section">
   <div class="wrap">
-    <h2>Maps route across a graph. Some edges were never in it.</h2>
+    <p class="eyebrow section-index">01 / The missing connections</p>
+    <h2>Some Journeys Go<br>Beyond the Map.</h2>
     <div class="body measure lede">
-      <p>Mapping apps are excellent at what they have data for. They route across digitized road and transit graphs, and anything missing from that graph is invisible to them. Private shuttles, terminal interiors, courtesy vans, informal connections: the edges do not exist, so the answer that comes back is technically valid and practically useless.</p>
-      <p>Toronto Pearson Terminal 1 to an off-airport rental depot is the case Laneway is tested against, and the one you just travelled.</p>
+      <p>Maps route what their graphs contain. Private shuttles, terminal interiors, and informal connectors are often missing.</p>
+      <p>Laneway is tested against that gap: Pearson Terminal 1 to an off-airport rental depot.</p>
     </div>
   </div>
 </section>
 
-<section id="verification">
+<section id="verification" class="contrast-section">
   <div class="wrap">
-    <h2 class="measure" style="font-size:clamp(24px,3.2vw,34px);line-height:1.16;max-width:19ch">Never present a fact the system cannot back up.</h2>
+    <p class="eyebrow section-index">02 / Evidence, not estimates</p>
+    <h2 class="section-title">Trust Is Built.<br>One Fact at a Time.</h2>
     <div class="lede measure" style="margin-top:24px">
-      <p>Plausible and correct look identical on a page, which is why nobody trusts a generated itinerary. Every claim is checked against a retrieved source before you see it, and the checker is allowed to say no. Three verdicts, never collapsed into two. These are real results from the engine.</p>
+      <p>Plausible is not proof. Laneway checks every claim and can return supported, contradicted, or unsupported.</p>
     </div>
 
     <div class="ledger">
-      <div class="row">
-        <span class="mark ok">Supported</span>
-        <p class="claim">"MiWay route 7 serves stops on Airport Road."</p>
-        <p class="src"><b>MiWay official GTFS schedule feed</b>The feed lists a stop at 6445 Airport Rd.</p>
-      </div>
-      <div class="row">
-        <span class="mark bad">Contradicted</span>
-        <p class="claim">"MiWay route 7 enters Pearson Terminal 1."</p>
-        <p class="src"><b>MiWay official GTFS schedule feed</b>Route termini are City Centre and Westwood Square. The claim was dropped.</p>
-      </div>
-      <div class="row">
-        <span class="mark warn">Unsupported</span>
-        <p class="claim">"The rental shuttle leaves from the arrivals level post."</p>
-        <p class="src"><b>Operator website, unreachable</b>Shown as unverified, never quietly deleted and never stated as fact.</p>
-      </div>
+      <details class="row" data-verdict="supported">
+        <summary><span class="mark ok">Supported</span><span class="claim">"MiWay route 7 serves stops on Airport Road."</span><span class="src"><b>MiWay official GTFS schedule feed</b>Lists a stop at 6445 Airport Rd.</span></summary>
+        <div class="ledger-route-map" aria-hidden="true"><svg viewBox="0 0 640 82" preserveAspectRatio="none"><path class="ledger-map-road" d="M10 18 C160 44 260 5 410 22 S560 56 630 32 M40 70 C180 50 305 76 600 62 M180 0 L160 82 M470 0 L492 82"></path><path class="ledger-map-route" pathLength="1" d="M72 54 C190 20 340 64 552 26"></path><circle class="ledger-map-node" cx="72" cy="54" r="4"></circle><circle class="ledger-map-node" cx="552" cy="26" r="4"></circle><path class="ledger-map-vehicle" d="M-6 -5 L7 0 L-6 5 L-3 0 Z"></path></svg></div>
+      </details>
+      <details class="row" data-verdict="contradicted">
+        <summary><span class="mark bad">Contradicted</span><span class="claim">"MiWay route 7 enters Pearson Terminal 1."</span><span class="src"><b>MiWay official GTFS schedule feed</b>Terminates at City Centre and Westwood Square. Claim dropped.</span></summary>
+        <div class="ledger-route-map" aria-hidden="true"><svg viewBox="0 0 640 82" preserveAspectRatio="none"><path class="ledger-map-road" d="M10 18 C160 44 260 5 410 22 S560 56 630 32 M40 70 C180 50 305 76 600 62 M180 0 L160 82 M470 0 L492 82"></path><path class="ledger-map-route" pathLength="1" d="M72 54 C190 20 340 64 552 26"></path><circle class="ledger-map-node" cx="72" cy="54" r="4"></circle><circle class="ledger-map-node" cx="552" cy="26" r="4"></circle><path class="ledger-map-vehicle" d="M-6 -5 L7 0 L-6 5 L-3 0 Z"></path></svg></div>
+      </details>
+      <details class="row" data-verdict="unsupported">
+        <summary><span class="mark warn">Unsupported</span><span class="claim">"The rental shuttle leaves from the arrivals level post."</span><span class="src"><b>Operator website, unreachable</b>Shown as unverified, never stated as fact.</span></summary>
+        <div class="ledger-route-map" aria-hidden="true"><svg viewBox="0 0 640 82" preserveAspectRatio="none"><path class="ledger-map-road" d="M10 18 C160 44 260 5 410 22 S560 56 630 32 M40 70 C180 50 305 76 600 62 M180 0 L160 82 M470 0 L492 82"></path><path class="ledger-map-route" pathLength="1" d="M72 54 C190 20 340 64 552 26"></path><circle class="ledger-map-node" cx="72" cy="54" r="4"></circle><circle class="ledger-map-node" cx="552" cy="26" r="4"></circle><path class="ledger-map-vehicle" d="M-6 -5 L7 0 L-6 5 L-3 0 Z"></path></svg></div>
+      </details>
     </div>
 
     <div class="lede measure" style="margin-top:32px">
-      <p>A fact without provenance is a bug, so the type system refuses to build one: inside the engine an unsourced fact is unconstructible. Every source carries the URL it came from and the moment it was fetched.</p>
+      <p>Unsourced facts cannot be constructed. Every source stores its URL and fetch time.</p>
     </div>
   </div>
 </section>
 
-<section>
+<section class="light-section">
   <div class="wrap">
-    <h2 class="measure" style="font-size:clamp(24px,3.2vw,34px);line-height:1.16;max-width:19ch">A slow layer that thinks, a fast layer that checks.</h2>
+    <p class="eyebrow section-index">03 / Under the hood</p>
+    <h2 class="section-title">Intelligence Meets<br>a Reality Check.</h2>
     <div class="lede measure" style="margin-top:24px">
-      <p>The model proposes and never gets the last word. Retrieval, caching and composition are deterministic with no model calls inside them, which keeps both the cost and the failure modes predictable.</p>
+      <p>The model proposes. Deterministic systems retrieve, compose, cache, and verify.</p>
     </div>
     <div class="pipe">
-      <div><span class="k num">01</span><h3>Intake</h3><p>Plain language becomes a structured trip query. When it is ambiguous it asks rather than guesses.</p></div>
-      <div><span class="k num">02</span><h3>Planner</h3><p>Decides which legs to attempt and what evidence each needs. Treated as untrusted throughout.</p></div>
-      <div><span class="k num">03</span><h3>Retrieval</h3><p>Official feeds first, then the open web. Cache-first, robots respected, crawler identified honestly.</p></div>
-      <div><span class="k num">04</span><h3>Composer</h3><p>Chains legs into a journey and checks the timing is actually possible. Deterministic.</p></div>
-      <div><span class="k num">05</span><h3>Verifier</h3><p>Every claim traced to a verbatim span in a real source, or marked unverified. Fails closed.</p></div>
-      <div><span class="k num">06</span><h3>Present</h3><p>Map, timeline, turn-by-turn, and a citation on every leg. Saved plans work with no signal.</p></div>
+      <div><span class="k num">01</span><h3>Intake</h3><p>Turns plain language into a trip query and asks when intent is unclear.</p></div>
+      <div><span class="k num">02</span><h3>Planner</h3><p>Chooses the legs and evidence the trip needs.</p></div>
+      <div><span class="k num">03</span><h3>Retrieval</h3><p>Checks the cache, then official feeds and the open web.</p></div>
+      <div><span class="k num">04</span><h3>Composer</h3><p>Chains legs and checks that timing works.</p></div>
+      <div><span class="k num">05</span><h3>Verifier</h3><p>Traces each claim to a source or marks it unverified.</p></div>
+      <div><span class="k num">06</span><h3>Present</h3><p>Shows the route, directions, and citations, even offline.</p></div>
     </div>
   </div>
 </section>
 
-<section id="status">
+<section id="activity" class="light-section">
   <div class="wrap">
-    <h2 class="measure" style="font-size:clamp(24px,3.2vw,34px);line-height:1.16;max-width:19ch">Honest status, since that is the whole product.</h2>
+    <div class="activity-head">
+      <div><p class="eyebrow section-index">04 / In motion</p>
+      <h2>One Journey.<br>Many Ways to Move.</h2></div>
+      <p class="activity-note"><b>Simulated activity.</b> Generated route examples, never customer telemetry.</p>
+    </div>
+    <div class="activity-stage">
+      <ol class="activity-stream" id="activityRows" aria-label="Generated examples of Laneway activity">
+        <li class="activity-item"><div class="activity-person"><strong>Anonymous</strong><span>Simulation paused</span></div><div class="activity-route"><span class="activity-airport"><strong>YYC</strong><small>Gate 83</small></span><span class="activity-line"><span class="carrier">WestJet</span><i></i><svg width="16" height="10" viewBox="0 0 16 10" aria-hidden="true"><path d="M1 5h13M10 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></span><span class="activity-airport to"><strong>YEG</strong><small>Edmonton</small></span></div><div class="activity-state"><strong>Example</strong><span>JavaScript required</span></div></li>
+      </ol>
+    </div>
+    <p class="activity-foot"><span class="mono">Simulated route feed</span><span>Varied timing. No route repeats within one hour in this browser.</span></p>
+  </div>
+</section>
+
+<section id="status" class="light-section">
+  <div class="wrap">
+    <p class="eyebrow section-index">05 / Building in the open</p>
+    <h2 class="section-title">Real Progress.<br>Honest Limits.</h2>
     <div class="cols">
       <div>
         <h3>Working today</h3>
         <ul>
-          <li><b>Verified multi-modal plans</b> with a source and a fetch time on every claim</li>
-          <li><b>Turn-by-turn navigation</b> with off-route detection and a lock screen Live Activity</li>
-          <li><b>Live vehicle positions</b> where the operator publishes a realtime feed</li>
-          <li><b>Walking routes on real footpaths</b> from OpenStreetMap, not around the block</li>
-          <li><b>Saved plans that open offline</b>, because airport wifi fails exactly when you need the plan</li>
+          <li><b>Verified multi-modal plans</b> with a source and fetch time per claim</li>
+          <li><b>Turn-by-turn navigation</b> with off-route detection and Live Activities</li>
+          <li><b>Live vehicle positions</b> where operators publish realtime feeds</li>
+          <li><b>Walking routes on real footpaths</b> from OpenStreetMap</li>
+          <li><b>Saved offline plans</b> for unreliable airport wifi</li>
         </ul>
       </div>
       <div>
         <h3>Not there yet</h3>
         <ul>
-          <li><b>No public release.</b> There is nothing to download, and no App Store listing.</li>
-          <li><b>iOS only</b>, and Canada only, on purpose. Coverage grows one transit feed at a time.</li>
-          <li><b>No voice guidance</b>, and no booking or payment for any individual leg.</li>
-          <li><b>Some sources block crawlers.</b> When that happens the leg comes back honestly unverified.</li>
+          <li><b>No public release.</b> Nothing to download yet.</li>
+          <li><b>iOS and Canada only.</b> Coverage grows one feed at a time.</li>
+          <li><b>No booking or payments</b> for individual legs.</li>
+          <li><b>Some sources block crawlers.</b> Those legs return unverified.</li>
         </ul>
       </div>
     </div>
@@ -608,15 +968,16 @@ footer .right{margin-left:auto;display:flex;gap:20px}
 
 <div class="wrap">
   <div class="close">
-    <h2>A maps app you can trust on the leg that matters.</h2>
-    <p>Planning and verification are the foundation. Navigation is the surface you live in. There is nothing to sign up for yet, so the engineering log is the whole story, updated as the work happens.</p>
+    <p class="eyebrow">The next leg starts here.</p>
+    <h2>Good Journeys.<br>Grounded in Reality.</h2>
+    <p>Verified planning is the foundation. Navigation is the product. Follow the engineering log until release.</p>
     <a href="devlog.html" class="btn">Read the dev log</a>
   </div>
 </div>
 
 <footer>
   <div class="wrap mono">
-    <span>Laneway. Built in the open, shipped when it is trustworthy.</span>
+    <span class="footer-brand">Laneway<span class="footer-dot">.</span></span>
     <span class="right">
       <a href="status.html">Status</a>
       <a href="devlog.html">Dev log</a>
@@ -631,6 +992,66 @@ footer .right{margin-left:auto;display:flex;gap:20px}
 </main>
 
 <script>
+/* Two opening beats. This is deliberately separate from the map camera
+   below: changing the introduction must not change the route choreography. */
+(function () {
+  "use strict";
+  var staticOpening = window.matchMedia("(prefers-reduced-motion: reduce), (max-height: 550px)");
+  var opening = document.getElementById("opening");
+  var beats = [].slice.call(document.querySelectorAll("[data-opening-beat]"));
+  if (!opening || beats.length !== 2) return;
+  var clamp = function (v, a, b) { return Math.min(b, Math.max(a, v)); };
+  var smooth = function (v, a, b) {
+    var t = clamp((v - a) / (b - a), 0, 1);
+    return t * t * (3 - 2 * t);
+  };
+  function positionAccentVehicles(beat, progress) {
+    [].forEach.call(beat.querySelectorAll("[data-accent-vehicle]"), function (vehicle) {
+      var scale = vehicle.classList.contains("accent-plane") ? 1.25 : 1.45;
+      vehicle.setAttribute("transform", "translate(" + (4 + 88 * progress).toFixed(1) + " 0) scale(" + scale + ")");
+    });
+  }
+  function place(beat, opacity, y, scale) {
+    beat.style.opacity = opacity.toFixed(3);
+    beat.style.transform = "translateY(" + y.toFixed(2) + "px) scale(" + scale.toFixed(4) + ")";
+    beat.style.pointerEvents = opacity > 0.6 ? "auto" : "none";
+    beat.inert = opacity <= 0.6;
+  }
+  function update() {
+    if (staticOpening.matches) {
+      beats.forEach(function (beat) { place(beat, 1, 0, 1); beat.style.setProperty("--line-draw", "1"); });
+      return;
+    }
+    var rect = opening.getBoundingClientRect();
+    var distance = Math.max(1, rect.height - window.innerHeight);
+    var p = clamp(-rect.top / distance, 0, 1);
+
+    var firstOut = smooth(p, 0.34, 0.49);
+    place(beats[0], 1 - firstOut, -34 * firstOut, 1 - 0.025 * firstOut);
+    var firstAccentProgress = smooth(p, 0.03, 0.25);
+    beats[0].style.setProperty("--line-draw", firstAccentProgress.toFixed(3));
+    positionAccentVehicles(beats[0], firstAccentProgress);
+
+    var secondIn = smooth(p, 0.40, 0.55);
+    var secondOut = smooth(p, 0.89, 1.00);
+    place(beats[1], secondIn * (1 - secondOut), 30 * (1 - secondIn) - 30 * secondOut, 0.97 + 0.03 * secondIn);
+    var secondAccentProgress = smooth(p, 0.47, 0.77);
+    beats[1].style.setProperty("--line-draw", secondAccentProgress.toFixed(3));
+    positionAccentVehicles(beats[1], secondAccentProgress);
+
+  }
+  var queued = false;
+  function queue() {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(function () { queued = false; update(); });
+  }
+  window.addEventListener("scroll", queue, { passive:true });
+  window.addEventListener("resize", queue);
+  staticOpening.addEventListener("change", queue);
+  update();
+}());
+
 /* ============================================================
    One map, one camera. On load it flies from a wide view down
    to Terminal 1 and the map details in by layer. From then on
@@ -885,6 +1306,241 @@ footer .right{margin-left:auto;display:flex;gap:20px}
 })();
 </script>
 
+<script>
+/* ============================================================
+   A local activity simulation, never customer telemetry. The identity pool
+   is synthetic and stays in this file. Three of every ten identity slots are
+   Anonymous; the other seven use different username patterns. Exact route
+   graphics are remembered in localStorage for an hour so a refresh cannot
+   replay one in the same browser. A static site cannot make that promise across
+   different visitors, which is why the disclosure says "in this browser".
+   ============================================================ */
+(function () {
+  "use strict";
+
+  var body = document.getElementById("activityRows");
+  if (!body) return;
+
+  var FIRST_NAMES = [
+    "Aaliyah","Aaron","Ada","Adrian","Aisha","Alejandro","Alex","Alice","Amara","Amelia","Amir","Ana","Andre","Anna","Aria","Arthur","Audrey","Ava","Ayla","Benjamin",
+    "Bianca","Blake","Caleb","Camila","Carmen","Carter","Celeste","Charles","Chloe","Clara","Daniel","Daniela","Darius","David","Delilah","Diego","Eden","Elena","Elias","Elise",
+    "Ella","Elliot","Emilia","Emilio","Emma","Ethan","Eva","Evelyn","Ezra","Fatima","Felix","Finn","Freya","Gabriel","Gabriela","Grace","Hana","Harper","Hazel","Henry",
+    "Hugo","Ian","Imani","Iris","Isaac","Isabella","Isla","Ivan","Jack","Jade","Jamal","James","Jasmine","Javier","Jayden","Joan","Joel","Jonah","Jordan","Joseph",
+    "Julia","Julian","Kai","Karina","Kieran","Laila","Lara","Laura","Leah","Leo","Liam","Lila","Lina","Logan","Lucia","Luis","Luna","Maeve","Malik","Marco",
+    "Maria","Mateo","Maya","Mia","Mila","Mina","Mira","Mohamed","Nadia","Naomi","Nathan","Nia","Nico","Noah","Nora","Oliver","Olivia","Omar","Oscar","Paolo",
+    "Parker","Priya","Rafael","Rania","Rebecca","Ren","Riley","Rosa","Rowan","Ruby","Ryan","Sabrina","Sam","Samuel","Sara","Sofia","Soren","Stella","Talia","Theo",
+    "Thomas","Valentina","Victor","Violet","William","Xavier","Yasmin","Yuna","Zoe","Abel","Abigail","Adam","Adriana","Ahmed","Alessia","Alina","Alvaro","Anika","Antonio",
+    "Ari","Arielle","Asher","Astrid","Atlas","Beatriz","Bella","Bruno","Celine","Cesar","Dahlia","Damian","Diana","Dominic","Eileen","Eliana","Esther","Evan","Fiona","George",
+    "Georgia","Hassan","Helena","Ibrahim","Ines","Jalen","Jamie","Kiara","Leila","Leon","Luca","Mara","Marina","Matteo","Max","Melanie","Micah","Niko","Nina","Owen","Zain"
+  ];
+  var LAST_NAMES = [
+    "Adams","Ahmed","Akhtar","Ali","Alvarez","Anderson","Aoki","Archer","Arora","Baker","Banks","Bennett","Berg","Brown","Campbell","Carter","Castillo","Chen","Choi","Clark",
+    "Cohen","Collins","Cooper","Costa","Cruz","Das","Davis","Diaz","Dubois","Evans","Fisher","Flores","Foster","Garcia","Gomez","Gonzalez","Green","Gupta","Hall","Harris",
+    "Hayes","Hernandez","Hill","Ho","Howard","Hughes","Ibrahim","Ito","Jackson","Jain","Jensen","Johnson","Jones","Kang","Khan","Kim","King","Kumar","Lee","Lewis",
+    "Li","Lin","Lopez","Martin","Martinez","Mason","Matsuda","Miller","Mitchell","Moore","Morgan","Morris","Murphy","Nakamura","Nelson","Nguyen","Novak","Ortiz","Owen","Park",
+    "Patel","Perez","Perry","Peterson","Phillips","Price","Quinn","Ramirez","Ramos","Reed","Rivera","Roberts","Robinson","Rodriguez","Rogers","Romero","Ross","Roy","Ruiz","Saito",
+    "Sanchez","Santos","Schmidt","Scott","Shah","Silva","Singh","Smith","Stewart","Sullivan","Suzuki","Tanaka","Taylor","Thomas","Thompson","Torres","Tran","Turner","Walker","Wang",
+    "Ward","Watson","White","Williams","Wilson","Wong","Wright","Wu","Young","Zhang","Zhao","Abbott","Acosta","Aguilar","Alexander","Allen","Andersen","Armstrong","Atkinson","Austin",
+    "Bailey","Bains","Barker","Barnes","Barrett","Barton","Bell","Benson","Bishop","Blair","Bolton","Boone","Boyd","Brady","Brooks","Burton","Byrne","Cabrera","Calderon","Campos",
+    "Carlson","Carr","Carroll","Chang","Chapman","Chow","Cook","Crawford","Cunningham","Davidson","Delgado","Dunn","Edwards","Elliott","Ellis","Erickson","Estrada","Fleming","Ford","Fowler",
+    "Franklin","Freeman","Gallo","Gardner","Gill","Grant","Gray","Griffin","Gutierrez","Hansen","Hart","Hawkins","Holland","Holmes","Ingram","James","Kennedy","Lane","Larson","Lawson"
+  ];
+  var AIRPORTS = [
+    { code:"YYC", city:"Calgary" },{ code:"YEG", city:"Edmonton" },
+    { code:"YYZ", city:"Toronto" },{ code:"YVR", city:"Vancouver" },
+    { code:"YUL", city:"Montreal" },{ code:"YOW", city:"Ottawa" },
+    { code:"YHZ", city:"Halifax" },{ code:"YWG", city:"Winnipeg" },
+    { code:"YQB", city:"Quebec City" },{ code:"YTZ", city:"Toronto Island" },
+    { code:"YXE", city:"Saskatoon" },{ code:"YQR", city:"Regina" },
+    { code:"YXY", city:"Whitehorse" },{ code:"YHM", city:"Hamilton" },
+    { code:"YKF", city:"Waterloo" },{ code:"YYJ", city:"Victoria" },
+    { code:"YXX", city:"Abbotsford" },{ code:"YFC", city:"Fredericton" },
+    { code:"YQM", city:"Moncton" },{ code:"YYT", city:"St. John's" }
+  ];
+  var AIRLINES = ["WestJet","Air Canada","Porter","Flair"];
+  var SCOOTER_STARTS = ["SUBWAY","MARKET","CAMPUS","LIBRARY","OFFICE"];
+  var SCOOTER_ENDS = ["HOME","HOTEL","STATION","TERMINAL","DEPOT"];
+  var BUS_LINES = [
+    { code:"38", agency:"Calgary Transit", to:"BRTWD", place:"Brentwood Station" },
+    { code:"7", agency:"MiWay", to:"AIRPT", place:"Airport Road" },
+    { code:"504", agency:"TTC", to:"KING", place:"King Street" },
+    { code:"6", agency:"Calgary Transit", to:"DOWNT", place:"Downtown" }
+  ];
+  var TRAIN_LINES = [
+    { from:"T1", fromPlace:"Terminal 1", to:"T3", toPlace:"Terminal 3", carrier:"LINK train" },
+    { from:"UNION", fromPlace:"Union Station", to:"YYZ", toPlace:"Pearson", carrier:"UP Express" },
+    { from:"CITY", fromPlace:"City Hall", to:"BRTWD", toPlace:"Brentwood", carrier:"CTrain" }
+  ];
+  var WALK_STARTS = ["DOOR D","ARRIVALS","PLATFORM","PARKADE","POST 17"];
+  var WALK_ENDS = ["POST 17","RENTAL","CHECK-IN","LINK","HOTEL" ];
+  var MODES = ["flight","scooter","bus","train","walk"];
+  var STATES = [
+    { verb:"planned a route", label:"Route ready" },
+    { verb:"checked the sources", label:"Sources checked" },
+    { verb:"saved a plan offline", label:"Saved offline" },
+    { verb:"started guidance", label:"Guidance started" },
+    { verb:"rechecked a connection", label:"Route refreshed" }
+  ];
+  var NAME_PATTERNS = [
+    function (f, l) { return f + " " + l; },
+    function (f, l) { return f + " " + l.charAt(0) + "."; },
+    function (f, l) { return f.charAt(0) + ". " + l; },
+    function (f, l, n) { return (f + "." + l).toLowerCase() + n; },
+    function (f, l, n) { return (f.charAt(0) + l).toLowerCase() + n; },
+    function (f, l, n) { return (f + "_" + l.charAt(0)).toLowerCase() + n; },
+    function (f, l, n) { return (l + f.charAt(0)).toLowerCase() + n; }
+  ];
+
+  var STORAGE_KEY = "laneway-simulated-activity-v3";
+  var HOUR = 60 * 60 * 1000;
+  var rows = [];
+  var history = [];
+  var identitySlots = [];
+  var lastIdentityType = null;
+  var lastMode = null;
+  var timer = null;
+  var animating = false;
+
+  function randomInt(max) { return Math.floor(Math.random() * max); }
+  function shuffle(list) {
+    for (var i = list.length - 1; i > 0; i--) {
+      var j = randomInt(i + 1), hold = list[i]; list[i] = list[j]; list[j] = hold;
+    }
+    return list;
+  }
+  function refillIdentitySlots() {
+    var slots;
+    do { slots = shuffle([-1,-1,-1,0,1,2,3,4,5,6]); }
+    while (slots.some(function (v, i) { return v === -1 && i > 0 && slots[i - 1] === -1; }) || slots[0] === lastIdentityType);
+    identitySlots = slots;
+  }
+  function nextIdentityType() {
+    if (!identitySlots.length) refillIdentitySlots();
+    var type = identitySlots.shift();
+    lastIdentityType = type;
+    return type;
+  }
+  function loadHistory() {
+    try {
+      history = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]").filter(function (item) {
+        return item && typeof item.key === "string" && Date.now() - item.at < HOUR;
+      });
+    } catch (error) { history = []; }
+  }
+  function saveHistory() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(history)); } catch (error) {}
+  }
+  function known(key) { return history.some(function (item) { return item.key === key; }); }
+  function randomTrip() {
+    var mode;
+    do { mode = MODES[randomInt(MODES.length)]; } while (mode === lastMode);
+    lastMode = mode;
+    if (mode === "flight") {
+      var from = randomInt(AIRPORTS.length), to = randomInt(AIRPORTS.length - 1);
+      if (to >= from) to++;
+      return { mode:mode,from:{code:AIRPORTS[from].code,detail:"Gate " + (1 + randomInt(99))},to:{code:AIRPORTS[to].code,detail:AIRPORTS[to].city},carrier:AIRLINES[randomInt(AIRLINES.length)],verb:"planned a flight connection" };
+    }
+    if (mode === "scooter") {
+      var scooterMinutes = 5 + randomInt(24);
+      return { mode:mode,from:{code:SCOOTER_STARTS[randomInt(SCOOTER_STARTS.length)],detail:"Subway exit"},to:{code:SCOOTER_ENDS[randomInt(SCOOTER_ENDS.length)],detail:"Saved place, " + scooterMinutes + " min"},carrier:"Lime scooter",verb:"took a Lime scooter" };
+    }
+    if (mode === "bus") {
+      var bus = BUS_LINES[randomInt(BUS_LINES.length)];
+      var stops = 2 + randomInt(15);
+      return { mode:mode,from:{code:bus.code,detail:bus.agency},to:{code:bus.to,detail:bus.place + ", " + stops + " stops"},carrier:"City bus",verb:"took bus " + bus.code };
+    }
+    if (mode === "train") {
+      var train = TRAIN_LINES[randomInt(TRAIN_LINES.length)];
+      var stations = 2 + randomInt(12);
+      return { mode:mode,from:{code:train.from,detail:train.fromPlace},to:{code:train.to,detail:train.toPlace + ", " + stations + " stops"},carrier:train.carrier,verb:"took the train" };
+    }
+    return { mode:mode,from:{code:WALK_STARTS[randomInt(WALK_STARTS.length)],detail:"Wayfinding"},to:{code:WALK_ENDS[randomInt(WALK_ENDS.length)],detail:"Connector"},carrier:(3 + randomInt(16)) + " min walk",verb:"walked the connector" };
+  }
+  function tripKey(trip) {
+    return "route|" + trip.mode + "|" + trip.from.code + "|" + trip.from.detail + "|" + trip.carrier + "|" + trip.to.code + "|" + trip.to.detail;
+  }
+  function identity(type) {
+    if (type === -1) return "Anonymous";
+    var first = FIRST_NAMES[randomInt(FIRST_NAMES.length)];
+    var last = LAST_NAMES[randomInt(LAST_NAMES.length)];
+    return NAME_PATTERNS[type](first, last, 10 + randomInt(990));
+  }
+  function makeEvent(age) {
+    history = history.filter(function (item) { return Date.now() - item.at < HOUR; });
+    for (var attempt = 0; attempt < 100; attempt++) {
+      var trip = randomTrip();
+      var key = tripKey(trip);
+      if (!known(key)) {
+        var type = nextIdentityType();
+        var who = identity(type);
+        var event = { who:who,trip:trip,state:STATES[randomInt(STATES.length)],at:Date.now() - age,key:key };
+        history.push({ key: key, at: Date.now() });
+        saveHistory();
+        return event;
+      }
+    }
+    var fallback = randomTrip();
+    return { who:"Anonymous",trip:fallback,state:STATES[0],at:Date.now() - age,key:tripKey(fallback) };
+  }
+  function ago(at) {
+    var seconds = Math.max(0, Math.floor((Date.now() - at) / 1000));
+    if (seconds < 8) return "just now";
+    if (seconds < 60) return seconds + " sec ago";
+    var minutes = Math.floor(seconds / 60);
+    return minutes === 1 ? "1 min ago" : minutes + " min ago";
+  }
+  function modeIcon(mode, className) {
+    var path = {
+      flight:"<path d=\"M2 6h5l3-4h2l-1 4h5v2h-5l1 4h-2L7 8H2z\"/>",
+      scooter:"<circle cx=\"4\" cy=\"10\" r=\"1.5\"/><circle cx=\"14\" cy=\"10\" r=\"1.5\"/><path d=\"M5 10h5l2-6h3M10 4h3\"/>",
+      bus:"<rect x=\"3\" y=\"2\" width=\"12\" height=\"8\" rx=\"1\"/><path d=\"M3 6h12M6 12v-2m6 2v-2M6 4h.01M12 4h.01\"/>",
+      train:"<rect x=\"3\" y=\"1.5\" width=\"12\" height=\"8.5\" rx=\"1\"/><path d=\"M5 12l2-2h4l2 2M3 6h12M6 4h.01M12 4h.01\"/>",
+      walk:"<circle cx=\"9\" cy=\"2.5\" r=\"1.5\"/><path d=\"M9 4v3l-3 2m3-2l3 2m-3-2v4l-2 2m2-2l3 2\"/>"
+    }[mode] || "<path d=\"M1 6h14M11 2l4 4-4 4\"/>";
+    return '<svg class="' + (className || "mode-icon") + '" width="16" height="14" viewBox="0 0 18 14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">' + path + "</svg>";
+  }
+  function render(isNew) {
+    body.innerHTML = rows.map(function (event, index) {
+      var classes = "activity-item";
+      if (isNew && index === 0) classes += " activity-enter";
+      return '<li class="' + classes + '" data-signature="' + encodeURIComponent(event.key) + '">' +
+        '<div class="activity-person"><strong>' + event.who + '</strong><span>' + event.trip.verb + '</span></div>' +
+        '<div class="activity-route"><span class="activity-airport"><strong>' + event.trip.from.code + '</strong><small>' + event.trip.from.detail + '</small></span>' +
+        '<span class="activity-line"><span class="carrier">' + modeIcon(event.trip.mode, "mode-icon") + event.trip.carrier + '</span><i></i><span class="activity-runner" aria-hidden="true">' + modeIcon(event.trip.mode, "activity-runner-icon") + '</span><svg class="activity-arrow" width="18" height="12" viewBox="0 0 18 12" aria-hidden="true"><path d="M1 6h14M11 2l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></span>' +
+        '<span class="activity-airport to"><strong>' + event.trip.to.code + '</strong><small>' + event.trip.to.detail + '</small></span></div>' +
+        '<div class="activity-state"><strong>' + event.state.label + '</strong><span><time>' + ago(event.at) + '</time></span></div></li>';
+    }).join("");
+  }
+  function update() {
+    if (animating) { schedule(); return; }
+    animating = true;
+    var last = body.lastElementChild;
+    if (last) last.classList.add("activity-exit");
+    setTimeout(function () {
+      rows.unshift(makeEvent(0));
+      rows = rows.slice(0, 4);
+      render(true);
+      setTimeout(function () {
+        render(false);
+        animating = false;
+      }, 640);
+    }, 480);
+    schedule();
+  }
+  function schedule() {
+    clearTimeout(timer);
+    if (!document.hidden) timer = setTimeout(update, 4200 + randomInt(6800));
+  }
+
+  loadHistory();
+  rows = [makeEvent(4000),makeEvent(26000),makeEvent(57000),makeEvent(91000)];
+  render(false);
+  schedule();
+  setInterval(function () { if (!animating) render(false); }, 10000);
+  document.addEventListener("visibilitychange", schedule);
+}());
+</script>
+
 <script src="status.js"></script>
 <script>
 /* ============================================================
@@ -955,6 +1611,52 @@ footer .right{margin-left:auto;display:flex;gap:20px}
     '<a href="status.html">See the full status</a>';
 
   document.getElementById("pulse").hidden = false;
+}());
+</script>
+
+<script>
+/* Hover previews a stop. A click pins it until another stop, outside click,
+   or Escape closes it; native details still work when scripting is absent. */
+(function () {
+  "use strict";
+  var art = document.querySelector(".connection-art");
+  if (!art) return;
+  var stops = [].slice.call(art.querySelectorAll(".connection-stop"));
+  var pinned = null;
+  function closeAll() {
+    pinned = null;
+    stops.forEach(function (stop) { stop.open = false; });
+  }
+  function show(stop) {
+    if (pinned && pinned !== stop) pinned = null;
+    stops.forEach(function (item) { item.open = item === stop; });
+  }
+  stops.forEach(function (stop) {
+    var summary = stop.querySelector("summary");
+    stop.addEventListener("pointerenter", function (event) {
+      if (event.pointerType === "mouse" || event.pointerType === "pen") show(stop);
+    });
+    stop.addEventListener("pointerleave", function () {
+      if (pinned !== stop && !stop.contains(document.activeElement)) stop.open = false;
+    });
+    stop.addEventListener("focusin", function () { show(stop); });
+    stop.addEventListener("focusout", function (event) {
+      if (pinned !== stop && !stop.contains(event.relatedTarget)) stop.open = false;
+    });
+    summary.addEventListener("click", function (event) {
+      event.preventDefault();
+      if (pinned === stop) closeAll();
+      else { show(stop); pinned = stop; }
+    });
+  });
+  document.addEventListener("pointerdown", function (event) {
+    if (!art.contains(event.target)) closeAll();
+  });
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape" && stops.some(function (stop) { return stop.open; })) {
+      closeAll();
+    }
+  });
 }());
 </script>
 

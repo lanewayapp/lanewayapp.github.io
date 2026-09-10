@@ -614,13 +614,19 @@ footer .wrap{align-items:center;gap:24px}
   .panel{position:static;opacity:1;margin-bottom:36px}
 }
 
-/* The same two links, order and button treatment on every page. */
+/* The same three links, order and button treatment on every page. */
 .top .wrap{max-width:1320px;width:100%;margin:0 auto;padding:0 clamp(20px,5vw,56px);display:flex;align-items:center;height:76px;gap:24px}
 .top nav.site-nav{margin-left:auto;display:flex;align-items:center;gap:10px;font-family:"Geist",sans-serif;letter-spacing:0;text-transform:none}
 .top nav.site-nav a{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:8px 17px;border:1px solid #3D506B;border-radius:999px;background:#172133;color:#FFFFFF;font-size:13px;font-weight:500;line-height:1.5;text-decoration:none;white-space:nowrap;transition:background .2s ease}
 .top nav.site-nav a:hover,.top nav.site-nav a:focus-visible{background:#243F64;color:#FFFFFF}
 .top nav.site-nav a:focus-visible{outline:2px solid var(--accent,var(--accent-deep));outline-offset:3px}
-@media(max-width:600px){.top .wrap{height:64px;gap:12px}.top nav.site-nav{gap:8px}.top nav.site-nav a{font-size:12px;padding:8px 12px}}
+@media(max-width:600px){
+  .top .wrap{height:auto;min-height:64px;gap:12px;padding-block:10px}
+  .top .brand{flex:none}
+  .top .brand-name{display:none}
+  .top nav.site-nav{gap:6px;flex-wrap:wrap;justify-content:flex-end;min-width:0}
+  .top nav.site-nav a{min-height:44px;font-size:12px;padding:8px 10px}
+}
 </style>
 <noscript>
 <style>
@@ -744,17 +750,18 @@ footer .wrap{align-items:center;gap:24px}
 
 <header class="top">
   <div class="wrap">
-    <a class="brand" href="./">
+    <a class="brand" href="./" aria-label="Laneway home">
       <svg width="31" height="31" viewBox="0 0 32 32" aria-hidden="true">
         <rect width="32" height="32" rx="7" fill="#172133"></rect>
         <path d="M9 25 Q9 13 16 13 Q23 13 23 7" stroke="#E89E2E" stroke-width="3.2" fill="none" stroke-linecap="round"></path>
         <circle cx="9" cy="25" r="2.6" fill="#E89E2E"></circle>
       </svg>
-      Laneway
+      <span class="brand-name">Laneway</span>
     </a>
     <nav class="site-nav" aria-label="Main navigation">
-      <a href="devlog.html">Dev log</a>
+      <a href="./" aria-current="page">Overview</a>
       <a href="status.html">Status</a>
+      <a href="devlog.html">Follow Build</a>
     </nav>
   </div>
   <div class="progress"><i id="bar"></i></div>

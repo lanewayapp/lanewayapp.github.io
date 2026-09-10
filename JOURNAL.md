@@ -6,7 +6,7 @@
 12:15 AM; the redesign direction was recorded at 12:18 AM. The latest palette refinement was
 recorded at 12:32 AM. The user resumed at the 6:38 AM clock check. These
 are clock checks, not an estimated active duration, and include interruptions.
-The latest request was recorded at the 9:44 PM clock check.*
+The latest request was recorded at the 9:46 PM clock check.*
 
 ## Timeline
 
@@ -165,6 +165,17 @@ Overview and Dev log only. Website PR #6 remains open; its existing change
 removes the hiding rule and includes both links on all five pages. No new CSS
 fix is needed for this report. Public deployment awaits merge of PR #6.
 This was a source comparison, not a visual iPhone test.
+
+**9:46 PM - Three Consistent Navigation Links.** The user requested only
+Overview, Status, and Follow Build. Updated all five website headers in that
+order, with Follow Build opening the dev log. On mobile the brand uses its
+existing symbol and accessible home label, leaving room for all three links.
+Buttons have 44px minimum touch targets and may wrap instead of being hidden.
+An initial edit assertion caught the 404 page's pre-existing accessible label;
+completed that page separately and verified every header afterward. Local
+links, fragments, IDs, seven inline scripts, shared metrics and renderer checks
+pass. No visual iPhone test was performed. The public mobile hiding rule is
+removed by the existing PR diff; public deployment still awaits PR #6 merge.
 
 ## Validation and Rollback
 

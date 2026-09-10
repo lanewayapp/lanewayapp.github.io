@@ -133,7 +133,7 @@ would be guessing.
 12:15 AM; the redesign direction was recorded at 12:18 AM. The latest palette refinement was
 recorded at 12:32 AM. The user resumed at the 6:38 AM clock check. These
 are clock checks, not an estimated active duration, and include interruptions.
-The latest requests were recorded at 10:14 AM and on resuming at 2:28 PM.*
+The latest request was recorded at the 9:46 PM clock check.*
 
 ## Timeline
 
@@ -242,6 +242,67 @@ had no remote head. Pushed the branch and both rollback tags to the existing
 fork instead and successfully submitted the cross-fork PR. No permissions
 were changed and nothing was merged or deployed. Issue #140 is linked for
 closure when the PR lands.
+
+**6:57 PM - Public Updates Refreshed and Navigation Unified.** The user
+asked for current dev log and status information and the same two top-right
+buttons on every page. The first clock check for that request was 6:51 PM.
+Found that website PR #5 had been merged and issue #140 closed, then started
+a follow-up branch from the merged main and opened #141 before editing.
+
+The local product checkout is old and conflicted, so its version and test
+count were not used. Created a clean checkout of current committed product
+main and ran its existing sanitizing status exporter. The environment did
+not provide uv. Reused the installed Python environment with imports pointed
+explicitly at the clean source and verified that module path before collecting
+358 tests successfully. This was collection, not a test-suite pass. The export
+reports app 0.29.0, engine 0.2.0, 23 modules and 230 commits; the last product
+commit is still September 4. The snapshot date is September 9.
+
+Added nine curated public updates covering the website, profile and saved
+plans, Vehicles, rideshare handoff, account foundations, system integration,
+destination clarification, navigation fixes and planner grounding. No private
+locations, costs, credentials or engine source were copied. Incomplete phone
+account integration, unconfirmed feed coverage and outstanding device checks
+remain explicit. Status now includes a concise product summary.
+
+The dev log renders its headline metrics from status.js, with a dated
+markdown fallback. Both surfaces identify counts as collected tests. Updated
+the documented editing workflow so the duplicate manual metric band does not
+become the primary source again. Header navigation is always Dev log followed
+by Status, with identical button styling, including mobile and the 404 page.
+The brand still returns home; the legal document TOC remains separate.
+
+Checks pass for all seven inline scripts, local links and fragments, unique
+IDs, font assets, snapshot integrity and commit totals. Renderer checks pass
+with the snapshot, with its absence, and with a changed count to confirm the
+shared source wins. All five header link lists match. No application code
+changed; no engine benchmark or visual browser test was run.
+
+**6:59 PM - Follow-Up Pull Request Submitted.** Opened website PR #6:
+https://github.com/lanewayapp/lanewayapp.github.io/pull/6. The refresh is
+committed as 8e11d8f and targets main through the existing fork workflow.
+The local dev log preview is refreshed. Issue #141 remains open until the
+follow-up lands; no production deployment was performed in this session.
+
+**9:44 PM - Public iPhone Navigation Report Confirmed.** The user reported
+that Status was missing on iPhone and confirmed they were using the public
+website. Fetched the public homepage and dev log source: the homepage still
+explicitly hides Status at its mobile breakpoint, and the dev log still has
+Overview and Dev log only. Website PR #6 remains open; its existing change
+removes the hiding rule and includes both links on all five pages. No new CSS
+fix is needed for this report. Public deployment awaits merge of PR #6.
+This was a source comparison, not a visual iPhone test.
+
+**9:46 PM - Three Consistent Navigation Links.** The user requested only
+Overview, Status, and Follow Build. Updated all five website headers in that
+order, with Follow Build opening the dev log. On mobile the brand uses its
+existing symbol and accessible home label, leaving room for all three links.
+Buttons have 44px minimum touch targets and may wrap instead of being hidden.
+An initial edit assertion caught the 404 page's pre-existing accessible label;
+completed that page separately and verified every header afterward. Local
+links, fragments, IDs, seven inline scripts, shared metrics and renderer checks
+pass. No visual iPhone test was performed. The public mobile hiding rule is
+removed by the existing PR diff; public deployment still awaits PR #6 merge.
 
 ## Validation and Rollback
 

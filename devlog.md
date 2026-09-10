@@ -1,11 +1,90 @@
 # Metrics
 
-- 6 | Days from empty repo to navigation
-- 0.27.2 | Current build
-- 350 | Tests, all offline
-- 5 | Official transit feeds
+Snapshot: Wednesday Sep 9, 2026. Test counts describe collection, not a test-run result.
+
+- 0.29.0 | Current app build
+- 358 | Tests collected
+- 23 | Engine modules
+- 45 | Numbered builds
 
 # Entries
+
+## Website | Wednesday Sep 9
+### A Cleaner Website With a Clearer Journey
+
+The public site now uses a black-and-white foundation with navy accents. Two opening statements lead into the map journey; the animated title card has been removed.
+
+- **An interactive route illustration.** Hover or focus a stop to read more; tap to keep its explanation open. The diagram is an illustration, not travel directions.
+- **Activity is labelled as simulated.** Moving examples demonstrate the route concept without pretending to be customer telemetry.
+- **A reversible redesign.** The previous design is preserved. The site changes do not represent a new app release.
+
+## 0.29.0 | Friday Sep 4
+### Saved Plans, Nearby Vehicles and an Honest Profile
+
+The latest committed app build brings saved-plan verification, nearby vehicles and a local profile into distinct surfaces.
+
+- **A Travel Log for saved plans.** Verification summaries describe the evidence attached to a saved route. They do not claim that the traveller physically completed it.
+- **A dedicated Vehicles surface.** Live transit and shared-vehicle information is shown where operator feeds are available. Temporary vehicle-position routes cannot be saved as lasting offline facts.
+- **A local profile.** An avatar, status and chosen favorites stay on the device. Unconnected social fields say they are not connected rather than inventing counts.
+- **Still needs a device check.** The tab bar is now hidden during active navigation in code; that final change has not been verified on a device.
+
+## Connections | Thursday Sep 3
+### Rideshare Handoffs Without Invented Fares
+
+A missing connection can involve a rideshare or shared vehicle. Supporting those legs requires being clear about what Laneway can and cannot finish itself.
+
+- **Rideshare handoff.** The route can carry pickup and dropoff information into the operator's app. Booking remains with the traveller and the operator.
+- **No made-up fare.** A route does not turn an unavailable live quote into a price estimate presented as fact.
+- **Availability expires.** Shared-vehicle counts remain timestamped observations, separate from durable route evidence. Feed coverage still requires confirmation.
+
+## Accounts | Monday Aug 31
+### Preparing the Server for More Than One Traveller
+
+The backend now distinguishes travellers, device sessions and usage. This is infrastructure for a public product, not a claim that account setup is complete in the app.
+
+- **Separate sessions.** One device can be signed out without treating every traveller as the same person.
+- **Persistent usage.** Usage records survive server restarts instead of resetting with the process.
+- **Still in progress.** The phone's account flow and cross-device synchronization remain unfinished.
+
+## 0.26.0 | Saturday Aug 29
+### Saved Trips Reach Beyond the App
+
+Saved trips can be reached through system search, and the app can make its trip actions available to system suggestions.
+
+- **Use the plan already saved.** The shortcut points back to an existing route rather than inventing a fresh answer from its title.
+- **System suggestions are opportunities.** Making an action available does not guarantee that iOS will suggest it.
+
+## 0.25.0 | Friday Aug 28
+### Siri Integration, Within the Available APIs
+
+App shortcuts expose Laneway actions to Siri. This is a supported shortcut integration, not a claim that Laneway can replace every built-in navigation command.
+
+- **Saved-trip actions.** The system can hand an available Laneway action back to the app.
+- **Honest boundaries.** Broader navigation integration remains dependent on platform capabilities.
+
+## Destinations | Wednesday Aug 26
+### Name the Place Before Committing to It
+
+A request for a type of business can resolve to several real places. The app now carries the resolved name and address into the route instead of leaving a generic category on screen.
+
+- **A visible choice.** The proposed place is shown with other matches so the traveller can see what was selected.
+- **One resolved destination.** The map, route text and recent destinations use the same named place.
+
+## Navigation | Saturday Aug 22
+### Making the Map Match the Plan
+
+On-road testing exposed disagreements between the route the engine returned and the way the app displayed it. The corrections focused on destination placement, journey timing and camera behavior.
+
+- **Display errors matter.** A correct plan is not enough when its map or time summary tells a different story.
+- **Keep the uncertainty.** Failures and unresolved questions remain part of the development record rather than disappearing behind a polished route line.
+
+## Grounding | Friday Aug 21
+### Give the Planner Real Connections to Work With
+
+The planner now receives retrieved transit context instead of relying only on recalled network knowledge. Repeated benchmark runs also revealed that a stable answer can still be consistently wrong.
+
+- **Ground before composing.** Available route evidence should shape the proposed connections.
+- **Ambiguity still needs a question.** An unspecified airport or hotel is not a destination the system can safely guess.
 
 ## 0.18.1 / 0.19.0 | Monday Aug 17
 ### A plan took five minutes, and the reason was invisible twice over

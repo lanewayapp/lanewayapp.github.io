@@ -872,7 +872,7 @@ footer .wrap{align-items:center;gap:24px}
     </div>
     <div class="opening-beat" data-opening-beat="1">
       <span class="beat-eyebrow mono">Less guesswork. More getting there.</span>
-      <h2>The most <span class="opening-accent" data-accent-mode="plane">efficient<svg class="accent-route" viewBox="0 0 120 28" aria-hidden="true"><path class="accent-track" d="M4 21 H116"></path><g class="accent-plane" data-accent-vehicle="plane" transform="translate(94 3.5) scale(1.25)"><path d="M2 19 L11 15 L3 10 L5 8 L17 13 L29 6 L24 15 L29 20 L17 16 L5 22 Z"></path></g></svg></span> way is the <span class="opening-accent" data-accent-mode="bike">best<svg class="accent-route" viewBox="0 0 120 28" aria-hidden="true"><path class="accent-track" d="M4 21 H116"></path><g class="accent-bike" data-accent-vehicle="bike" transform="translate(94 0) scale(1.45)"><circle cx="7" cy="20" r="4"></circle><circle cx="19" cy="20" r="4"></circle><path d="M7 20 L12 12 L19 20 M9 20 H17 M12 12 L17 11 M12 12 L9 8 M8 8 H12"></path></g></svg></span> way.</h2>
+      <h2>The most <span class="opening-accent" data-accent-mode="plane">efficient<svg class="accent-route" viewBox="0 0 120 28" aria-hidden="true"><path class="accent-track" d="M4 21 H116"></path><g class="accent-plane" data-accent-vehicle="plane" transform="translate(94 4) scale(1.25)"><path d="M2 19 L11 15 L3 10 L5 8 L17 13 L29 6 L24 15 L29 20 L17 16 L5 22 Z"></path></g></svg></span> way is the <span class="opening-accent" data-accent-mode="bike">best<svg class="accent-route" viewBox="0 0 120 28" aria-hidden="true"><path class="accent-track" d="M4 21 H116"></path><g class="accent-bike" data-accent-vehicle="bike" transform="translate(94 0) scale(1.45)"><circle cx="7" cy="20" r="4"></circle><circle cx="19" cy="20" r="4"></circle><path d="M7 20 L12 12 L19 20 M9 20 H17 M12 12 L17 11 M12 12 L9 8 M8 8 H12"></path></g></svg></span> way.</h2>
     </div>
 
   </div>
@@ -1080,9 +1080,9 @@ footer .wrap{align-items:center;gap:24px}
       var scale = isPlane ? 1.25 : 1.45;
       /* The plane spans 6 to 22 in its own units, so once scaled its centre
          lands at y 17.5 and the track is at 21: it flew above the line it is
-         meant to be travelling. Drop it the 3.5 that centres it. The bike is
+         meant to be travelling. Drop it the 4 that seats it on the line. The bike is
          drawn to sit on its wheels and is left where it is. */
-      var ride = isPlane ? 3.5 : 0;
+      var ride = isPlane ? 4 : 0;
       vehicle.setAttribute("transform", "translate(" + (4 + 88 * progress).toFixed(1) + " " + ride + ") scale(" + scale + ")");
     });
   }

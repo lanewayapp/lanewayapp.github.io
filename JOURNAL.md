@@ -120,6 +120,17 @@ He was right, and the diagnosis took a wrong turn first.
   brief before touching the file, and when a change moves something, check what
   it was aligned to.**
 
+- **Follow up, same session.** Baron asked for the original glyph to sit centred
+  on the track rather than above it. The plane spans 6 to 22 in its own units, so
+  after `scale(1.25)` its centre lands at y 17.5 while the track is at 21: it was
+  flying 3.5 units above the line the whole time, which is what he had been
+  looking at. Dropped by exactly that. **The offset had to go in two places**, the
+  inline transform for the static and reduced-motion state and
+  `positionAccentVehicles`, which rewrites the whole transform on every scroll
+  frame and would otherwise have put it straight back. The bike is drawn to sit
+  on its wheels and was left alone.
+
+
 
 
 ## Open

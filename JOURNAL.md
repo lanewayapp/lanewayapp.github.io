@@ -151,6 +151,12 @@ with the snapshot, with its absence, and with a changed count to confirm the
 shared source wins. All five header link lists match. No application code
 changed; no engine benchmark or visual browser test was run.
 
+**6:59 PM - Follow-Up Pull Request Submitted.** Opened website PR #6:
+https://github.com/lanewayapp/lanewayapp.github.io/pull/6. The refresh is
+committed as 8e11d8f and targets main through the existing fork workflow.
+The local dev log preview is refreshed. Issue #141 remains open until the
+follow-up lands; no production deployment was performed in this session.
+
 ## Validation and Rollback
 
 All six inline scripts parse. Local links, fragment targets, unique IDs and

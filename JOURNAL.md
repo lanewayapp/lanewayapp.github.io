@@ -1,3 +1,97 @@
+# The Pull at the Top, Again - Monday Sep 14
+
+*Written 5:59 PM.*
+
+## What was asked
+
+"the website you can see under the top white panel when scrolling past the
+top, elastic weirdness, needs to be fixed like old version of site, either
+remove elasticity or expand the white panel way higher, ide prefer to keep
+the elastic".
+
+Two options offered, one preferred. Take the preferred one.
+
+## What was still wrong after Thursday Sep 3
+
+That session pinned the bar so the pull could not drag it off the map, and
+that held: no seam opens between the bar and the ground any more. What it
+did not close is the top of `main`. The bar holds still, the scrolling layer
+slides down past it, and the strip that opens between the bar's bottom edge
+and the top of the opening panel is bare map, which is exactly the thing
+that lives under the page.
+
+Measured at 1280 by 900 with the fixed layers pinned and the scrolling layer
+dragged down 90px, which is the behaviour the owner's machine showed in
+September:
+
+- Light: road lines at `rgb(204,204,204)` crossing the strip on a white
+  ground. Faint, and unmistakably not the page.
+- Dark: the whole strip `rgb(16,16,16)`, a hard 90px band of near black
+  against the opening panel's white. This is the one that reads as broken.
+
+## What shipped
+
+The owner's second option: raise the panel, keep the elastic.
+
+`.opening::before` is a band of the opening's own `--bg`, one viewport tall,
+sitting directly above the section's top edge on `bottom:100%`. It is
+absolutely positioned inside the section, so it belongs to the scrolling
+layer and slides down with the page: the pull finds more of the same panel
+instead of the edge of it. The colour resolves inside `.light-section`, so
+it is `#FFFFFF` in both themes, the same white as the panel it continues.
+
+It is not the curtain that was built and cut on Thursday Sep 3. That one was
+`position:fixed` above the viewport, pinned with the bar, which only ever
+helped browsers that drag fixed layers along with the bounce, and a bar that
+carries a lid with it is not a bar that is holding still. This one is on the
+layer that actually moves, which is why it works on the machine that
+reported the bug. If a browser does drag the fixed layers instead, the band
+travels with them and still covers, so both behaviours are handled without
+anything riding on the bar.
+
+The band has to reach all the way down to the content's top edge or it does
+not cover the gap, and the content's top edge is the bar's bottom edge, so
+at rest the band sits behind the bar. That is the whole of its cost, below.
+
+## Checked
+
+- Simulated pull at 90px, 1280 by 900, light and dark: the strip under the
+  bar is `rgb(255,255,255)` at every sample, map lines gone in light, black
+  band gone in dark.
+- Same at 390 by 844 and 820 by 1100, both themes: white at all three depths
+  sampled. No horizontal overflow at any width, `scrollWidth` equals
+  `clientWidth`. Document height unchanged at 11775.
+- Full viewport screenshots diffed against the file before the change at
+  scroll 0, 400, 1200, 2600, 4200, 6000, 9000 and 20000, light and dark.
+  Every position above 0 is pixel identical. The only difference anywhere is
+  inside the bar at scroll 0.
+- **That one difference, and why it is an improvement.** In dark the bar at
+  the top of the page went from `rgb(16,16,16)` to `rgb(30,30,30)`. It was
+  already `rgb(30,30,30)` at scroll 200 and at scroll 1500 before this
+  change, because the white panel scrolls under the glass and lifts it by
+  the 6 percent the glass lets through. The top of the page was the odd one
+  out, showing map instead of panel; now it matches the rest of the scroll.
+  In light the bar is white either way: 1650 pixels of 1.15 million differ,
+  and they are the blurred road lines that used to show through it.
+- Bottom pull checked as well, content dragged up 90px at the foot of the
+  page, both themes: the map's land colour is the page colour at that end,
+  so nothing shows. Left alone.
+- `devlog.html`, `legal.html` and `status.html` have no fixed layer under
+  them, so a pull uncovers page colour. `404.html` does have a fixed map,
+  but its land is the page colour and its header is opaque, so the pull
+  uncovers page colour there too, at most a hairline of road. Left alone.
+- Non-ASCII check clean, with the vendored `woff2` skipped. The crash noted
+  on Thursday Sep 3 is still there and `CLAUDE.md` is still the owner's file.
+
+## Open
+
+- The pull still cannot be felt from this machine: headless Chromium on
+  Linux has no elastic overscroll, so it is pinned layers and a translated
+  scroll layer, not a real bounce. The geometry is the part being checked,
+  and the geometry is what the owner reported.
+
+---
+
 # Large Screens Stopped Scaling - Thursday Sep 10
 
 ### Baron's Work

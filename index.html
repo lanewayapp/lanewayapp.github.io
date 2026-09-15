@@ -171,10 +171,13 @@ main{position:relative;z-index:1;padding-top:calc(var(--bar) + 2px)}
    holding still. Not a fixed curtain: that rides with the bar and was cut on
    Thursday Sep 3 for it. This one scrolls with the page, which is the layer
    that actually moves. It sits above the content, so at rest it is off screen
-   apart from the strip behind the bar, which it paints panel white. */
+   apart from the strip behind the bar, which it paints panel white.
+   A viewport plus 180px, at the owner's ask, so a hard fling on a trackpad
+   runs out of pull long before it runs out of panel. The extra costs
+   nothing: the band is off screen at rest and paints no wider than the page. */
 .opening::before{
   content:"";position:absolute;left:0;right:0;bottom:100%;
-  height:100vh;background:var(--bg);pointer-events:none;
+  height:calc(100vh + 180px);background:var(--bg);pointer-events:none;
 }
 .opening-sticky{position:sticky;top:var(--bar);height:calc(100vh - var(--bar));display:grid;place-items:center;overflow:hidden}
 .opening-sticky::before{

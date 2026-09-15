@@ -90,6 +90,29 @@ at rest the band sits behind the bar. That is the whole of its cost, below.
   scroll layer, not a real bounce. The geometry is the part being checked,
   and the geometry is what the owner reported.
 
+## Then 180px more, Tuesday Sep 15
+
+*4:39 PM.* "thats good but expand it like 180 more pixes just for maximum
+leeway." Band height `100vh` to `calc(100vh + 180px)`, one value.
+
+Worth writing down what the number buys, since the band is anchored at the
+bottom and grows upward. At 1280 by 900 the cover held to a 820px pull
+before and holds to 1000px now; on a 390 tall landscape window it was 310px
+and is now 490px, which is where the flat 180 does the most, because a
+viewport unit is worth less on a short window and the pull is not.
+
+- Simulated pulls of 90, 400, 820 and 1000 at 1280 by 900, and 90, 300 and
+  490 at 844 by 390, both themes: every sampled pixel of the strip between
+  the bar and the panel is `rgb(255,255,255)`, five columns across, every
+  second row.
+- Diffed against the committed version at scroll 0, 400, 2600 and 6000 in
+  both themes: identical at every one. It cannot be otherwise, since only
+  the band's top edge moved and it was already off screen, but a change that
+  should be invisible is worth proving invisible rather than asserting it.
+- Document height unchanged, `scrollWidth` equals `clientWidth`. The band
+  paints no wider than the page, so the extra height costs nothing but a
+  taller off screen rectangle.
+
 ---
 
 # Large Screens Stopped Scaling - Thursday Sep 10

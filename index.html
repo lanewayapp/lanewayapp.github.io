@@ -57,20 +57,34 @@
 }
 
 *,*::before,*::after{box-sizing:border-box}
-/* Horizontal clipping is set on body alone, the way devlog and legal set it.
-   With it on both, the root's copy is the one the viewport takes and body
-   keeps its own, which makes body a scroll container and breaks sticky and
-   scroll-driven position for everything inside it. overscroll-behavior is
-   not the tool for the elastic pull at the top: the root scroller on macOS
-   ignores it, tested and reverted. The bar is pinned instead, below. */
-html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+/* No elastic. Owner's call, Tuesday Sep 15, having seen the alternative.
+   The bounce belongs to the viewport, so the viewport is given nothing to
+   scroll: the page scrolls inside .scroller instead, and a scroll container
+   that is not the root does honour overscroll-behavior. This is the only
+   thing that stops it on macOS. overscroll-behavior on the root does not:
+   it governs chaining and pull to refresh, not the bounce of the main
+   frame, tried and reverted on Thursday Sep 3.
+   Horizontal clipping used to sit on body alone, because a body with its
+   own overflow becomes a scroll container and breaks sticky. That no longer
+   applies: sticky now measures against .scroller, which is the scrollport,
+   and both root boxes are clipped on purpose so neither can scroll. */
+html,body{height:100%;overflow:hidden}
+html{-webkit-text-size-adjust:100%}
+.scroller{
+  height:100%;overflow-y:auto;overflow-x:hidden;
+  overscroll-behavior:none;scroll-behavior:smooth;
+}
+/* It is focused at load so the keyboard has a scroller to drive, and it is
+   the page rather than a control, so it carries no ring of its own. Every
+   control inside keeps its own :focus-visible outline. */
+.scroller:focus{outline:none}
 /* The header is sticky, so anything an in-page link targets has to clear it
    or the heading lands underneath. Long standing open item, closed. */
 [id]{scroll-margin-top:calc(var(--bar) + 18px)}
 body{
   margin:0;background:var(--bg);color:var(--ink);
   font-family:"Geist",-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
-  font-weight:400;-webkit-font-smoothing:antialiased;line-height:1.6;overflow-x:hidden;
+  font-weight:400;-webkit-font-smoothing:antialiased;line-height:1.6;
 }
 /* The first frame is part of the product. The route mark draws once, then its
    endpoint carries forward into an open ring. The overlay leaves on load and
@@ -163,22 +177,6 @@ main{position:relative;z-index:1;padding-top:calc(var(--bar) + 2px)}
    behind them and keeps its existing load animation, while this layer owns
    only the words and their scroll progress. */
 .opening{position:relative;height:300vh;padding:0}
-/* The pull past the top, answered on the page's own layer. Fixed layers are
-   pinned through the bounce and the scrolling layer slides down, so the strip
-   the pull opened under the bar was bare map: the ground the page is standing
-   on, seen from above it. The opening's white carries on past the top of the
-   document instead, so a pull finds more of the same panel and the bar keeps
-   holding still. Not a fixed curtain: that rides with the bar and was cut on
-   Thursday Sep 3 for it. This one scrolls with the page, which is the layer
-   that actually moves. It sits above the content, so at rest it is off screen
-   apart from the strip behind the bar, which it paints panel white.
-   A viewport plus 180px, at the owner's ask, so a hard fling on a trackpad
-   runs out of pull long before it runs out of panel. The extra costs
-   nothing: the band is off screen at rest and paints no wider than the page. */
-.opening::before{
-  content:"";position:absolute;left:0;right:0;bottom:100%;
-  height:calc(100vh + 180px);background:var(--bg);pointer-events:none;
-}
 .opening-sticky{position:sticky;top:var(--bar);height:calc(100vh - var(--bar));display:grid;place-items:center;overflow:hidden}
 .opening-sticky::before{
   content:"";position:absolute;inset:0;background:var(--bg);
@@ -662,7 +660,7 @@ footer .wrap{align-items:center;gap:24px}
 }
 
 @media (prefers-reduced-motion:reduce){
-  html{scroll-behavior:auto}
+  .scroller{scroll-behavior:auto}
   *{transition:none!important;animation:none!important}
   .ledger-map-route{stroke-dashoffset:0}
   .ledger-map-vehicle{opacity:1;transform:translateX(430px)}
@@ -843,6 +841,8 @@ footer .wrap{align-items:center;gap:24px}
   </div>
   <div class="progress"><i id="bar"></i></div>
 </header>
+
+<div class="scroller" id="scroller" tabindex="-1">
 
 <main>
 
@@ -1076,7 +1076,24 @@ footer .wrap{align-items:center;gap:24px}
 
 </main>
 
+</div>
+
 <script>
+/* The page scrolls in .scroller, not in the viewport, so the window never
+   fires scroll and window.scrollY is always 0. Every scroll read goes
+   through this element instead. Rect based reads are untouched: the
+   scroller fills the viewport, so getBoundingClientRect still answers the
+   question the choreography is asking. */
+var SCROLLER = document.getElementById("scroller") || document.scrollingElement;
+function onPageScroll(fn) { SCROLLER.addEventListener("scroll", fn, { passive: true }); }
+/* Give the keys somewhere to go. The viewport no longer scrolls, and a
+   non-root scroller is not the default scroll target, so with focus on body
+   space, arrows, PageDown, Home and End did nothing at all. Measured on the
+   locked page before this line existed. Focusing the container once at load
+   fixes it without a tab stop and without a focus ring, and anything focused
+   inside it scrolls it the usual way. */
+if (SCROLLER.focus) { try { SCROLLER.focus({ preventScroll: true }); } catch (e) { SCROLLER.focus(); } }
+
 /* Two opening beats. This is deliberately separate from the map camera
    below: changing the introduction must not change the route choreography. */
 (function () {
@@ -1137,7 +1154,7 @@ footer .wrap{align-items:center;gap:24px}
     queued = true;
     requestAnimationFrame(function () { queued = false; update(); });
   }
-  window.addEventListener("scroll", queue, { passive:true });
+  onPageScroll(queue);
   window.addEventListener("resize", queue);
   staticOpening.addEventListener("change", queue);
   update();
@@ -1299,8 +1316,8 @@ footer .wrap{align-items:center;gap:24px}
 
   function frame(dt) {
     if (bar) {
-      var max = document.documentElement.scrollHeight - window.innerHeight;
-      bar.style.width = (max > 0 ? (window.scrollY / max) * 100 : 0) + "%";
+      var max = SCROLLER.scrollHeight - SCROLLER.clientHeight;
+      bar.style.width = (max > 0 ? (SCROLLER.scrollTop / max) * 100 : 0) + "%";
     }
 
     var r = journey.getBoundingClientRect();
@@ -1381,7 +1398,7 @@ footer .wrap{align-items:center;gap:24px}
 
   intro();
   var pending = true;
-  window.addEventListener("scroll", function () { pending = true; }, { passive: true });
+  onPageScroll(function () { pending = true; });
   window.addEventListener("resize", function () {
     narrow = window.matchMedia("(max-width:820px)").matches;
     measure();
@@ -1794,10 +1811,10 @@ footer .wrap{align-items:center;gap:24px}
     return found;
   }
 
-  window.addEventListener("scroll", function () {
+  onPageScroll(function () {
     if (restoring) return;
     anchor = read();
-  }, { passive: true });
+  });
 
   window.addEventListener("resize", function () {
     /* Snapshot first: a resize that shrinks the document makes the browser
@@ -1810,7 +1827,7 @@ footer .wrap{align-items:center;gap:24px}
       var r = held.el.getBoundingClientRect();
       var s = span(r);
       if (s >= MIN_SPAN) {
-        window.scrollTo(0, Math.round(r.top + window.scrollY + held.progress * s));
+        SCROLLER.scrollTo(0, Math.round(r.top + SCROLLER.scrollTop + held.progress * s));
       }
       /* Let the sections re-render against the corrected offset before
          listening again, or the restore reads as a scroll and is lost. */

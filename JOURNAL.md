@@ -1,3 +1,75 @@
+# The Elastic Is Gone - Tuesday Sep 15
+
+*Written 5:06 PM.*
+
+## What was asked
+
+"ok just lock it so theres no elastic, push to main." The other option from
+the first report, chosen after seeing that the panel fix left nothing to
+look at.
+
+## How it is done, and why not the obvious way
+
+`overscroll-behavior` on the root is a dead end on macOS and was already
+tried and reverted on Thursday Sep 3. The bounce belongs to the viewport, so
+the viewport is given nothing to scroll: `html` and `body` are `height:100%`
+and `overflow:hidden`, and the page scrolls inside a new `.scroller` that
+wraps `main`. A scroll container that is not the root does honour
+`overscroll-behavior:none`, which is on it.
+
+The fixed layers stay outside the scroller, so the loader, the map and the
+bar still measure against the viewport and are untouched.
+
+- **The scroll reads moved with it.** `window.scrollY` is always 0 now and
+  the window never fires `scroll`. One global, `SCROLLER`, and one helper,
+  `onPageScroll`, carry the three scroll listeners, the progress bar's
+  `scrollTop` and range, and the resize anchor's `scrollTo`. Every
+  `getBoundingClientRect` read is unchanged, because the scroller fills the
+  viewport and still answers the question the choreography asks.
+- **The white band came out.** It was the answer to a pull that can no
+  longer happen, and `.scroller` clips anything above its scroll origin
+  anyway, so keeping it would have been dead CSS. Both changes are in one
+  commit, so one revert puts the elastic and its cover back together.
+- **The keyboard needed fixing, and this is the part worth remembering.** A
+  non-root scroller is not the browser's default scroll target. With focus
+  on body, space, arrows, PageDown, Home and End scrolled nothing at all.
+  Measured, not guessed. `tabindex="-1"` plus one `focus({preventScroll:true})`
+  at load hands the keys a scroller without adding a tab stop, and
+  `:focus-visible` never matches a programmatic focus, so no ring appears.
+
+## Checked
+
+- Viewport cannot scroll: root range 0, body range 0, `window.scrollY` 0.
+  Scroller range 7059, which is exactly what the document's was.
+- Screenshots against the merged page at scroll 0, 400, 1200, 2600, 4200,
+  6000 and the bottom, light and dark, reduced motion so the live
+  animations do not colour the comparison: identical everywhere except the
+  78px of bar at scroll 0, where the band used to paint the backdrop white
+  and the map now shows through the glass again, as it did before Monday.
+- Opening beat opacities and progress bar width sampled at five depths in
+  both themes: identical values to the old page, digit for digit.
+- `#route` anchor lands at 94px, which is the bar plus the 18px margin.
+  Wheel, Space, PageDown, End, Home and ArrowDown all scroll. A focused
+  link scrolls the container. Space on a `summary` still toggles it, same
+  as before.
+- No horizontal overflow on the root or the scroller. No page errors.
+
+## The costs, stated
+
+- **The iOS URL bar will not collapse any more.** Only a document scroll
+  does that, so phone visitors lose the extra strip of screen they used to
+  get after scrolling. This is the real price of the lock.
+- **Scroll position is no longer restored by the browser** on reload or back,
+  since that only applies to the document scroller.
+- Only `index.html` is locked. `devlog.html`, `status.html`, `legal.html`
+  and `404.html` still bounce; nothing shows there, and they have no
+  scroll-driven code, so the same three rules would do it if the owner wants
+  them consistent.
+- Safari is unverified from here, as ever. The mechanism is the one that
+  works there; the keyboard behaviour is the part worth a real check.
+
+---
+
 # The Pull at the Top, Again - Monday Sep 14
 
 *Written 5:59 PM.*

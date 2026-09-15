@@ -54,16 +54,44 @@ bar still measure against the viewport and are untouched.
   as before.
 - No horizontal overflow on the root or the scroller. No page errors.
 
-## The costs, stated
+## The costs, and then the costs paid back
 
-- **The iOS URL bar will not collapse any more.** Only a document scroll
-  does that, so phone visitors lose the extra strip of screen they used to
-  get after scrolling. This is the real price of the lock.
-- **Scroll position is no longer restored by the browser** on reload or back,
-  since that only applies to the document scroller.
+Both costs were reported to the owner and neither was accepted: "fix it so
+it works with the ios bar collapse still, and the restoring scroll position
+is kind of important so put that back." Right on both counts, and the answer
+was to stop treating the lock as one mechanism.
+
+- **The bounce needs different medicine on each platform, so it gets it.**
+  The macOS main frame ignores `overscroll-behavior`. iOS does not. So touch
+  keeps the document as its scroller and takes `overscroll-behavior:none` on
+  the root, while pointer devices get the container lock. The split is
+  `@media (hover:hover) and (pointer:fine)`, and the script reads the same
+  query so the two can never disagree about what is scrolling.
+- **The URL bar collapses again**, because on touch the document is doing
+  the scrolling, which is the only thing that collapses it.
+- **The offset comes back on reload.** The browser restores the scroll it
+  owns, which on the locked route is nothing, so the page keeps its own in
+  `sessionStorage`, per path, saved on `pagehide` and `visibilitychange` and
+  put back before the choreography reads a rect. A hash in the URL wins over
+  it. `behavior:"auto"` on the restore, or the scroller's own smooth scroll
+  animates it and the page opens mid flight.
+- **One helper each for the three reads**, `scrollPos`, `scrollRange` and
+  `scrollToY`, and `onPageScroll` binds both the window and the container
+  since only one of them can ever fire. The query is read live rather than
+  cached: an iPad that gains a trackpad changes the answer.
+
+*5:18 PM.* Checked both routes. Pointer: root range 0, container range 10875,
+PageDown and wheel both scroll, progress bar tracks, offset 3000 survives a
+reload, and `#verification` still wins over the restore and lands at 94px.
+Touch: root range 11068, the container is a plain div with `overflow:visible`,
+`overscroll-behavior` none on the root, `window.scrollY` drives the progress
+bar, `history.scrollRestoration` back to `auto`, no horizontal overflow.
+Renders identical to the page before the lock at three scroll positions, two
+widths and both themes, except the activity ticker, which differs against
+itself run to run and was confirmed as such rather than assumed.
 - Only `index.html` is locked. `devlog.html`, `status.html`, `legal.html`
   and `404.html` still bounce; nothing shows there, and they have no
-  scroll-driven code, so the same three rules would do it if the owner wants
+  scroll-driven code, so one rule on the root would do it if the owner wants
   them consistent.
 - Safari is unverified from here, as ever. The mechanism is the one that
   works there; the keyboard behaviour is the part worth a real check.

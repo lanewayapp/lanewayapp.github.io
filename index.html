@@ -57,34 +57,45 @@
 }
 
 *,*::before,*::after{box-sizing:border-box}
-/* No elastic. Owner's call, Tuesday Sep 15, having seen the alternative.
-   The bounce belongs to the viewport, so the viewport is given nothing to
-   scroll: the page scrolls inside .scroller instead, and a scroll container
-   that is not the root does honour overscroll-behavior. This is the only
-   thing that stops it on macOS. overscroll-behavior on the root does not:
-   it governs chaining and pull to refresh, not the bounce of the main
-   frame, tried and reverted on Thursday Sep 3.
-   Horizontal clipping used to sit on body alone, because a body with its
-   own overflow becomes a scroll container and breaks sticky. That no longer
-   applies: sticky now measures against .scroller, which is the scrollport,
-   and both root boxes are clipped on purpose so neither can scroll. */
-html,body{height:100%;overflow:hidden}
-html{-webkit-text-size-adjust:100%}
-.scroller{
-  height:100%;overflow-y:auto;overflow-x:hidden;
-  overscroll-behavior:none;scroll-behavior:smooth;
+/* No elastic, by two different routes, because one route alone costs
+   something worth more than the bounce. Owner's call, Tuesday Sep 15.
+
+   Touch keeps the document as the scroller. The iOS URL bar only collapses
+   for a document scroll and the browser only restores an offset it owns, so
+   both of those stay; overscroll-behavior on the root is enough there,
+   which is the whole reason this split exists.
+
+   Pointer devices take the other route. The macOS main frame ignores
+   overscroll-behavior, tried and reverted on Thursday Sep 3, so the
+   viewport is given nothing to scroll and .scroller carries the page
+   instead: a scroll container that is not the root does honour the
+   property. Nothing is lost there, since a Mac has no URL bar to collapse
+   and the script restores the offset itself.
+
+   Horizontal clipping stays on body alone on the document route, the way
+   devlog and legal set it: with it on both, the root's copy is the one the
+   viewport takes, body keeps its own and becomes a scroll container, which
+   breaks sticky. Inside the media query that does not apply, because sticky
+   measures against .scroller by then. */
+html{-webkit-text-size-adjust:100%;overscroll-behavior:none}
+html,.scroller{scroll-behavior:smooth}
+@media (hover:hover) and (pointer:fine){
+  html,body{height:100%;overflow:hidden}
+  .scroller{
+    height:100%;overflow-y:auto;overflow-x:hidden;overscroll-behavior:none;
+  }
+  /* Focused at load so the keyboard has a scroller to drive, and it is the
+     page rather than a control, so it carries no ring of its own. Every
+     control inside keeps its own :focus-visible outline. */
+  .scroller:focus{outline:none}
 }
-/* It is focused at load so the keyboard has a scroller to drive, and it is
-   the page rather than a control, so it carries no ring of its own. Every
-   control inside keeps its own :focus-visible outline. */
-.scroller:focus{outline:none}
 /* The header is sticky, so anything an in-page link targets has to clear it
    or the heading lands underneath. Long standing open item, closed. */
 [id]{scroll-margin-top:calc(var(--bar) + 18px)}
 body{
   margin:0;background:var(--bg);color:var(--ink);
   font-family:"Geist",-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
-  font-weight:400;-webkit-font-smoothing:antialiased;line-height:1.6;
+  font-weight:400;-webkit-font-smoothing:antialiased;line-height:1.6;overflow-x:hidden;
 }
 /* The first frame is part of the product. The route mark draws once, then its
    endpoint carries forward into an open ring. The overlay leaves on load and
@@ -660,7 +671,7 @@ footer .wrap{align-items:center;gap:24px}
 }
 
 @media (prefers-reduced-motion:reduce){
-  .scroller{scroll-behavior:auto}
+  html,.scroller{scroll-behavior:auto}
   *{transition:none!important;animation:none!important}
   .ledger-map-route{stroke-dashoffset:0}
   .ledger-map-vehicle{opacity:1;transform:translateX(430px)}
@@ -1084,15 +1095,59 @@ footer .wrap{align-items:center;gap:24px}
    through this element instead. Rect based reads are untouched: the
    scroller fills the viewport, so getBoundingClientRect still answers the
    question the choreography is asking. */
-var SCROLLER = document.getElementById("scroller") || document.scrollingElement;
-function onPageScroll(fn) { SCROLLER.addEventListener("scroll", fn, { passive: true }); }
-/* Give the keys somewhere to go. The viewport no longer scrolls, and a
-   non-root scroller is not the default scroll target, so with focus on body
-   space, arrows, PageDown, Home and End did nothing at all. Measured on the
-   locked page before this line existed. Focusing the container once at load
-   fixes it without a tab stop and without a focus ring, and anything focused
-   inside it scrolls it the usual way. */
-if (SCROLLER.focus) { try { SCROLLER.focus({ preventScroll: true }); } catch (e) { SCROLLER.focus(); } }
+var SCROLLER = document.getElementById("scroller");
+/* The same query the stylesheet branches on, so script and CSS cannot
+   disagree about which thing is scrolling. Read live rather than cached: an
+   iPad that gains a trackpad changes the answer. */
+var LOCK_Q = window.matchMedia("(hover:hover) and (pointer:fine)");
+function locked() { return !!SCROLLER && LOCK_Q.matches; }
+function scrollPos() { return locked() ? SCROLLER.scrollTop : (window.pageYOffset || 0); }
+function scrollRange() {
+  return locked() ? SCROLLER.scrollHeight - SCROLLER.clientHeight
+                  : document.documentElement.scrollHeight - window.innerHeight;
+}
+function scrollToY(y) { if (locked()) SCROLLER.scrollTo(0, y); else window.scrollTo(0, y); }
+/* Both, on purpose. Only one of the two ever fires, and which one depends on
+   a media query that can change under us. */
+function onPageScroll(fn) {
+  window.addEventListener("scroll", fn, { passive: true });
+  if (SCROLLER) SCROLLER.addEventListener("scroll", fn, { passive: true });
+}
+
+if (locked()) {
+  /* Give the keys somewhere to go. A non-root scroller is not the browser's
+     default scroll target, so with focus on body space, arrows, PageDown,
+     Home and End did nothing at all. Measured, not assumed. Focusing the
+     container once at load fixes it without adding a tab stop and without a
+     ring, since :focus-visible never matches a programmatic focus, and
+     anything focused inside it scrolls it the usual way. */
+  try { SCROLLER.focus({ preventScroll: true }); } catch (e) { SCROLLER.focus(); }
+
+  /* And put the offset back on reload. The browser restores the scroll it
+     owns, which on this route is nothing, so the page keeps its own: saved
+     on the way out, put back before the choreography reads a rect. A hash in
+     the URL wins, because the reader asked for that instead. Session scoped
+     and per path, and every access is guarded: private mode can throw on
+     sessionStorage rather than return null. */
+  (function () {
+    var KEY = "laneway:offset:" + location.pathname;
+    function save() {
+      try { sessionStorage.setItem(KEY, String(Math.round(SCROLLER.scrollTop))); } catch (e) {}
+    }
+    window.addEventListener("pagehide", save);
+    document.addEventListener("visibilitychange", function () {
+      if (document.visibilityState === "hidden") save();
+    });
+    if (!location.hash) {
+      try {
+        var y = parseFloat(sessionStorage.getItem(KEY));
+        /* behavior auto, or the smooth scroll on .scroller animates the
+           restore and the page opens mid flight. */
+        if (y > 0) SCROLLER.scrollTo({ top: y, behavior: "auto" });
+      } catch (e) {}
+    }
+  }());
+}
 
 /* Two opening beats. This is deliberately separate from the map camera
    below: changing the introduction must not change the route choreography. */
@@ -1316,8 +1371,8 @@ if (SCROLLER.focus) { try { SCROLLER.focus({ preventScroll: true }); } catch (e)
 
   function frame(dt) {
     if (bar) {
-      var max = SCROLLER.scrollHeight - SCROLLER.clientHeight;
-      bar.style.width = (max > 0 ? (SCROLLER.scrollTop / max) * 100 : 0) + "%";
+      var max = scrollRange();
+      bar.style.width = (max > 0 ? (scrollPos() / max) * 100 : 0) + "%";
     }
 
     var r = journey.getBoundingClientRect();
@@ -1827,7 +1882,7 @@ if (SCROLLER.focus) { try { SCROLLER.focus({ preventScroll: true }); } catch (e)
       var r = held.el.getBoundingClientRect();
       var s = span(r);
       if (s >= MIN_SPAN) {
-        SCROLLER.scrollTo(0, Math.round(r.top + SCROLLER.scrollTop + held.progress * s));
+        scrollToY(Math.round(r.top + scrollPos() + held.progress * s));
       }
       /* Let the sections re-render against the corrected offset before
          listening again, or the restore reads as a scroll and is lost. */

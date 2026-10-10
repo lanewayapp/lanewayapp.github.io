@@ -279,6 +279,164 @@ section{padding:clamp(64px,9vw,132px) 0}
 .reading h2{font-size:clamp(24px,3.2vw,34px);line-height:1.16;max-width:19ch;margin-bottom:26px}
 .reading .body{margin-left:clamp(0px,14vw,190px)}
 
+/* Interactive recreations of the route sheet and evidence views in PlanView.swift.
+   The map is schematic; the copy comes from the app's canned demo plan. */
+.app-demo-intro{display:flex;align-items:end;justify-content:space-between;gap:30px}
+.app-demo.light-section{position:relative;overflow:hidden;background:radial-gradient(ellipse 55% 38% at 6% 55%,#E3EAF1 0%,transparent 100%),radial-gradient(ellipse 45% 40% at 96% 38%,#E8EDF2 0%,transparent 100%),#F3F5F7}
+.app-demo .wrap{position:relative;z-index:1}
+.app-demo-intro-aside{max-width:39ch}
+.app-demo-intro .lede{max-width:39ch;margin:0}
+.app-demo-replay{display:inline-flex;align-items:center;gap:8px;margin-top:16px;padding:8px 13px;border:1px solid #B7C4D4;border-radius:999px;background:rgba(255,255,255,.72);color:#243F64;font:600 12px "Geist",sans-serif;cursor:pointer}
+.app-demo-replay[hidden]{display:none}
+.app-demo-replay:hover{background:#fff;border-color:#243F64}
+.app-demo-replay:focus-visible{outline:3px solid #243F64;outline-offset:3px}
+.app-demo-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:16px}
+.app-demo-actions .app-demo-replay{margin-top:0}
+.app-demo-connections-link{display:inline-flex;align-items:center;padding:8px 13px;border:1px solid #243F64;border-radius:999px;background:#243F64;color:#fff;font:600 12px "Geist",sans-serif;text-decoration:none}
+.app-demo-connections-link:hover{background:#172133;border-color:#172133}
+.app-demo-connections-link:focus-visible{outline:3px solid #243F64;outline-offset:3px}
+.app-demo-showcase{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:25px;align-items:start;margin-top:48px;perspective:1400px}
+.app-demo-showcase::before{content:"";position:absolute;inset:16% -6% 14%;z-index:-1;border-radius:50%;background:radial-gradient(ellipse,rgba(36,63,100,.13) 0%,rgba(36,63,100,0) 67%);pointer-events:none}
+.app-demo-guide{position:absolute;z-index:8;left:-100px;top:-100px;width:28px;height:34px;pointer-events:none;opacity:0;transition:opacity .25s}
+.app-demo-guide[data-visible="true"]{opacity:1}
+.app-demo-guide svg{display:block;width:28px;height:34px;filter:drop-shadow(1px 2px 2px rgba(23,33,51,.4));transform-origin:3px 2px}
+.app-demo-guide::after{content:"";position:absolute;left:-3px;top:-4px;width:12px;height:12px;border:2px solid rgba(36,74,124,.6);border-radius:50%;opacity:0}
+.app-demo-guide[data-tap="true"] svg{animation:app-demo-pointer-click .3s ease-out}
+.app-demo-guide[data-tap="true"]::after{animation:app-demo-pointer-ring .55s ease-out}
+@keyframes app-demo-pointer-click{40%{transform:scale(.82)}to{transform:scale(1)}}
+@keyframes app-demo-pointer-ring{from{opacity:1;transform:scale(.35)}to{opacity:0;transform:scale(2.5)}}
+.app-demo-window{--depth:0px;--tilt:2deg;display:flex;flex-direction:column;min-width:0;color:#172133;transform:translateY(var(--depth)) rotateY(var(--tilt));transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.app-demo-window:nth-child(2){--depth:22px;--tilt:0deg}
+.app-demo-window:nth-child(3){--depth:44px;--tilt:-2deg}
+.app-demo-window:hover,.app-demo-window:focus-within{transform:translateY(var(--depth)) rotateY(0deg) scale(1.012)}
+.app-demo-window-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:34px;margin-bottom:12px;padding:0 3px;color:#536278;font:600 10px "Geist Mono",ui-monospace,Menlo,monospace;letter-spacing:.08em;text-transform:uppercase}
+.app-demo-window-bar .number{color:#243F64}
+.app-demo-window-bar .try{padding:4px 8px;border:1px solid #B7C4D4;border-radius:999px;color:#465D78;font-size:9px}
+.app-demo-window-copy{order:2;min-height:0;padding:18px 5px 0}
+.app-demo-window-copy h3{margin:0 0 6px;font-size:clamp(22px,2vw,29px);font-weight:550;line-height:1.16;letter-spacing:-.04em}
+.app-demo-window-copy p{max-width:33ch;margin:0;color:#546172;font-size:13px;line-height:1.5}
+.app-demo-showcase[data-playing="true"] .app-ui{animation:app-demo-arrive .85s cubic-bezier(.2,.8,.2,1) both}
+.app-demo-showcase[data-playing="true"] .app-demo-window:nth-child(2) .app-ui{animation-delay:.14s}
+.app-demo-showcase[data-playing="true"] .app-demo-window:nth-child(3) .app-ui{animation-delay:.28s}
+@keyframes app-demo-arrive{from{opacity:.4;transform:translateY(32px) scale(.96)}to{opacity:1;transform:none}}
+.app-ui{order:1;position:relative;contain:layout;height:560px;margin:0;overflow:hidden;isolation:isolate;border:7px solid #172133;border-radius:30px;background:#F3F5F7;color:#202A36;box-shadow:0 26px 42px rgba(23,33,51,.22),0 5px 12px rgba(23,33,51,.14);font:13px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.app-demo-window:nth-child(2) .app-ui{box-shadow:0 28px 48px rgba(46,85,132,.24),0 5px 12px rgba(23,33,51,.14)}
+.app-demo-window:nth-child(3) .app-ui{box-shadow:0 28px 48px rgba(23,33,51,.24),0 5px 12px rgba(23,33,51,.14)}
+.app-demo-window[data-active="true"] .app-ui{box-shadow:0 34px 68px rgba(36,63,100,.34),0 0 0 4px rgba(36,63,100,.18)}
+.app-ui button{font:inherit;cursor:pointer}
+.app-ui button:focus-visible{outline:3px solid #274B7A;outline-offset:2px}
+.app-ui-chip{display:inline-block;padding:4px 9px;border-radius:999px;background:#E7E8E7;color:#667080;font-size:11px;font-weight:650;white-space:nowrap}
+.app-ui-chip.verified{background:#DCE7F2;color:#243F64}
+.app-ui-chip.unverified{background:#F5EAD9;color:#945D13}
+.app-ui-map{position:absolute;inset:0;background:#E5EBF0}
+.app-ui-map svg{display:block;width:100%;height:100%;transition:transform .8s cubic-bezier(.2,.8,.2,1)}
+.app-ui-plan[data-leg="walk"] .app-ui-map svg{transform:scale(1.28) translate(10%,16%)}
+.app-ui-plan[data-leg="train"] .app-ui-map svg{transform:scale(1.28) translate(0,0)}
+.app-ui-plan[data-leg="shuttle"] .app-ui-map svg{transform:scale(1.28) translate(-8%,-15%)}
+.app-ui-map .road{fill:none;stroke:#C8D2DC;stroke-width:7;stroke-linecap:round}
+.app-ui-map .road.minor{stroke:#F9FAFC;stroke-width:5}
+.app-ui-map .map-water{fill:#D4E2EC}
+.app-ui-map .map-park{fill:#DCE4E7}
+.app-ui-map .demo-route{fill:none;stroke:#243F64;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;transition:stroke-width .4s,opacity .4s}
+.app-ui-map .demo-route.unknown{stroke:#75869A;stroke-dasharray:8 7}
+.app-ui-map .demo-route.unknown.shuttle{stroke:#B77B35}
+.app-demo-showcase[data-playing="true"] .app-ui-map .demo-route.known{animation:app-demo-route-draw 1.5s ease-out both}
+.app-ui-map .route-tracer{fill:none;stroke:#EAF2FB;stroke-width:7;stroke-linecap:round;stroke-dasharray:.07 .93;opacity:0}
+.app-demo-showcase[data-playing="true"] .app-ui-map .route-tracer{opacity:.95;animation:app-demo-route-trace 2.4s linear 1.5s infinite}
+.app-ui-map .route-vehicle-halo{fill:rgba(36,63,100,.23);opacity:0}
+.app-ui-map .route-vehicle{fill:#172133;stroke:#fff;stroke-width:4;filter:drop-shadow(0 3px 4px rgba(23,33,51,.3));opacity:0}
+.app-ui-map[data-travelling="true"] .route-vehicle,.app-ui-map[data-travelling="true"] .route-vehicle-halo{opacity:1}
+.app-ui-map[data-arrived="true"] .route-vehicle-halo{animation:app-demo-arrival-ping .85s ease-out 2}
+@keyframes app-demo-arrival-ping{to{opacity:0;r:35}}
+.app-ui-plan[data-leg="walk"] .route-tracer,.app-ui-plan[data-leg="shuttle"] .route-tracer{opacity:0!important}
+.app-ui-plan[data-leg]:not([data-leg="none"]) .demo-route{opacity:.26}
+.app-ui-plan[data-leg="walk"] .demo-route.walk,.app-ui-plan[data-leg="train"] .demo-route.train,.app-ui-plan[data-leg="shuttle"] .demo-route.shuttle{opacity:1;stroke-width:8}
+@keyframes app-demo-route-draw{from{stroke-dasharray:1;stroke-dashoffset:1}to{stroke-dasharray:1;stroke-dashoffset:0}}
+@keyframes app-demo-route-trace{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+.app-ui-map .map-node{fill:#fff;stroke:#243F64;stroke-width:4}
+.app-ui-plan[data-leg="walk"] .map-node:nth-of-type(1),.app-ui-plan[data-leg="train"] .map-node:nth-of-type(2),.app-ui-plan[data-leg="shuttle"] .map-node:nth-of-type(3){animation:app-demo-map-ping 1.4s ease-out 2}
+@keyframes app-demo-map-ping{50%{stroke-width:10;opacity:.55}}
+.app-ui-map .map-label{fill:#43535C;font:700 10px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:.05em}
+.app-ui-map-note{position:absolute;top:20px;left:18px;padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.92);color:#52616E;font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase}
+.app-ui-map-focus{position:absolute;top:60px;left:18px;max-width:calc(100% - 36px);padding:9px 12px;border-radius:12px;background:#fff;color:#354152;font-size:12px;font-weight:700;box-shadow:0 5px 18px rgba(36,42,50,.12);opacity:0;transform:translateY(7px);transition:opacity .35s,transform .35s;pointer-events:none}
+.app-ui-plan[data-leg]:not([data-leg="none"]) .app-ui-map-focus{opacity:1;transform:none}
+.app-ui-map-focus span{display:none}
+.app-ui-plan[data-leg="walk"] .app-ui-map-focus .walk,.app-ui-plan[data-leg="train"] .app-ui-map-focus .train,.app-ui-plan[data-leg="shuttle"] .app-ui-map-focus .shuttle{display:block}
+.app-ui-plan-sheet{position:absolute;inset:14px 0 0;border-radius:25px 25px 0 0;background:#F3F5F7;box-shadow:0 -15px 38px rgba(23,33,51,.19);transform:translateY(calc(100% - 112px));transition:transform .62s cubic-bezier(.2,.8,.2,1)}
+.app-demo-window[data-open="true"] .app-ui-plan-sheet{transform:none}
+.app-ui-plan-toggle{position:relative;display:block;width:100%;height:112px;padding:20px 17px 12px;border:0;background:none;text-align:left;color:#202A36}
+.app-ui-grabber{position:absolute;top:8px;left:50%;width:33px;height:5px;border-radius:5px;background:#BBC0BF;transform:translateX(-50%)}
+.app-ui-plan-title{display:block;max-width:calc(100% - 22px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:15px;font-weight:750}
+.app-ui-plan-meta{display:flex;gap:6px;margin-top:9px}
+.app-ui-chevron{position:absolute;right:18px;top:40px;width:9px;height:9px;border-top:2px solid #707B86;border-right:2px solid #707B86;transform:rotate(-45deg);transition:transform .3s}
+.app-demo-window[data-open="true"] .app-ui-chevron{transform:rotate(135deg)}
+.app-ui-plan-details{height:calc(100% - 112px);overflow:auto;padding:0 16px 18px;overscroll-behavior:contain}
+.app-ui-overview,.app-ui-leg-row,.app-ui-leg-card,.app-ui-detail-card{border:1px solid #DEE4E9;border-radius:17px;background:#fff;box-shadow:0 5px 18px rgba(36,42,50,.06)}
+.app-ui-overview{padding:13px;margin-bottom:12px}
+.app-ui-overview strong{display:block;margin-bottom:5px;color:#667080;font-size:10px;letter-spacing:.13em}
+.app-ui-overview p{margin:0;font-size:12px;line-height:1.4}
+.app-ui-leg-list{display:grid;gap:8px}
+.app-ui-leg-row{display:block;width:100%;padding:11px;text-align:left;color:#202A36;transition:border-color .25s,box-shadow .25s,transform .25s}
+.app-ui-leg-row:hover{transform:translateY(-2px)}
+.app-ui-leg-row[aria-pressed="true"]{border-color:#243F64;box-shadow:0 0 0 2px rgba(36,63,100,.2)}
+.app-ui-leg-row .line,.app-ui-leg-card .line{display:flex;align-items:center;justify-content:space-between;gap:6px}
+.app-ui-leg-row strong,.app-ui-leg-card strong{font-size:14px}
+.app-ui-leg-row small{display:block;margin-top:5px;color:#67717D;font-size:11px;line-height:1.35}
+.app-ui-appbar{position:relative;z-index:1;padding:15px 15px 12px;border-bottom:1px solid #DEE4E9;background:#F3F5F7}
+.app-ui-appbar strong{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:14px}
+.app-ui-appbar .app-ui-chip{margin-top:6px}
+.app-ui-timeline{position:relative;height:calc(100% - 73px);overflow:auto;padding:18px 14px;overscroll-behavior:contain}
+.app-ui-timeline::before{content:"";position:absolute;top:21px;bottom:20px;left:30px;width:2px;background:#D7DEE5}
+.app-ui-leg-block{position:relative;margin:0 0 13px 30px}
+.app-ui-mode-dot{position:absolute;top:15px;left:-29px;display:grid;place-items:center;width:24px;height:24px;border:2px solid #D4D6CF;border-radius:50%;background:#fff;color:#697684;font-size:10px;font-weight:800}
+.app-ui-mode-dot.verified{border-color:#243F64;color:#243F64}
+.app-ui-leg-card{padding:13px}
+.app-ui-leg-card p{margin:7px 0 0;font-size:12px;line-height:1.35}
+.app-ui-leg-card .muted{color:#707986}
+.app-ui-evidence-trigger{margin-top:12px;padding:0;border:0;background:none;color:#243F64;text-align:left;font-size:11px!important;font-weight:700!important}
+.app-ui-evidence-trigger:hover{text-decoration:underline}
+.app-ui-train-scene{padding-top:35px}
+.app-ui-shuttle-select{display:block;width:100%;padding:0;border:0;background:none;text-align:left;color:inherit}
+.app-ui-shuttle-card{transition:border-color .25s,box-shadow .25s,transform .25s}
+.app-ui-shuttle-card:has(.app-ui-shuttle-select[aria-pressed="true"]){border-color:#243F64;box-shadow:0 0 0 2px rgba(36,63,100,.2);transform:translateY(-3px)}
+.app-ui-shuttle-card:has(.app-ui-shuttle-select[aria-pressed="true"]){animation:app-demo-unknown-pulse 1.4s ease-out 2}
+@keyframes app-demo-unknown-pulse{50%{box-shadow:0 0 0 10px rgba(36,63,100,0)}}
+.app-ui-detail-sheet{position:absolute;z-index:3;inset:0;overflow:auto;background:#F3F5F7;visibility:hidden;transform:translateY(101%);transition:transform .55s cubic-bezier(.2,.8,.2,1),visibility 0s .55s;overscroll-behavior:contain}
+.app-demo-window[data-open="true"] .app-ui-detail-sheet{visibility:visible;transform:none;transition:transform .55s cubic-bezier(.2,.8,.2,1),visibility 0s}
+.app-demo-window[data-open="true"] .app-ui-detail-card{animation:app-demo-detail-reveal .55s cubic-bezier(.2,.8,.2,1) both}
+.app-demo-window[data-open="true"] .app-ui-detail-card:nth-child(2){animation-delay:.16s}
+@keyframes app-demo-detail-reveal{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.app-demo-window[data-open="true"] .app-ui-detail-card:nth-child(2)::after{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(110deg,transparent 25%,rgba(36,63,100,.12) 48%,transparent 72%);transform:translateX(-110%);pointer-events:none;animation:app-demo-source-scan 1.4s ease-in-out .4s both}
+@keyframes app-demo-source-scan{to{transform:translateX(110%)}}
+.app-ui-detail-head{position:sticky;top:0;z-index:1;display:flex;align-items:center;justify-content:space-between;padding:18px 15px;border-bottom:1px solid #DEE4E9;background:#F3F5F7}
+.app-ui-detail-head strong{font-size:17px}
+.app-ui-detail-head button{padding:7px 13px;border:0;border-radius:999px;background:#fff;font-weight:700}
+.app-ui-detail-body{display:grid;gap:13px;padding:18px 15px}
+.app-ui-detail-card{position:relative;overflow:hidden;padding:15px;font-size:13px;line-height:1.5}
+.app-ui-detail-card p{margin:0}
+.app-ui-claim-head{display:flex;gap:8px;align-items:start;font-size:13px;font-weight:700;line-height:1.35}
+.app-ui-claim-mark{flex:none;display:grid;place-items:center;width:19px;height:19px;border-radius:50%;background:#243F64;color:#fff;font-size:12px}
+.app-ui-claim-mark.unknown{background:#B77B35}
+.app-ui-detail-card blockquote{margin:12px 0;padding-left:10px;border-left:3px solid #9EB1C6;color:#69727F;font-style:italic;font-size:12px}
+.app-ui-detail-card .source{display:block;margin-top:9px;color:#69727F;font-size:11px}
+.app-ui-detail-card .source a{color:#425E84;text-decoration:underline}
+.app-ui-detail-card .reason{margin-top:11px;color:#815620;font-size:12px}
+.app-demo-caption{max-width:82ch;margin:75px 0 0;color:#58677A;font-size:12px;line-height:1.55}
+@media (max-width:900px){
+  .app-demo-intro{display:block}.app-demo-intro .lede{margin-top:20px}
+  .app-demo-showcase{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .app-demo-window{--depth:0px!important;--tilt:0deg!important}
+  .app-demo-caption{margin-top:28px}
+}
+@media (max-width:650px){
+  .app-demo-showcase{grid-template-columns:1fr;gap:16px;margin-top:28px}
+  .app-demo-window{margin-bottom:18px}
+  .app-ui{height:520px}
+}
+@media (max-width:500px){
+  .app-demo-guide{display:none}
+}
+
 /* Verification: a ledger, which is what a verifier produces. */
 .ledger{margin-top:40px;border-top:1px solid var(--ink)}
 .ledger .row{border-bottom:1px solid var(--hair)}
@@ -326,15 +484,6 @@ section{padding:clamp(64px,9vw,132px) 0}
 @media (max-width:760px){
   .ledger summary{grid-template-columns:1fr;gap:8px;padding:20px 0}
 }
-
-/* Pipeline: dense and technical on purpose, small type, no boxes. */
-.pipe{margin-top:40px;border-top:1px solid var(--hair);display:grid;grid-template-columns:repeat(3,1fr);gap:0}
-.pipe div{padding:20px clamp(16px,2.4vw,30px) 24px 0;border-bottom:1px solid var(--hair)}
-.pipe .k{font-family:"Geist Mono",ui-monospace,Menlo,monospace;font-size:11px;font-weight:500;color:var(--accent)}
-.pipe h3{font-size:14.5px;margin:8px 0 5px;font-weight:500}
-.pipe p{margin:0;font-size:13.5px;line-height:1.5;color:var(--muted)}
-@media (max-width:860px){.pipe{grid-template-columns:repeat(2,1fr)}}
-@media (max-width:560px){.pipe{grid-template-columns:1fr}}
 
 /* Status: two plain lists. The column heading says what the column is, so the
    rows carry no badges. */
@@ -530,7 +679,7 @@ section.opening{padding:0}
   --verified:#1E7A48;--contradicted:#B23A2A;
   background:var(--bg);color:var(--ink);color-scheme:light;
 }
-.light-section .section-index,.light-section .pipe .k{color:#243F64}
+.light-section .section-index{color:#243F64}
 .light-section .btn{background:#172133;border-color:#172133;color:#FFFFFF}
 .light-section .btn:hover{background:#243F64;border-color:#243F64}
 .contrast-section{--bg:#101010;--ink:#F5F5F5;--muted:#A6A6A6;--hair:rgba(255,255,255,.16);--accent:#D9E5F5;--verified:#53C68B;--contradicted:#F08073;background:var(--bg);color:var(--ink)}
@@ -542,13 +691,6 @@ section.opening{padding:0}
 .ledger summary:focus-visible{outline-offset:7px}
 .ledger summary .src::after{content:"Explore the trace +";display:block;font-size:12px;color:var(--ink);margin-top:10px}
 .ledger details[open] summary .src::after{content:"Close the trace -"}
-.pipe{margin-top:52px;grid-template-columns:repeat(3,1fr);border:1px solid var(--hair);border-radius:4px;overflow:hidden}
-.pipe div{padding:30px;border:0;min-height:205px}
-.pipe div:not(:nth-child(3n)){border-right:1px solid var(--hair)}
-.pipe div:nth-child(-n+3){border-bottom:1px solid var(--hair)}
-.pipe .k{font-size:12px;color:var(--muted)}
-.pipe h3{font-size:20px;letter-spacing:-.035em;margin:24px 0 9px}
-.pipe p{font-size:14px;line-height:1.6;max-width:29ch}
 #activity{background:var(--surface);border-block:1px solid var(--hair)}
 .activity-note{font-size:15px;max-width:32ch;margin-left:auto}
 .activity-stage{border-top:1px solid var(--hair)}
@@ -595,27 +737,9 @@ footer .wrap{align-items:center;gap:24px}
   .reading .body{margin:28px 0 0;font-size:17px}
   .ledger summary{grid-template-columns:1fr;gap:14px}
   .ledger .claim{font-size:17px}
-  .pipe{grid-template-columns:repeat(2,1fr)}.pipe div{padding:24px;min-height:190px}
-  .pipe div:not(:nth-child(3n)){border-right:0}
-  .pipe div:nth-child(odd){border-right:1px solid var(--hair)}
-  .pipe div:nth-child(-n+4){border-bottom:1px solid var(--hair)}
   .activity-note{margin:0;max-width:38ch}.activity-airport strong{font-size:25px}
   .cols{gap:36px}.coverage ul{gap:10px 0}
   footer .right{margin-left:0;gap:20px;flex-wrap:wrap}
-}
-/* The monochrome redesign re-declared .pipe further down the sheet than the
-   original ladder, so the single-column rule written for narrow screens
-   stopped winning and never applied again. Every phone, and the folded Duo
-   at 466, got two columns about twenty characters wide. Restored at the
-   width it was written for, with the borders one column actually needs:
-   the rules above paint the right-hand edge on the odd cells and the bottom
-   edge on the first four, and both are wrong once the cells are stacked. */
-@media (max-width:560px){
-  .pipe{grid-template-columns:1fr}
-  .pipe div,.pipe div:nth-child(odd),.pipe div:not(:nth-child(3n)){border-right:0}
-  .pipe div,.pipe div:nth-child(-n+4){border-bottom:1px solid var(--hair)}
-  .pipe div:last-child{border-bottom:0}
-  .pipe div{min-height:0;padding:22px 24px}
 }
 /* Large screens. Every max-width and every clamp ceiling on this page tops out
    around a 1400px viewport, so past that more screen bought nothing but
@@ -651,9 +775,6 @@ footer .wrap{align-items:center;gap:24px}
   /* Body copy grows, but far less than the display sizes: a measure that
      tracked the screen would be unreadable at this width. */
   .reading .body{font-size:clamp(18px,1.15vw,21px)}
-  .pipe div{padding:clamp(30px,2.2vw,44px)}
-  .pipe h3{font-size:22px}
-  .pipe p{font-size:15px}
   .cols li{font-size:16px}
 }
 @media (max-height:680px) and (min-width:761px){
@@ -713,6 +834,116 @@ footer .wrap{align-items:center;gap:24px}
 @media (min-width:1600px){
   .top .wrap{max-width:clamp(1320px,78vw,2200px)}
 }
+/* Connections profile concept. The inner UI deliberately stays light in both themes. */
+#connections{--blue:#243F64;--line:#DCE3EA;--cool:#F2F5F7;--muted:#5B6775;--navy:#172133;--ink:#151515;--paper:#fff;color:#151515;color-scheme:light}
+#connections{padding:34px 0 90px;background:var(--cool)}
+#connections .showcase-head{display:flex;align-items:end;justify-content:space-between;gap:25px;margin-bottom:22px}
+#connections .showcase-head h3{margin:6px 0 0;font-size:clamp(25px,3vw,38px);font-weight:550;letter-spacing:-.045em;line-height:1.12}
+#connections .showcase-head .mono{color:var(--blue)}
+#connections .showcase-guide{margin:-7px 0 19px;color:#536278;font-size:13px;line-height:1.5}
+#connections .showcase-guide strong{color:var(--blue);font-weight:700}
+#connections .replay{padding:9px 16px;border:1px solid #A9B8C8;border-radius:999px;background:#fff;color:var(--blue);font-size:13px;font-weight:650;white-space:nowrap}
+#connections .replay:hover{border-color:var(--blue);background:#E9EFF5}
+#connections .profile-demo{position:relative;display:grid;grid-template-columns:260px minmax(0,1fr);gap:8px;min-height:640px;padding:8px;border:1px solid #334052;border-radius:30px;background:var(--navy);color:#151515;color-scheme:light;box-shadow:0 30px 70px rgba(23,33,51,.22),0 4px 14px rgba(23,33,51,.12);isolation:isolate}
+#connections .profile-sidebar,#connections .profile-main{min-width:0;border-radius:23px;background:#fff}
+#connections .profile-sidebar{display:flex;flex-direction:column;gap:20px;padding:23px 18px;background:#EFF3F6}
+#connections .sidebar-label{display:flex;align-items:center;justify-content:space-between;gap:8px;color:#536278}
+#connections .sidebar-label .sample{padding:4px 8px;border:1px solid #CBD5DF;border-radius:99px;font-size:9px}
+#connections .avatar{display:grid;place-items:center;width:60px;height:60px;border-radius:19px;background:var(--navy);color:#fff;font-size:24px;font-weight:600;letter-spacing:-.05em}
+#connections .profile-sidebar h3{margin:12px 0 3px;font-size:22px;font-weight:570;letter-spacing:-.04em}
+#connections .profile-sidebar p{margin:0;color:var(--muted);font-size:12px;line-height:1.5}
+#connections .sidebar-actions{display:grid;gap:7px}
+#connections .sidebar-actions button{display:flex;align-items:center;gap:12px;width:100%;padding:12px;border:1px solid transparent;border-radius:12px;background:transparent;color:#344153;text-align:left;font-size:13px;font-weight:650}
+#connections .sidebar-actions button.is-current,#connections .sidebar-actions button:hover{border-color:#BFCBD8;background:#fff;color:var(--navy)}
+#connections .sidebar-actions svg{width:18px;height:18px;flex:none}
+#connections .sidebar-foot{margin-top:auto;padding:15px;border:1px solid #D5DEE6;border-radius:16px;background:#fff}
+#connections .sidebar-foot b{display:block;margin-bottom:5px;font-size:12px}
+#connections .sidebar-foot p{font-size:11px}
+#connections .profile-main{position:relative;overflow:hidden;min-height:624px;background:#F9FAFB}
+#connections .main-bar{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:19px 26px;border-bottom:1px solid var(--line);background:#fff}
+#connections .main-bar .mono{color:#586A7D}
+#connections .main-bar .state{color:var(--blue);font-size:11px;font-weight:700}
+#connections .profile-screen{display:none;padding:28px 30px 32px;min-height:548px;animation:screen-enter .55s cubic-bezier(.2,.8,.2,1) both}
+#connections .profile-demo[data-scene="connections"] .screen-connections,#connections .profile-demo[data-scene="friend"] .screen-friend,#connections .profile-demo[data-scene="trip"] .screen-trip{display:block}
+@keyframes screen-enter{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+#connections .screen-head{display:flex;align-items:start;justify-content:space-between;gap:18px;margin-bottom:24px}
+#connections .screen-head h2{margin:3px 0 4px;font-size:clamp(27px,3.4vw,42px);font-weight:580;line-height:1.08;letter-spacing:-.055em}
+#connections .screen-head p{margin:0;color:var(--muted);font-size:13px}
+#connections .screen-head p strong{color:var(--blue);font-weight:700}
+#connections .screen-head .mono{color:var(--blue)}
+#connections .back{display:inline-flex;gap:7px;align-items:center;padding:0;border:0;background:none;color:var(--blue);font-size:12px;font-weight:700}
+#connections .back:hover{text-decoration:underline}
+#connections .connection-row{display:flex;align-items:center;gap:17px;width:100%;padding:18px;border:1px solid var(--line);border-radius:20px;background:#fff;text-align:left;box-shadow:0 8px 25px rgba(23,33,51,.055);transition:transform .3s,box-shadow .3s,border-color .3s}
+#connections .connection-row:hover,#connections .connection-row:focus-visible{transform:translateY(-4px);border-color:#A6B8CB;box-shadow:0 18px 35px rgba(23,33,51,.13)}
+#connections .friend-avatar{display:grid;place-items:center;flex:none;width:54px;height:54px;border-radius:17px;background:#DCE6F0;color:var(--blue);font-size:22px;font-weight:650}
+#connections .connection-row strong{display:block;font-size:17px;letter-spacing:-.03em}
+#connections .connection-row small{display:block;margin-top:3px;color:var(--muted);font-size:12px}
+#connections .connection-row .verified{margin-top:8px;padding:3px 7px;font-size:10px}
+#connections .connection-row .arrow{margin-left:auto;color:var(--blue);font-size:22px}
+#connections .preview-explain{max-width:60ch;margin:26px 0 0;color:#687687;font-size:12px}
+#connections .friend-profile{display:grid;grid-template-columns:minmax(0,1fr) 180px;gap:25px;align-items:end;padding:22px;border:1px solid var(--line);border-radius:21px;background:#fff}
+#connections .friend-profile .name{display:flex;align-items:center;gap:14px}
+#connections .friend-profile h3{margin:0;font-size:23px;letter-spacing:-.04em}
+#connections .friend-profile p{margin:3px 0 0;color:var(--muted);font-size:12px}
+#connections .friend-profile .photo-strip{display:flex;justify-content:flex-end;align-items:end;height:96px}
+#connections .friend-profile .photo-strip img{width:67px;height:87px;margin-left:-16px;object-fit:cover;border:3px solid #fff;border-radius:12px;box-shadow:0 6px 14px rgba(23,33,51,.16);transform:rotate(-6deg)}
+#connections .friend-profile .photo-strip img:nth-child(2){transform:translateY(-8px) rotate(5deg)}
+#connections .friend-profile .photo-strip img:nth-child(3){transform:rotate(10deg)}
+#connections .profile-demo[data-scene="friend"] .photo-strip img{animation:photo-fan .55s cubic-bezier(.2,.8,.2,1) both}
+#connections .profile-demo[data-scene="friend"] .photo-strip img:nth-child(2){animation-delay:.1s}
+#connections .profile-demo[data-scene="friend"] .photo-strip img:nth-child(3){animation-delay:.2s}
+@keyframes photo-fan{from{opacity:0;translate:0 30px;rotate:-12deg}to{opacity:1;translate:0 0;rotate:0deg}}
+#connections .trip-card{display:grid;grid-template-columns:40% minmax(0,1fr);overflow:hidden;width:100%;min-height:205px;margin-top:18px;padding:0;border:1px solid var(--line);border-radius:21px;background:#fff;text-align:left;box-shadow:0 10px 28px rgba(23,33,51,.08);transition:transform .3s,box-shadow .3s}
+#connections .trip-card:hover,#connections .trip-card:focus-visible{transform:translateY(-5px);box-shadow:0 24px 42px rgba(23,33,51,.17)}
+#connections .trip-card img{width:100%;height:100%;object-fit:cover}
+#connections .trip-card-body{display:flex;flex-direction:column;justify-content:space-between;gap:16px;padding:23px}
+#connections .trip-card .mono{color:var(--muted)}
+#connections .trip-card strong{display:block;margin-top:6px;font-size:clamp(24px,3vw,34px);line-height:1.05;letter-spacing:-.05em}
+#connections .trip-card .trip-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;color:var(--muted);font-size:12px}
+#connections .verified{display:inline-flex;align-items:center;gap:6px;padding:6px 9px;border:1px solid #C9D8E8;border-radius:99px;background:#E5EDF6;color:var(--blue);font-size:11px;font-weight:750;white-space:nowrap}
+#connections .verified svg{width:14px;height:14px;flex:none}
+#connections .trip-head{display:flex;align-items:end;justify-content:space-between;gap:14px;margin:15px 0 18px}
+#connections .trip-head h2{margin:0;font-size:clamp(30px,3.7vw,48px);font-weight:580;line-height:1;letter-spacing:-.06em}
+#connections .trip-head .meta{color:var(--muted);font-size:12px}
+#connections .trip-head .verified{margin-top:10px}
+#connections .profile-demo[data-scene="trip"] .trip-head .verified{animation:badge-arrive .65s cubic-bezier(.2,.8,.2,1) .22s both}
+@keyframes badge-arrive{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
+#connections .trip-layout{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(220px,.75fr);gap:18px}
+#connections .photo-view{position:relative;overflow:hidden;height:290px;border-radius:19px;background:#D5DEE7}
+#connections .photo-view img{display:block;width:100%;height:100%;object-fit:cover;transition:opacity .22s,transform .7s}
+#connections .photo-view.is-changing img{opacity:.45;transform:scale(1.04)}
+#connections .photo-view .photo-label{position:absolute;left:13px;bottom:13px;max-width:calc(100% - 26px);padding:7px 10px;border-radius:8px;background:rgba(16,24,36,.78);color:#fff;font-size:11px}
+#connections .photo-thumbs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:8px}
+#connections .photo-thumbs a{position:relative;display:block;overflow:hidden;height:68px;border:3px solid transparent;border-radius:10px}
+#connections .photo-thumbs a[aria-current="true"]{border-color:var(--blue)}
+#connections .photo-thumbs a img{display:block;width:100%;height:100%;object-fit:cover}
+#connections .photo-thumbs a:hover img{transform:scale(1.08)}
+#connections .photo-thumbs a img{transition:transform .3s}
+#connections .memories h3{margin:0 0 11px;font-size:15px;letter-spacing:-.02em}
+#connections .memory-card{padding:14px;border:1px solid var(--line);border-radius:15px;background:#fff;box-shadow:0 6px 18px rgba(23,33,51,.045);animation:memory-arrive .55s both}
+#connections .memory-card+.memory-card{margin-top:9px;animation-delay:.16s}
+@keyframes memory-arrive{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+#connections .memory-card .author{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:11px;font-weight:750}
+#connections .memory-card .initial{display:grid;place-items:center;width:23px;height:23px;border-radius:50%;background:#DCE6F0;color:var(--blue)}
+#connections .memory-card p{margin:0;color:#475565;font-size:12px;line-height:1.45}
+#connections .trip-note{margin:14px 0 0;color:#617083;font-size:11px;line-height:1.45}
+#connections .demo-pointer{position:absolute;z-index:10;left:0;top:0;width:28px;height:34px;opacity:0;pointer-events:none;filter:drop-shadow(1px 2px 2px rgba(23,33,51,.45))}
+#connections .demo-pointer[data-visible="true"]{opacity:1}
+#connections .demo-pointer svg{display:block;width:28px;height:34px;transform-origin:3px 2px}
+#connections .demo-pointer[data-press="true"] svg{animation:pointer-press .27s ease-out}
+@keyframes pointer-press{45%{transform:scale(.8)}to{transform:none}}
+#connections .showcase-caption{max-width:83ch;margin:20px 0 0;color:#4E5E70;font-size:12px;line-height:1.55}
+@media(max-width:980px){#connections .profile-demo{grid-template-columns:1fr}#connections .profile-sidebar{min-height:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:13px}#connections .sidebar-label{grid-column:1/-1}#connections .sidebar-actions{align-self:center}#connections .sidebar-foot{display:none}#connections .profile-main{min-height:550px}}
+@media(max-width:650px){#connections .showcase-head{align-items:start}#connections .replay{font-size:11px;padding:8px 10px}#connections .profile-demo{padding:5px;border-radius:22px}#connections .profile-sidebar,#connections .profile-main{border-radius:17px}#connections .profile-sidebar{grid-template-columns:1fr;padding:16px}#connections .profile-sidebar .identity{display:flex;align-items:center;gap:12px}#connections .profile-sidebar h3{margin:0}#connections .profile-sidebar .identity p{display:none}#connections .avatar{width:47px;height:47px;border-radius:14px;font-size:19px}#connections .sidebar-actions{grid-template-columns:1fr}#connections .sidebar-actions button{padding:10px}#connections .main-bar{padding:14px 17px}#connections .profile-screen{padding:20px 16px;min-height:520px}#connections .friend-profile{grid-template-columns:1fr}#connections .friend-profile .photo-strip{display:none}#connections .trip-card{grid-template-columns:38% minmax(0,1fr);min-height:176px}#connections .trip-card-body{padding:15px}#connections .trip-card .trip-meta{display:block}#connections .trip-card .verified{margin-bottom:5px}#connections .trip-layout{grid-template-columns:1fr}#connections .photo-view{height:230px}#connections .memories{margin-top:5px}}
+@media(max-width:500px){#connections .demo-pointer{display:none}}
+#connections .connections-intro{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(280px,.9fr);align-items:end;gap:45px;margin-bottom:50px}
+#connections .connections-intro p{max-width:55ch;margin:0;color:#566578;font-size:15px;line-height:1.6}
+#connections .connections-intro .section-index{margin-bottom:28px;color:#243F64;font-size:12px}
+#connections .connections-intro .section-title{margin:0}
+#connections .showcase-head{margin-top:0}
+@media(max-width:800px){#connections .connections-intro{grid-template-columns:1fr;gap:22px}}
+@media(prefers-color-scheme:dark){#connections{background:#191F28;color:#F5F5F5}#connections .showcase-head .mono,#connections .connections-intro .section-index,#connections .showcase-guide strong{color:#C5D8F0}#connections .connections-intro p,#connections .showcase-caption,#connections .showcase-guide{color:#B8C2CE}}
+@media(prefers-reduced-motion:reduce){#connections .demo-pointer{display:none}}
 </style>
 <noscript>
 <style>
@@ -733,6 +964,9 @@ footer .wrap{align-items:center;gap:24px}
 .panel{position:static;opacity:1;margin-bottom:36px}
 .atlas{opacity:.45}
 .site-loader{display:none}
+#connections .profile-demo[data-scene] .profile-screen{display:none}
+#connections .profile-demo[data-scene] .screen-trip{display:block}
+#connections .replay,#connections .sidebar-actions,#connections .back{display:none}
 </style>
 </noscript>
 </head>
@@ -866,7 +1100,7 @@ footer .wrap{align-items:center;gap:24px}
           <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> Verified routing. In development for iOS.</p>
       <h1>Everything in between</h1>
           <p class="intro-description">Trip plans that connect the shuttles, terminal walks, and missing links. With the evidence to back them up.</p>
-          <div class="intro-actions"><a class="btn" href="#route">Explore a journey <span aria-hidden="true">&#8599;</span></a><a class="link" href="#verification">How verification works</a></div>
+          <div class="intro-actions"><a class="btn" href="#how-it-works">See the app <span aria-hidden="true">&#8599;</span></a><a class="link" href="#route">Explore a journey</a></div>
         </div>
         <div class="connection-art" role="group" aria-label="Illustration of walking, rail and shuttle connections, with the shuttle connection marked unverified. Not travel directions.">
           <div class="art-heading"><span class="mono">The space between A and B</span><span class="art-status">Route illustration</span></div>
@@ -925,7 +1159,7 @@ footer .wrap{align-items:center;gap:24px}
         </div>
         <div class="panel" data-panel="2">
           <span class="mono">Laneway</span>
-          <h2>Four legs, each one sourced.</h2>
+          <h2>Four legs, with the gap shown.</h2>
           <ol>
             <li data-hl="0"><span class="k num">01</span>Walk to the LINK platform, level 3</li>
             <li data-hl="1"><span class="k num">02</span>LINK train to Terminal 3</li>
@@ -934,9 +1168,9 @@ footer .wrap{align-items:center;gap:24px}
           </ol>
         </div>
         <div class="panel" data-panel="3">
-          <span class="mono">Verified</span>
+          <span class="mono">Evidence checked</span>
           <h2>Checked leg by leg, before you see it.</h2>
-          <p>Three legs are sourced. The unpublished shuttle stays visible and clearly unverified.</p>
+          <p>Each leg shows its status. Unsupported connections stay visible and clearly unverified.</p>
         </div>
       </div>
     </div>
@@ -956,9 +1190,127 @@ footer .wrap{align-items:center;gap:24px}
   </div>
 </section>
 
+<section class="app-demo light-section" id="how-it-works" aria-labelledby="app-demo-title">
+  <div class="wrap">
+    <p class="eyebrow section-index">02 / Inside the app</p>
+    <div class="app-demo-intro">
+      <h2 class="section-title" id="app-demo-title">The Route Is Only<br>the Beginning.</h2>
+      <div class="app-demo-intro-aside"><p class="lede">Three parts of one sample plan, visible together. Open the route, inspect a source, and tap the connection we could not confirm.</p><div class="app-demo-actions"><button class="app-demo-replay" type="button" hidden>Replay the UI demo <span aria-hidden="true">&#8635;</span></button><a class="app-demo-connections-link" href="#connections">Explore Connections concept</a></div></div>
+    </div>
+    <div class="app-demo-showcase" data-playing="false">
+      <article class="app-demo-window" data-open="false">
+        <div class="app-demo-window-bar"><span><span class="number">01</span> / The plan</span><span class="try">Try it</span></div>
+        <div class="app-demo-window-copy">
+          <h3>One route. Every leg.</h3>
+          <p>Tap the trip bar to open the timeline. Select a leg to focus it.</p>
+        </div>
+        <div class="app-ui app-ui-plan" data-leg="none">
+          <div class="app-ui-map" aria-hidden="true">
+            <svg viewBox="0 0 360 560" preserveAspectRatio="xMidYMid slice">
+              <path class="map-water" d="M0 385 Q100 344 184 390 T360 370 V560 H0Z"/>
+              <path class="map-park" d="M0 0 H108 Q68 90 0 119Z M258 0 H360 V181 Q319 125 258 0Z"/>
+              <path class="road" d="M-40 141 C75 180 220 86 405 135 M-35 327 C113 292 203 351 394 295 M67 -20 C107 177 79 363 115 590 M250 -20 C213 191 276 380 224 590"/>
+              <path class="road minor" d="M-30 223 C111 256 245 202 390 226 M-20 464 C105 432 253 482 394 420 M172 -20 C154 130 191 290 172 592 M328 -20 C298 201 341 375 297 590"/>
+              <path class="demo-route unknown walk" pathLength="1" d="M100 169 C145 198 173 220 184 265"/>
+              <path class="demo-route known train" pathLength="1" d="M184 265 C195 310 198 327 228 345"/>
+              <path class="route-tracer" pathLength="1" d="M184 265 C195 310 198 327 228 345"/>
+              <circle class="route-vehicle-halo" cx="184" cy="265" r="17"/>
+              <circle class="route-vehicle" cx="184" cy="265" r="8"/>
+              <path class="demo-route unknown shuttle" d="M228 345 C250 361 280 403 297 446"/>
+              <circle class="map-node" cx="100" cy="169" r="9"/><circle class="map-node" cx="228" cy="345" r="9"/><circle class="map-node" cx="297" cy="446" r="9"/>
+              <text class="map-label" x="66" y="150">T1</text><text class="map-label" x="195" y="327">LINK</text><text class="map-label" x="279" y="472">DEPOT</text>
+            </svg>
+          </div>
+          <span class="app-ui-map-note">Schematic sample map</span>
+          <div class="app-ui-map-focus" aria-live="polite"><span class="walk">Walk selected: terminal connection unverified</span><span class="train">Train selected: link verified</span><span class="shuttle">Shuttle selected: pickup unverified</span></div>
+          <div class="app-ui-plan-sheet">
+            <button class="app-ui-plan-toggle" type="button" data-demo-toggle aria-expanded="false" aria-controls="demo-plan-details">
+              <span class="app-ui-grabber" aria-hidden="true"></span>
+              <span class="app-ui-plan-title">Terminal 1 arrivals &rarr; Rental depot</span>
+              <span class="app-ui-plan-meta"><span class="app-ui-chip">about 35 min</span><span class="app-ui-chip unverified">1/3 legs verified</span></span>
+              <span class="app-ui-chevron" aria-hidden="true"></span>
+            </button>
+            <div class="app-ui-plan-details" id="demo-plan-details" inert>
+              <div class="app-ui-overview"><strong>THE ROUTE</strong><p>Demo route, no live verification behind it. Ride the Terminal Link train, then continue to the depot.</p></div>
+              <div class="app-ui-leg-list" aria-label="Sample route legs">
+                <button class="app-ui-leg-row" type="button" data-demo-leg="walk" aria-pressed="false"><span class="line"><strong>Walk</strong><span class="app-ui-chip unverified">Unverified</span></span><small>Terminal 1 arrivals &rarr; Terminal 1 Link station</small></button>
+                <button class="app-ui-leg-row" type="button" data-demo-leg="train" aria-pressed="false"><span class="line"><strong>Train</strong><span class="app-ui-chip verified">Verified</span></span><small>Terminal 1 Link station &rarr; Viscount station</small></button>
+                <button class="app-ui-leg-row" type="button" data-demo-leg="shuttle" aria-pressed="false"><span class="line"><strong>Shuttle</strong><span class="app-ui-chip unverified">Unverified</span></span><small>Viscount station &rarr; Rental depot</small></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+      <article class="app-demo-window" data-open="false">
+        <div class="app-demo-window-bar"><span><span class="number">02</span> / The evidence</span><span class="try">Try it</span></div>
+        <div class="app-demo-window-copy">
+          <h3>Open the source.</h3>
+          <p>Tap the evidence row to open the claim, quote, source, and fetch time.</p>
+        </div>
+        <div class="app-ui">
+          <div class="app-ui-appbar"><strong>Terminal 1 arrivals &rarr; Rental depot</strong><span class="app-ui-chip unverified">1/3 legs verified</span></div>
+          <div class="app-ui-timeline app-ui-train-scene">
+            <div class="app-ui-leg-block"><span class="app-ui-mode-dot verified" aria-hidden="true">T</span>
+              <div class="app-ui-leg-card">
+                <span class="line"><strong>Train</strong><span class="app-ui-chip verified">Verified</span></span>
+                <p>Terminal 1 Link station &rarr; Viscount station</p>
+                <p class="muted">10:12 AM to 10:20 AM (estimated)</p>
+                <p class="muted">Board the Terminal Link toward Viscount. Runs around the clock.</p>
+                <button class="app-ui-evidence-trigger" type="button" data-demo-toggle aria-expanded="false" aria-controls="demo-train-evidence">1 claim checked, tap for evidence</button>
+              </div>
+            </div>
+          </div>
+          <div class="app-ui-detail-sheet" id="demo-train-evidence" role="region" aria-label="Train leg evidence" inert>
+            <div class="app-ui-detail-head"><strong>Train leg</strong><button type="button" data-demo-close>Done</button></div>
+            <div class="app-ui-detail-body">
+              <div class="app-ui-detail-card"><p>Board the Terminal Link toward Viscount. Runs around the clock.</p></div>
+              <div class="app-ui-detail-card">
+                <div class="app-ui-claim-head"><span class="app-ui-claim-mark" aria-hidden="true">&#10003;</span><span>The Link train is free and runs 24 hours a day</span></div>
+                <blockquote>"The wheelchair-accessible train runs 24 hours a day, seven days a week and is completely free-of-charge to ride."</blockquote>
+                <span class="source"><a href="https://en.wikipedia.org/wiki/Link_Train" target="_blank" rel="noopener noreferrer">en.wikipedia.org</a> - sample fetch: Oct 9, 2026 at 10:00 AM</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+      <article class="app-demo-window" data-open="false">
+        <div class="app-demo-window-bar"><span><span class="number">03</span> / The unknown</span><span class="try">Try it</span></div>
+        <div class="app-demo-window-copy">
+          <h3>Keep the gap visible.</h3>
+          <p>Tap the shuttle to focus it, then open the claim the app could not support.</p>
+        </div>
+        <div class="app-ui">
+          <div class="app-ui-appbar"><strong>Terminal 1 arrivals &rarr; Rental depot</strong><span class="app-ui-chip unverified">1/3 legs verified</span></div>
+          <div class="app-ui-timeline">
+            <div class="app-ui-leg-block"><span class="app-ui-mode-dot verified" aria-hidden="true">T</span><div class="app-ui-leg-card"><span class="line"><strong>Train</strong><span class="app-ui-chip verified">Verified</span></span><p>Terminal 1 Link station &rarr; Viscount station</p></div></div>
+            <div class="app-ui-leg-block"><span class="app-ui-mode-dot" aria-hidden="true">S</span>
+              <div class="app-ui-leg-card app-ui-shuttle-card">
+                <button class="app-ui-shuttle-select" type="button" data-demo-select aria-pressed="false"><span class="line"><strong>Shuttle</strong><span class="app-ui-chip unverified">Unverified</span></span><p>Viscount station &rarr; Rental depot</p><p class="muted">10:25 AM to 10:35 AM (estimated)</p><p class="muted">The operator shuttle leaves from an unmarked post; call ahead if it is not there.</p></button>
+                <button class="app-ui-evidence-trigger" type="button" data-demo-toggle aria-expanded="false" aria-controls="demo-shuttle-evidence">1 claim checked, tap for evidence</button>
+              </div>
+            </div>
+          </div>
+          <div class="app-ui-detail-sheet" id="demo-shuttle-evidence" role="region" aria-label="Shuttle leg evidence" inert>
+            <div class="app-ui-detail-head"><strong>Shuttle leg</strong><button type="button" data-demo-close>Done</button></div>
+            <div class="app-ui-detail-body">
+              <div class="app-ui-detail-card"><p>The operator shuttle leaves from the unmarked post by the station exit; call ahead if it is not there.</p></div>
+              <div class="app-ui-detail-card">
+                <div class="app-ui-claim-head"><span class="app-ui-claim-mark unknown" aria-hidden="true">?</span><span>Unsupported: the depot shuttle serves Viscount station every 15 minutes</span></div>
+                <p class="reason">No source reachable: the operator site blocked the crawler. This claim is not confirmed.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+      <div class="app-demo-guide" aria-hidden="true"><svg viewBox="0 0 28 34" focusable="false"><path d="M3 2v25l6.4-6.4 5.3 11.4 4.3-2-5.4-11.2h9.4Z" fill="#fff" stroke="#172133" stroke-width="2" stroke-linejoin="round"/></svg></div>
+    </div>
+    <p class="app-demo-caption">Interactive recreation of the current iOS route and evidence views using the app's canned offline sample. No live route was requested. The schematic map, timing, and sample source timestamp are illustrative, not travel directions.</p>
+  </div>
+</section>
+
 <section id="verification" class="contrast-section">
   <div class="wrap">
-    <p class="eyebrow section-index">02 / Evidence, not estimates</p>
+    <p class="eyebrow section-index">03 / Evidence, not estimates</p>
     <h2 class="section-title">Trust Is Built.<br>One Fact at a Time.</h2>
     <div class="lede measure" style="margin-top:24px">
       <p>Plausible is not proof. Laneway checks every claim and can return supported, contradicted, or unsupported.</p>
@@ -985,28 +1337,54 @@ footer .wrap{align-items:center;gap:24px}
   </div>
 </section>
 
-<section class="light-section">
-  <div class="wrap">
-    <p class="eyebrow section-index">03 / Under the hood</p>
-    <h2 class="section-title">Intelligence Meets<br>a Reality Check.</h2>
-    <div class="lede measure" style="margin-top:24px">
-      <p>The model proposes. Deterministic systems retrieve, compose, cache, and verify.</p>
+<section class="connections-showcase light-section" id="connections" aria-labelledby="connections-title">
+    <div class="wrap">
+      <div class="connections-intro">
+        <div><p class="eyebrow section-index">04 / Connections concept</p><h2 class="section-title" id="connections-title">The Routes You Trust.<br>The Moments You Keep.</h2></div>
+        <p>Imagine opening a friend's profile to find the route they saved, photos, and the memories around it. This is a fictional concept. Today's app has a local profile and saved-trip verification, but no connected friends or photo sharing. Osaka is outside current Canada-only route coverage.</p>
+      </div>
+      <div class="showcase-head"><div><span class="mono">A fictional journey, shown in motion</span><h3 id="showcase-title">Open Maya's Osaka trip.</h3></div><button class="replay" type="button">Replay concept demo</button></div>
+      <p class="showcase-guide"><strong>Try it yourself:</strong> click or tap Connections, then Maya to preview her profile and Osaka trip.</p>
+      <div class="profile-demo" data-scene="connections" aria-label="Interactive Connections concept preview">
+        <aside class="profile-sidebar" aria-label="Sample personal profile">
+          <div class="sidebar-label mono"><span>Personal profile</span><span class="sample">Sample UI</span></div>
+          <div class="identity"><div class="avatar" aria-hidden="true">A</div><div><h3>Your profile</h3><p>A place for saved routes and the people you choose to share with.</p></div></div>
+          <div class="sidebar-actions"><button class="is-current" type="button" data-action="connections" aria-controls="connections-screen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="8" cy="9" r="3"></circle><circle cx="17" cy="10" r="2.5"></circle><path d="M2 20c0-4 2-6 6-6s6 2 6 6M14 16c3-1 7 0 8 4"></path></svg>Connections</button></div>
+          <div class="sidebar-foot"><b>What Verified means</b><p>Every route leg has a checked source. It never means a saved plan proves someone took the trip.</p></div>
+        </aside>
+        <div class="profile-main">
+          <div class="main-bar"><span class="mono">Laneway / Profile</span><span class="state">Concept preview</span></div>
+          <section class="profile-screen screen-connections" id="connections-screen" aria-labelledby="connections-heading">
+            <div class="screen-head"><div><span class="mono">Your circle</span><h2 id="connections-heading" tabindex="-1">Connections</h2><p><strong>Click or tap Maya</strong> to preview her profile and Osaka trip.</p></div></div>
+            <button class="connection-row" type="button" data-action="friend" aria-controls="friend-screen"><span class="friend-avatar" aria-hidden="true">M</span><span><strong>Maya</strong><small>Sample connection / Osaka trip</small><span class="verified"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="currentColor"></circle><path d="m4.5 8 2.3 2.3 4.7-4.8" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>Verified</span></span><span class="arrow" aria-hidden="true">&#8594;</span></button>
+            <p class="preview-explain">This profile and person are fictional. Connections are not available in the app today.</p>
+          </section>
+          <section class="profile-screen screen-friend" id="friend-screen" aria-labelledby="friend-heading">
+            <button class="back" type="button" data-action="connections">&#8592; Connections</button>
+            <div class="screen-head"><div><span class="mono">Connection profile / Sample</span><h2 id="friend-heading" tabindex="-1">Maya's journeys</h2><p>Routes, photos, and the people in between.</p></div></div>
+            <div class="friend-profile"><div class="name"><span class="friend-avatar" aria-hidden="true">M</span><div><h3>Maya</h3><p>Illustrative friend profile</p></div></div><div class="photo-strip" aria-hidden="true"><img src="assets/connections/Osaka%20Castle.jpg" alt=""><img src="assets/connections/Osaka%20Dinner.jpg" alt=""><img src="assets/connections/Osaka%20Canal.jpg" alt=""></div></div>
+            <button class="trip-card" type="button" data-action="trip" aria-controls="trip-screen"><img src="assets/connections/Osaka%20Canal.jpg" alt="Illustrative night view along an Osaka canal"><span class="trip-card-body"><span><span class="mono">Sample trip</span><strong>Osaka trip</strong></span><span class="trip-meta"><span class="verified"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="currentColor"></circle><path d="m4.5 8 2.3 2.3 4.7-4.8" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>Verified</span><span>Open trip &#8594;</span></span></span></button>
+          </section>
+          <section class="profile-screen screen-trip" id="trip-screen" aria-labelledby="trip-heading">
+            <button class="back" type="button" data-action="friend">&#8592; Maya's profile</button>
+            <div class="trip-head"><div><span class="mono">Maya / Sample journey</span><h2 id="trip-heading" tabindex="-1">Osaka trip</h2><span class="verified"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="currentColor"></circle><path d="m4.5 8 2.3 2.3 4.7-4.8" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>Verified</span></div><span class="meta">Illustrative route state</span></div>
+            <div class="trip-layout">
+              <div><div class="photo-view"><img id="selected-photo" src="assets/connections/Osaka%20Canal.jpg" alt="Illustrative evening scene along a canal in Osaka"><span class="photo-label" id="photo-label">Canal lights after dinner</span></div><div class="photo-thumbs" aria-label="Sample trip photos"><a href="assets/connections/Osaka%20Canal.jpg" data-photo-index="0" aria-current="true" aria-label="Show canal photo"><img src="assets/connections/Osaka%20Canal.jpg" alt="Canal lights at night"></a><a href="assets/connections/Osaka%20Castle.jpg" data-photo-index="1" aria-current="false" aria-label="Show castle photo"><img src="assets/connections/Osaka%20Castle.jpg" alt="Osaka Castle in daylight"></a><a href="assets/connections/Osaka%20Dinner.jpg" data-photo-index="2" aria-current="false" aria-label="Show dinner photo"><img src="assets/connections/Osaka%20Dinner.jpg" alt="Shared restaurant meal"></a></div></div>
+              <div class="memories"><h3>Memories from friends</h3><div class="memory-card"><div class="author"><span class="initial" aria-hidden="true">M</span>Maya / sample memory</div><p>"We followed the lights along the canal after dinner and kept walking just to see what was around the next corner."</p></div><div class="memory-card"><div class="author"><span class="initial" aria-hidden="true">R</span>Ren / sample memory</div><p>"One more skewer turned into a whole extra hour at the table."</p></div></div>
+            </div>
+            <p class="trip-note">The Verified badge is a fictional example of a route whose every leg has source evidence. It does not verify a visit, these photos, or these memories.</p>
+          </section>
+        </div>
+        <div class="demo-pointer" aria-hidden="true"><svg viewBox="0 0 28 34" focusable="false"><path d="M3 2v25l6.4-6.4 5.3 11.4 4.3-2-5.4-11.2h9.4Z" fill="#fff" stroke="#172133" stroke-width="2" stroke-linejoin="round"></path></svg></div>
+      </div>
+      <p class="showcase-caption">Illustrative concept only. Maya, Ren, the Osaka trip, its Verified state, the photos, and the memories are fictional. The photographs were generated for this preview. Laneway currently plans in Canada; Connections, shared photos, and friend memories have not shipped.</p>
     </div>
-    <div class="pipe">
-      <div><span class="k num">01</span><h3>Intake</h3><p>Turns plain language into a trip query and asks when intent is unclear.</p></div>
-      <div><span class="k num">02</span><h3>Planner</h3><p>Chooses the legs and evidence the trip needs.</p></div>
-      <div><span class="k num">03</span><h3>Retrieval</h3><p>Checks the cache, then official feeds and the open web.</p></div>
-      <div><span class="k num">04</span><h3>Composer</h3><p>Chains legs and checks that timing works.</p></div>
-      <div><span class="k num">05</span><h3>Verifier</h3><p>Traces each claim to a source or marks it unverified.</p></div>
-      <div><span class="k num">06</span><h3>Present</h3><p>Shows the route, directions, and citations, even offline.</p></div>
-    </div>
-  </div>
-</section>
+  </section>
 
 <section id="activity" class="light-section">
   <div class="wrap">
     <div class="activity-head">
-      <div><p class="eyebrow section-index">04 / In motion</p>
+      <div><p class="eyebrow section-index">05 / In motion</p>
       <h2>One Journey.<br>Many Ways to Move.</h2></div>
       <p class="activity-note"><b>Simulated activity.</b> Generated route examples, never customer telemetry.</p>
     </div>
@@ -1021,7 +1399,7 @@ footer .wrap{align-items:center;gap:24px}
 
 <section id="status" class="light-section">
   <div class="wrap">
-    <p class="eyebrow section-index">05 / Building in the open</p>
+    <p class="eyebrow section-index">06 / Building in the open</p>
     <h2 class="section-title">Real Progress.<br>Honest Limits.</h2>
     <div class="cols">
       <div>
@@ -1894,5 +2272,388 @@ if (locked()) {
 }());
 </script>
 
+<script>
+(function () {
+  var showcase = document.querySelector(".app-demo-showcase");
+  if (!showcase) return;
+  var windows = showcase.querySelectorAll(".app-demo-window");
+  var replay = document.querySelector(".app-demo-replay");
+  var guide = showcase.querySelector(".app-demo-guide");
+  var map = showcase.querySelector(".app-ui-map");
+  var trainPath = map.querySelector(".demo-route.train");
+  var vehicle = map.querySelector(".route-vehicle");
+  var vehicleHalo = map.querySelector(".route-vehicle-halo");
+  var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  var timers = [];
+  var trainFrame = 0;
+  var guideMotion = null;
+  var visible = false;
+  var previewRunning = false;
+  var manual = false;
+
+  function setOpen(windowElement, open, moveFocus) {
+    var trigger = windowElement.querySelector("[data-demo-toggle]");
+    var content = document.getElementById(trigger.getAttribute("aria-controls"));
+    windowElement.dataset.open = String(open);
+    trigger.setAttribute("aria-expanded", String(open));
+    content.inert = !open;
+    if (content.classList.contains("app-ui-detail-sheet")) {
+      windowElement.querySelector(".app-ui-appbar").inert = open;
+      windowElement.querySelector(".app-ui-timeline").inert = open;
+      if (moveFocus && open) content.querySelector("[data-demo-close]").focus({ preventScroll: true });
+      else if (moveFocus) trigger.focus({ preventScroll: true });
+    } else if (moveFocus && !open && content.contains(document.activeElement)) {
+      trigger.focus({ preventScroll: true });
+    }
+  }
+
+  function selectLeg(windowElement, button, moveFocus) {
+    windowElement.querySelector(".app-ui-plan").dataset.leg = button.dataset.demoLeg;
+    windowElement.querySelectorAll("[data-demo-leg]").forEach(function (leg) {
+      leg.setAttribute("aria-pressed", String(leg === button));
+    });
+    setOpen(windowElement, false, moveFocus);
+    if (button.dataset.demoLeg === "train") animateTrain();
+    else stopTrain();
+  }
+
+  function stopTrain() {
+    cancelAnimationFrame(trainFrame);
+    map.dataset.travelling = "false";
+    map.dataset.arrived = "false";
+  }
+
+  function animateTrain() {
+    stopTrain();
+    if (reducedMotion.matches || document.hidden) return;
+    var length = trainPath.getTotalLength();
+    var start = 0;
+    var origin = trainPath.getPointAtLength(0);
+    [vehicle, vehicleHalo].forEach(function (circle) {
+      circle.setAttribute("cx", origin.x);
+      circle.setAttribute("cy", origin.y);
+    });
+    map.dataset.travelling = "true";
+    function frame(now) {
+      if (!start) start = now;
+      var progress = Math.min((now - start) / 1900, 1);
+      var eased = progress * progress * (3 - 2 * progress);
+      var point = trainPath.getPointAtLength(length * eased);
+      [vehicle, vehicleHalo].forEach(function (circle) {
+        circle.setAttribute("cx", point.x);
+        circle.setAttribute("cy", point.y);
+      });
+      if (progress < 1) trainFrame = requestAnimationFrame(frame);
+      else map.dataset.arrived = "true";
+    }
+    trainFrame = requestAnimationFrame(frame);
+  }
+
+  function guideTo(button, duration) {
+    if (window.innerWidth <= 500 || reducedMotion.matches) return;
+    var target = button.getBoundingClientRect();
+    var stage = showcase.getBoundingClientRect();
+    var toX = target.left + target.width / 2 - stage.left - 3;
+    var toY = target.top + target.height / 2 - stage.top - 2;
+    if (guide.dataset.visible !== "true" || duration === 0) {
+      guide.style.left = toX + "px";
+      guide.style.top = toY + "px";
+      guide.dataset.visible = "true";
+      return;
+    }
+    if (!guide.animate) {
+      guide.style.transition = "opacity .25s,left " + duration + "ms ease,top " + duration + "ms ease";
+      guide.style.left = toX + "px";
+      guide.style.top = toY + "px";
+      return;
+    }
+    var current = guide.getBoundingClientRect();
+    var fromX = current.left - stage.left;
+    var fromY = current.top - stage.top;
+    if (guideMotion) guideMotion.cancel();
+    var dx = toX - fromX;
+    var dy = toY - fromY;
+    var distance = Math.hypot(dx, dy) || 1;
+    var arc = Math.min(70, distance * .14);
+    var midX = (fromX + toX) / 2 + dy / distance * arc;
+    var midY = (fromY + toY) / 2 - dx / distance * arc;
+    guide.style.left = toX + "px";
+    guide.style.top = toY + "px";
+    var motion = guide.animate([
+      { left: fromX + "px", top: fromY + "px" },
+      { left: midX + "px", top: midY + "px", offset: .52 },
+      { left: toX + "px", top: toY + "px" }
+    ], { duration: duration, easing: "cubic-bezier(.25,.1,.25,1)", fill: "forwards" });
+    guideMotion = motion;
+    motion.onfinish = function () {
+      if (guideMotion !== motion) return;
+      motion.cancel();
+      guideMotion = null;
+    };
+    guide.dataset.visible = "true";
+  }
+
+  function guideTap() {
+    guide.dataset.tap = "false";
+    void guide.offsetWidth;
+    guide.dataset.tap = "true";
+  }
+
+  function activateWindow(index) {
+    windows.forEach(function (windowElement, windowIndex) {
+      windowElement.dataset.active = String(windowIndex === index);
+    });
+  }
+
+  function stopPreview() {
+    timers.forEach(clearTimeout);
+    timers = [];
+    previewRunning = false;
+    if (guideMotion) guideMotion.cancel();
+    guideMotion = null;
+    guide.dataset.visible = "false";
+    guide.dataset.tap = "false";
+    activateWindow(-1);
+    stopTrain();
+  }
+
+  function schedule(delay, action) { timers.push(setTimeout(action, delay)); }
+
+  function playPreview() {
+    if (!visible || document.hidden || manual || reducedMotion.matches) return;
+    stopPreview();
+    previewRunning = true;
+    windows.forEach(function (windowElement) { setOpen(windowElement, false, false); });
+    windows[0].querySelector(".app-ui-plan").dataset.leg = "none";
+    windows[0].querySelectorAll("[data-demo-leg]").forEach(function (leg) {
+      leg.setAttribute("aria-pressed", "false");
+    });
+    windows[2].querySelector("[data-demo-select]").setAttribute("aria-pressed", "false");
+    activateWindow(0);
+    schedule(250, function () { guideTo(windows[0].querySelector(".app-ui-map-note"), 0); });
+    schedule(500, function () { guideTo(windows[0].querySelector("[data-demo-toggle]"), 500); });
+    schedule(1100, function () { guideTap(); setOpen(windows[0], true, false); });
+    schedule(1900, function () { guideTo(windows[0].querySelector('[data-demo-leg="train"]'), 600); });
+    schedule(2600, function () { guideTap(); selectLeg(windows[0], windows[0].querySelector('[data-demo-leg="train"]'), false); });
+    schedule(3300, function () { activateWindow(1); guideTo(windows[1].querySelector("[data-demo-toggle]"), 550); });
+    schedule(4000, function () { guideTap(); setOpen(windows[1], true, false); });
+    schedule(5300, function () { activateWindow(2); guideTo(windows[2].querySelector("[data-demo-select]"), 700); });
+    schedule(6100, function () { guideTap(); windows[2].querySelector("[data-demo-select]").setAttribute("aria-pressed", "true"); });
+    schedule(6650, function () { guideTo(windows[2].querySelector("[data-demo-toggle]"), 400); });
+    schedule(7200, function () { guideTap(); setOpen(windows[2], true, false); });
+    schedule(9000, function () { guideTo(windows[2].querySelector("[data-demo-close]"), 500); });
+    schedule(9600, function () { guideTap(); setOpen(windows[2], false, false); });
+    schedule(10050, function () { activateWindow(1); guideTo(windows[1].querySelector("[data-demo-close]"), 600); });
+    schedule(10750, function () { guideTap(); setOpen(windows[1], false, false); });
+    schedule(11400, function () { guide.dataset.visible = "false"; activateWindow(-1); });
+    schedule(12300, playPreview);
+  }
+
+  showcase.addEventListener("click", function (event) {
+    if (!(event.target instanceof Element)) return;
+    var button = event.target.closest("button");
+    if (!button || !showcase.contains(button)) return;
+    manual = true;
+    stopPreview();
+    update();
+    var windowElement = button.closest(".app-demo-window");
+    if (button.hasAttribute("data-demo-toggle")) {
+      setOpen(windowElement, windowElement.dataset.open !== "true", true);
+    } else if (button.hasAttribute("data-demo-close")) {
+      setOpen(windowElement, false, true);
+    } else if (button.hasAttribute("data-demo-leg")) {
+      selectLeg(windowElement, button, true);
+    } else if (button.hasAttribute("data-demo-select")) {
+      button.setAttribute("aria-pressed", "true");
+    }
+  });
+
+  showcase.addEventListener("focusin", function () { manual = true; stopPreview(); update(); });
+  showcase.addEventListener("keydown", function (event) {
+    if (event.key !== "Escape" || !(event.target instanceof Element)) return;
+    var windowElement = event.target.closest('.app-demo-window[data-open="true"]');
+    if (windowElement) {
+      setOpen(windowElement, false, true);
+      event.preventDefault();
+    }
+  });
+
+  if (!window.IntersectionObserver) return;
+  replay.hidden = reducedMotion.matches;
+  replay.addEventListener("click", function () {
+    manual = false;
+    stopPreview();
+    if (window.innerWidth <= 650) {
+      windows[0].scrollIntoView({ behavior: "smooth", block: "center" });
+      if (visible) update();
+      return;
+    }
+    if (visible) update();
+    else showcase.scrollIntoView({ behavior: "smooth", block: "center" });
+  });
+  function update() {
+    var playing = visible && !document.hidden && !reducedMotion.matches && !manual;
+    showcase.dataset.playing = String(playing);
+    if (!playing) stopPreview();
+    else if (!manual && !previewRunning) playPreview();
+  }
+  reducedMotion.addEventListener("change", function () {
+    replay.hidden = reducedMotion.matches;
+    update();
+  });
+  document.addEventListener("visibilitychange", update);
+  new IntersectionObserver(function (entries) {
+    visible = entries[0].isIntersecting;
+    update();
+  }, { threshold: 0.15 }).observe(showcase);
+}());
+</script>
+
+<script>
+(function () {
+  "use strict";
+  var stage = document.querySelector("#connections .profile-demo");
+  var replay = document.querySelector("#connections .replay");
+  var pointer = stage.querySelector(".demo-pointer");
+  var photo = document.getElementById("selected-photo");
+  var photoLabel = document.getElementById("photo-label");
+  var photoView = stage.querySelector(".photo-view");
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+  var images = [
+    { src:"assets/connections/Osaka%20Canal.jpg", alt:"Illustrative evening scene along a canal in Osaka", label:"Canal lights after dinner" },
+    { src:"assets/connections/Osaka%20Castle.jpg", alt:"Illustrative daylight view of Osaka Castle", label:"A slow afternoon by the castle" },
+    { src:"assets/connections/Osaka%20Dinner.jpg", alt:"Illustrative shared restaurant meal in Osaka", label:"One more skewer together" }
+  ];
+  var currentPhoto = 0;
+  var token = 0;
+  var guided = false;
+  var playedOnce = false;
+  var visible = false;
+  var pointerPosition = null;
+
+  function setScene(scene, focus) {
+    stage.dataset.scene = scene;
+    stage.querySelector("[data-action='connections']").classList.toggle("is-current", scene === "connections");
+    if (focus) {
+      var heading = stage.querySelector(".screen-" + scene + " h2");
+      if (heading) heading.focus({ preventScroll:true });
+    }
+  }
+
+  function selectPhoto(index) {
+    if (!Number.isInteger(index) || index < 0 || index >= images.length) return;
+    currentPhoto = index;
+    var item = images[index];
+    photoView.classList.add("is-changing");
+    photo.src = item.src;
+    photo.alt = item.alt;
+    photoLabel.textContent = item.label;
+    stage.querySelectorAll("[data-photo-index]").forEach(function (link) {
+      link.setAttribute("aria-current", String(Number(link.dataset.photoIndex) === index));
+    });
+    setTimeout(function () { photoView.classList.remove("is-changing"); }, reduced.matches ? 0 : 220);
+  }
+
+  function stop() {
+    token++;
+    stage.dataset.playing = "false";
+    pointer.dataset.visible = "false";
+    pointerPosition = null;
+  }
+
+  stage.addEventListener("click", function (event) {
+    var target = event.target.closest("[data-action], [data-photo-index]");
+    if (!target || !stage.contains(target)) return;
+    if (target.hasAttribute("data-photo-index")) event.preventDefault();
+    if (!guided) stop();
+    if (target.hasAttribute("data-photo-index")) selectPhoto(Number(target.dataset.photoIndex));
+    else setScene(target.dataset.action, !guided);
+  });
+
+  function pause(ms) { return new Promise(function (resolve) { setTimeout(resolve, ms); }); }
+
+  async function pointTo(target, activeToken) {
+    if (reduced.matches || window.innerWidth <= 500) return;
+    var outer = stage.getBoundingClientRect();
+    var rect = target.getBoundingClientRect();
+    var end = { x:rect.left - outer.left + rect.width / 2, y:rect.top - outer.top + rect.height / 2 };
+    var start = pointerPosition || { x:end.x - 85, y:end.y + 75 };
+    pointer.dataset.visible = "true";
+    var mid = { x:(start.x + end.x) / 2 + 22, y:(start.y + end.y) / 2 - 25 };
+    if (pointer.animate) {
+      var motion = pointer.animate([
+        { left:start.x + "px", top:start.y + "px", opacity:pointerPosition ? 1 : 0 },
+        { left:mid.x + "px", top:mid.y + "px", opacity:1, offset:.52 },
+        { left:end.x + "px", top:end.y + "px", opacity:1 }
+      ], { duration:760, easing:"cubic-bezier(.25,.75,.2,1)" });
+      try { await motion.finished; } catch (_) { return; }
+    }
+    if (activeToken !== token) return;
+    pointer.style.left = end.x + "px";
+    pointer.style.top = end.y + "px";
+    pointerPosition = end;
+  }
+
+  async function play() {
+    stop();
+    if (reduced.matches || document.hidden) return;
+    var activeToken = token;
+    playedOnce = true;
+    stage.dataset.playing = "true";
+    selectPhoto(0);
+    setScene("connections", false);
+    var steps = [
+      { selector:"[data-action='connections']", wait:500 },
+      { selector:".connection-row", wait:650 },
+      { selector:".trip-card", wait:800 },
+      { selector:"[data-photo-index='1']", wait:1000 },
+      { selector:"[data-photo-index='2']", wait:1000 }
+    ];
+    for (var i = 0; i < steps.length; i++) {
+      await pause(steps[i].wait);
+      if (activeToken !== token || document.hidden || !visible) break;
+      var target = stage.querySelector(steps[i].selector);
+      if (!target) break;
+      await pointTo(target, activeToken);
+      if (activeToken !== token) break;
+      pointer.dataset.press = "true";
+      guided = true;
+      target.click();
+      guided = false;
+      await pause(220);
+      pointer.dataset.press = "false";
+      if (activeToken !== token) break;
+    }
+    if (activeToken === token) {
+      stage.dataset.playing = "false";
+      pointer.dataset.visible = "false";
+    }
+  }
+
+  replay.addEventListener("click", function () {
+    stage.scrollIntoView({ behavior:reduced.matches ? "auto" : "smooth", block:"start" });
+    visible = true;
+    if (reduced.matches) { stop(); selectPhoto(0); setScene("connections", true); }
+    else play();
+  });
+  document.addEventListener("visibilitychange", function () {
+    if (document.hidden) stop();
+    else if (visible && !playedOnce && !reduced.matches) play();
+  });
+  reduced.addEventListener("change", function () {
+    stop();
+    if (reduced.matches) setScene("trip", false);
+    else if (visible && !playedOnce) play();
+  });
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(function (entries) {
+      visible = entries[0].isIntersecting;
+      if (!visible) stop();
+      else if (!playedOnce && !reduced.matches) play();
+    }, { threshold:.2 }).observe(stage);
+  } else { visible = true; if (!reduced.matches) play(); }
+  if (reduced.matches) setScene("trip", false);
+}());
+</script>
 </body>
 </html>

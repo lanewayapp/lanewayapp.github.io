@@ -21,6 +21,7 @@ Files are named in title case with spaces, e.g. `Laneway Mark Dark 512.png`. In 
 - `wordmark/` - horizontal lockups (on ink, on cream, transparent ink, transparent cream) and stacked lockups.
 - `avatar/` - 1024px full-bleed profile pictures, safe for a circle crop.
 - `favicon/` - `Favicon.svg` plus PNG at 16/32/48/180/192/512.
+- `connections/` - three generated, web-sized sample Osaka photos for the illustrative Connections concept. They are not customer photos.
 
 ## Usage
 ```html

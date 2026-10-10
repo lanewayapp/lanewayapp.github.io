@@ -1,3 +1,472 @@
+# Confirm the Website PR for Review - Saturday Oct 10
+
+### Emilio's Work
+
+*Time worked: one prompt at the 12:49 PM clock check.*
+
+## Timeline
+
+**12:49 PM - Emilio asked to submit a PR.**
+Read both journals, checked the shared tracker, and verified that website
+PR #11 already exists, is open, is not a draft, and is mergeable. Its head
+is `87cf3f3`, the latest Connections guidance change. Product journal PR
+#157 is also open and not a draft. Pulled both review branches; neither had
+new commits to integrate. The website PR has no configured checks. No new
+PR was opened because that would duplicate the submitted review; no page
+code changed or benchmark ran. Both PRs remain awaiting review, and the
+website has not been published.
+
+---
+
+# Guide Visitors Into the Connections Preview - Saturday Oct 10
+
+### Emilio's Work
+
+*Time worked: one prompt at the 12:43 PM clock check. The latest clock check was 12:46 PM, a 3m elapsed work span since that check.*
+
+## Timeline
+
+**12:43 PM - Emilio asked for an explicit interaction cue.**
+He wanted visitors to know they can click a user in the Connections concept
+to see the profile preview. Read both journals, checked the tracker and #158
+comments, pulled both review branches, and recorded the request on #158
+before editing.
+
+**12:46 PM - The prompt is visible in and above the demo.**
+Replaced the vague line under the Connections heading with "Click or tap
+Maya to preview her profile and Osaka trip." Added a persistent guide above
+the UI: "Try it yourself: click or tap Connections, then Maya..." The
+outside guide stays visible after the automatic walkthrough changes screens.
+The guide uses the existing navy and cool-grey palette, with a light text
+override for the dark outer section.
+
+The local browser showed the guide at 625px and 390px. Both widths had no
+horizontal overflow; the 390px text wrapped cleanly. The new copy appeared
+in the DOM, and `git diff --check` passed. No engine code changed, so no
+routing benchmark ran. Website PR #11 and journal PR #157 remain in review;
+#158 stays open until publication and a live check.
+
+---
+
+# Remove the Landing Page Pipeline - Saturday Oct 10
+
+### Emilio's Work
+
+*Time worked: one prompt at the 12:37 PM clock check. The latest clock check was 12:39 PM, a 2m elapsed work span since that check.*
+
+## Timeline
+
+**12:37 PM - Emilio asked to remove Under the hood.**
+Read both journals, checked the shared issue tracker and #155 comments, and
+pulled the website and product journal review branches. Recorded the
+direction change on #155 before editing.
+
+**12:39 PM - The pipeline section was removed.**
+Deleted the six-stage "Intelligence Meets a Reality Check" section from the
+main landing page and removed every CSS rule and comment used only by its
+pipeline cards. Connections now directly follows Evidence. Renumbered
+Connections to 04, simulated activity to 05, and status to 06.
+
+The local browser showed the Evidence and Connections edges at the same
+position, with no leftover pipeline element or heading and no horizontal
+overflow at the default 625px width. The new section labels appeared in
+order. `git diff --check` passed. No product code changed, so no routing
+benchmark ran. Website PR #11 and product journal PR #157 remain the review
+path; #155 stays open until the website is published and verified.
+
+---
+
+# Put Connections on the Landing Page - Saturday Oct 10
+
+### Emilio's Work
+
+*Time worked: one prompt at the 12:30 PM clock check. The latest clock check was 12:33 PM, a 3m elapsed work span since that check.*
+
+## Timeline
+
+**12:30 PM - Emilio changed the Connections placement.**
+He wanted the complete profile showcase on the main web page directly before
+simulated activity. Read the website and product journals, checked the issue
+tracker and #158 comments, and pulled both review branches before editing.
+Commented on #158 with the revised placement and approach.
+
+**12:33 PM - The concept moved into the landing page.**
+Moved the existing working profile, Connections list, Maya profile, Osaka trip,
+photo gallery, memories, replay control, and guided cursor into a full
+`#connections` section in `index.html`, immediately before `#activity`.
+Changed the app demo call to action to an in-page link, renumbered the later
+section labels, scoped the demo CSS to the new section, and removed the
+now-duplicated `connections.html`. Updated the site documentation. The
+fictional concept label and current Canada-only and social-feature limits
+remain visible in the section; the sample Verified badge still describes
+source evidence for a route, not proof of a visit or media authenticity.
+
+Reviewed the integrated section at 625px, 1440px, and 390px. The in-page
+link lands on the section, guided playback reaches the trip, manual profile
+navigation and photo selection work, all sample images load, and the phone
+layout has no horizontal overflow. Browser logs showed no warnings or errors.
+Unique IDs, ARIA references, local asset paths, image alt attributes, inline
+JavaScript syntax, ASCII, and whitespace checks pass. No engine code changed,
+so no routing benchmark ran. Website PR #11 and product journal PR #157
+remain the review path. Issue #158 remains open until publication and a live
+site check.
+
+---
+
+# Connections Profile Concept - Saturday Oct 10
+
+### Emilio's Work
+
+*Time worked: one prompt at the 11:08 AM clock check. The latest clock check was 12:00 PM, a 52m elapsed work span rather than a prompt-to-prompt interval.*
+
+## Timeline
+
+**11:08 AM - A Connections profile showcase was requested.**
+Emilio asked for a personal profile showcase page where Connections shows
+a Verified badge on an "Osaka trip" with photos and memories from friends.
+Read both journals, checked both issue trackers and website PR #11, and
+pulled the website and product journal review branches before editing.
+The shipped iOS profile and travel log show saved route verification, but
+Friends and Followers are not connected. Osaka is outside the app's
+Canada-only v1 coverage. Opened product issue #158 to track a clearly
+labelled concept instead of claiming those features exist today.
+
+**12:00 PM - The interactive concept page was built and reviewed.**
+Added `connections.html` and linked it from the landing page's app demo
+section without changing its three-link primary navigation. The new page
+shows a sample personal profile, a Connections list with a Verified badge
+on Maya's Osaka trip, Maya's sample profile, and an openable trip with
+three generated Osaka photos and two fictional friend memories. A
+replayable Mac-style cursor moves through the actual controls and cycles
+the photos. Visitors can click through themselves; a manual action stops
+playback, and playback stops offscreen or in a hidden tab. Reduced-motion
+visitors get manual controls without autoplay. Without JavaScript, the
+trip details and photos remain visible. The generated images were resized
+and committed locally as web assets; no external request is needed.
+
+The hero, profile UI, trip badge, and closing note identify the scene as
+illustrative and state that Connections, shared media, and an Osaka route
+are not available in the current app. The Verified badge describes a
+fictional state where every route leg has source evidence; it does not
+attest that anyone took the trip or that the photos and memories are real.
+
+Reviewed the page at 1440px, the default 625px browser pane, and 390px.
+The three photo assets loaded, manual profile and photo controls worked,
+the cursor guided the sequence at 625px, and the phone had no horizontal
+overflow. The browser reported no warnings or errors. The default browser
+theme displayed the dark outer page with a light product surface. HTML
+references, local paths, alt attributes, script parsing, ASCII, and
+whitespace checks pass. No product or engine code changed, so no routing
+benchmark ran. Website PR #11 and product journal PR #157 are the review
+path; issue #158 stays open until publication and a live check.
+
+---
+
+# Show the Native App on the Landing Page - Friday Oct 9
+
+### Emilio's Work
+
+*Time worked: 13h 1m by clock checks (11:26 AM Friday Oct 9 to 12:27 AM Saturday Oct 10, the first clock check after the latest prompt). This span includes unmeasured interruptions and is not an active-work estimate.*
+
+## Timeline
+
+**11:26 AM - Informative landing page animations requested.**
+Read the private product journal and inspected the current website, its local
+changes, and both issue trackers. Opened product issue #155 before editing.
+The older website checkout had an unrelated uncommitted interaction pass and
+was far from public main, so a clean clone of current main was pulled into an
+isolated directory.
+
+**11:29 AM - A user-controlled route explanation was chosen.**
+The existing page already had an animated map, hover traces, and a simulated
+feed. It lacked a simple explanation of what happens when a route leg cannot
+be verified. Added a four-step illustration between the missing-connections
+and evidence sections. Native radio controls show the request, route legs,
+evidence labels, and disclosed final plan. The shuttle stays dashed and
+unverified. The example is explicitly illustrative and never offers pickup
+directions. Changed the existing journey headline and verdict label, which
+had called every leg sourced while the shuttle was described as unverified.
+
+**5:12 PM - Source and browser checks completed.**
+The four radio states responded in the local browser. A 375px phone viewport
+showed the full disclosed route without horizontal overflow; the desktop
+layout was also inspected. The markup works without JavaScript, and the
+existing reduced-motion rule removes transitions while retaining the selected
+state. All six inline scripts parse, HTML IDs are unique, local assets and
+fragment targets exist, and the diff has no whitespace or non-ASCII errors.
+An initial local-browser approval check timed out, then a fresh preview tab
+allowed the visual review. No engine code changed, so no routing benchmark was
+run. Public deployment remains unverified and issue #155 stays open until the
+website change ships.
+
+**5:13 PM - Review pull request opened.**
+Committed the page and journal as e5fd66a and opened website PR #11 from
+Emilio's fork against current public main. The PR has not been merged or
+deployed. Product issue #155 remains open for that final step.
+
+**10:28 PM - Emilio corrected the visual direction.**
+The four-step illustration was too abstract. Emilio asked for actual app UI
+demos with animated presentation, using Cluely's product showcase as a
+reference. Recorded the change on issue #155. Kept the copy correction from
+the first pass, but replaced the conceptual explainer rather than layering
+another diagram over it.
+
+**10:47 PM - Real screens captured and the showcase rebuilt.**
+Built the current iOS app in a temporary simulator directory. This Mac had no
+Laneway LaunchAgent on port 8000, so the native screens were driven through
+the app's saved-plan path using its canned demo content. This used no model
+call or live route request. Captured the route over the Pearson map, the full
+timeline, the train evidence sheet, and the focused unverified shuttle leg.
+A one-line temporary Swift change opened the saved plan at the large sheet
+detent for capture; it was reverted and does not enter either PR. Converted
+the simulator screenshots into four local JPEGs under `assets/app-demo/`.
+
+The page now presents those screens in a large phone stage. Four native radio
+controls let visitors select a screen without JavaScript. While the phone is
+in view, a small script advances the screens every six seconds; a manual
+selection stops playback. The script pauses offscreen and in a hidden tab,
+and does not run for reduced-motion visitors. On a phone viewport the short
+screen controls sit immediately above the device. The hero action now links
+straight to the app showcase. The text states that route data, map pin,
+timing, and the displayed source timestamp are illustrative, not travel
+directions or a live verification result.
+
+**10:47 PM - Browser and source checks.**
+Reviewed the desktop and 375px layouts, selected screens in both, and saw
+autoplay advance while the phone was visible. At 375px the document width
+equals the viewport width. All four local images loaded, and the browser
+reported no warnings or errors. All seven inline scripts parse. HTML IDs,
+fragment links, local assets, ASCII, and `git diff --check` pass. Public
+deployment remains unverified. Issue #155 stays open until the site ships.
+
+**10:59 PM - Emilio asked for three simultaneous windows.**
+The side list still made the visitor choose one feature at a time. Emilio
+wanted three separate windows that show three app features together. Checked
+the open issue and comments, pulled both branches, and recorded this change
+in direction on #155 before editing.
+
+**11:11 PM - The showcase became a three-window grid.**
+Replaced the side controls and single phone with separate plan, evidence,
+and unknown-leg windows. Each uses the captured native app screens. The plan
+window moves from the map preview to the leg timeline; the evidence window
+shows the claim, quote, source, and timestamp; the unknown window pans down
+to the shuttle marked unverified. All three stay on the page together. The
+motion pauses when the section is offscreen or the tab is hidden; reduced
+motion and absent JavaScript leave three useful static views. The sample
+route disclaimer remains visible below the windows. The browser could not
+be visually checked yet because the Mac locked during this pass. Source
+checks found all four images and fragment targets, unique IDs, and seven
+parseable inline scripts. Desktop and mobile visual review remains to do.
+
+**11:13 PM - The three windows were checked in the browser.**
+After the Mac unlocked, reviewed the page at 1280px and 375px. At desktop
+width, all three windows fit side by side; every capture loaded and the
+route image advanced from preview to timeline while evidence and the unknown
+leg stayed in view. At 375px the windows stack at full readable width and
+the page has no horizontal overflow. The shuttle label and disclosure are
+visible in the third window. Motion pauses when the showcase leaves view;
+the browser logged no warnings or errors. Removed the older hero claim that
+three legs were sourced, since the captured sample explicitly shows only
+one of three legs verified. The hero now says each leg shows its status.
+Public deployment remains unverified and #155 stays open.
+
+**11:19 PM - Emilio asked for interactive UI rather than moving screenshots.**
+The three windows still displayed captured images. Emilio wanted controls
+that visitors can use, with animated responses from the app interface.
+Checked #155 and its comments, pulled both branches, and commented on the
+new direction before editing. Read `PlanView.swift`, `ContentView.swift`,
+and the backend's canned demo plan to match the native route sheet, selected
+leg, evidence sheet, and unsupported-claim states.
+
+**11:32 PM - The windows became interactive app recreations.**
+Replaced the screenshots in `index.html` with code-native UI. The plan
+window opens a route sheet with a leg timeline; selecting a leg collapses
+the sheet and highlights that segment on a schematic map. The train window
+opens and closes a verified claim sheet with its quote, source link, and
+illustrative fetch timestamp. The shuttle window selects the unverified leg
+and opens the unsupported claim and source failure. Sheet transitions and
+route drawing run while the showcase is visible; the existing reduced-motion
+rule removes animations while keeping all controls usable. Keyboard Escape
+closes the evidence sheets and returns focus to the trigger. Removed four
+unused simulator JPEGs. The browser cannot execute native SwiftUI, so these
+are interactive recreations of its current behavior, clearly identified as
+such on the page. No routing request or live verification was made.
+
+**11:32 PM - Interaction and layout checks.**
+In the local browser, opened the route sheet, selected the train, and saw
+the map highlight and sheet collapse. Opened and closed the train evidence;
+selected the shuttle and opened its unsupported claim; checked Escape and
+focus return. Three windows fit together at 1440px; they stack at 390px
+without horizontal overflow, and the shuttle sheet remains readable there.
+The browser reported no errors. All seven inline scripts parse; HTML IDs
+are unique, all three `aria-controls` targets exist, and `git diff --check`
+passes. Public deployment remains unverified and #155 stays open.
+
+**11:35 PM - The review records were updated.**
+Committed and pushed website revision `7e9d3dd` to PR #11 and product
+journal revision `04c9eeb` to PR #157, then updated both PR descriptions
+to match the interactive implementation. The journal PR's engine checks
+passed and both PRs were mergeable. Commented on #155 with the final
+behavior and verification. Issue #155 remains open until publication.
+
+**11:43 PM - Emilio asked for a more creative demo.**
+The interactive windows were correct but still looked like three dark
+infographic cards. Emilio asked for cooler motion and stronger product
+presentation. Rechecked #155 and website PR #11, pulled both branches,
+and recorded the revised direction on #155 before editing. Inspected the
+current Cluely product presentation as a visual reference. The useful
+principle was to let product UI lead the composition instead of placing
+it below a block of explanation.
+
+**11:50 PM - The showcase was restaged and animated.**
+Removed the dark card shells, moved the short captions below the UI, and
+placed three rounded native-style windows on a pale blue and warm light
+stage. They rise into view at staggered times and respond to hover and
+focus with a small perspective change. A replayable, nine-second sequence
+opens the route timeline, focuses the verified train on a zooming map,
+reveals its evidence sheet, selects the shuttle, and reveals the unsupported
+claim. A small moving highlight stays on the verified train path; the
+unsupported shuttle remains dashed. Detail cards reveal in order and the
+selected shuttle pulses briefly. The sequence stops when a visitor hovers,
+focuses, or uses a control, and it pauses when offscreen or in a hidden
+tab. Replay starts it again. Reduced-motion visitors get manual controls
+without the automatic sequence or animation. No product or engine code
+changed and no new dependency was added.
+
+**11:50 PM - Visual and behavior checks.**
+Reviewed the three-window stage at 1440px. The automated route and train
+evidence states advanced, the verified path highlight moved, and replay
+reset all three windows. Manually selected the shuttle, opened its claim,
+and confirmed Escape returned focus. At 390px the windows stack at full
+readable width with no horizontal overflow; the unsupported claim remained
+readable. Scrolling the showcase offscreen set playback to false, and the
+browser logged no errors. All seven inline scripts parse, 41 HTML IDs are
+unique, three control targets and two fragment links resolve, local paths
+exist, and `git diff --check` passes. Reduced-motion and absent-JavaScript
+behavior were checked in source, not emulated in the browser. The sample
+data disclaimer stays visible. Issue #155 remains open for publication.
+
+**11:52 PM - Creative revision submitted for review.**
+Pushed website commit `03b0ec0` to PR #11 and product journal commit
+`9a61acf` to PR #157. Updated both PR descriptions and commented on #155
+with the changed presentation and verification. Both PRs were mergeable;
+the product journal's engine checks passed. The public site is unchanged,
+so #155 stays open until the website is published and checked live.
+
+**11:57 PM - Emilio asked for more advanced animation.**
+The three interactive windows and floating stage were right, but the
+automatic motion still felt like simple sheet transitions. Rechecked #155
+and its comments, confirmed both PRs were open with no review feedback,
+pulled the website and product journal branches, and recorded the new
+direction on #155 before editing.
+
+**12:04 AM Saturday Oct 10 - The guided route sequence was built.**
+The replay now shows a touch cue traveling between the real UI controls:
+opening the route, selecting the verified train, opening its source,
+selecting the shuttle, and opening its unsupported claim. A route marker
+uses the train SVG path's own geometry to travel to Viscount, then pings
+at arrival. The active window gains an amber glow, and the evidence card
+gets a short scan reveal. The cue does not block clicks and is omitted at
+narrow widths. The sequence now continues on hover; a real click or
+keyboard focus takes control. Animation pauses offscreen or in a hidden
+tab, and reduced-motion visitors keep manual controls without autoplay.
+The shuttle path stays dashed and has no traveling marker.
+
+Browser testing exposed a preexisting layout fault in the first window:
+its absolute map and sheet children were positioned against the showcase
+instead of their own UI surface, clipping the route title when opened.
+Adding layout containment to each fixed-height UI surface fixed the
+containing block; the title and all three leg controls now remain inside
+the route window. The browser showed the guide, train marker, source and
+unsupported states at 1440px. Manual train selection animated the marker;
+manual sheet opening, closing, and Escape focus return worked. At 390px
+the unsupported sheet was readable with no horizontal overflow. Browser
+logs had no warnings or errors. All eight inline scripts parse, 41 IDs
+are unique, all three `aria-controls` targets resolve, local assets and
+fragment links exist, and whitespace and Markdown ASCII checks pass. No
+product or engine code changed, so no routing benchmark ran. The public
+site remains unchanged and #155 stays open until publication.
+
+**12:06 AM Saturday Oct 10 - The revision was submitted for review.**
+Committed and pushed website change `8772a58` to PR #11 and product
+journal change `74e8f50` to PR #157. Updated both PR descriptions and
+commented on #155 with the implementation and checks. Both PRs were
+mergeable and the product journal's engine checks passed. The preview
+remains at `http://localhost:8076/#how-it-works`; the public site has not
+changed. Issue #155 remains open for publication and live verification.
+
+**12:11 AM Saturday Oct 10 - Emilio requested a Mac cursor.**
+The orange touch dot did not make the automatic walkthrough look like a
+person using the app. Checked #155, its comments, and both open PRs;
+pulled both branches and commented on the issue before editing.
+
+**12:14 AM Saturday Oct 10 - A pointer now drives the UI.**
+Replaced the dot with a white, dark-outlined Mac-style SVG arrow. Its tip
+lands at the actual center of each control. Web Animations moves it
+between controls along a gentle curved path with eased timing; an opacity
+and position fallback remains for older browsers. The pointer compresses
+briefly and shows a small ring when the corresponding UI action fires.
+After exposing both evidence sheets, it moves to each Done button and
+closes them before replaying, instead of disappearing over an open sheet.
+It never intercepts visitor clicks. On narrow screens the guided pointer
+is hidden while all manual controls remain available; reduced-motion
+visitors receive no automatic sequence.
+
+At 1440px the browser showed the arrow over the route, evidence, and
+unsupported windows, including its press at the train Done button. Both
+sheets closed during the automatic sequence. Clicking the route button
+stopped autoplay and hid the pointer while opening the sheet for manual
+use. At 390px the pointer is hidden and the page width stays 390px.
+Browser logs showed no warnings or errors. Inline scripts parse; IDs,
+control references, fragment targets, local assets, and whitespace checks
+pass. No Swift or engine code changed, so no routing benchmark ran.
+
+**12:16 AM Saturday Oct 10 - Cursor revision submitted.**
+Pushed website commit `fe53f86` to PR #11 and product journal commit
+`aa5f0c1` to PR #157. Updated both PR descriptions and commented on
+#155 with the behavior and checks. Both PRs were mergeable and the
+product journal's engine checks passed. The preview remains local;
+#155 stays open until publication and live verification.
+
+**12:19 AM Saturday Oct 10 - The app browser viewport was corrected.**
+The default in-app browser is 625px wide. The first cursor revision hid
+the pointer below 900px, so Emilio's own preview would not have shown
+the requested change. Moved that cutoff to 500px, leaving the pointer
+visible in the app browser while still hiding it on a phone. Replay at
+625px now scrolls the first window into view, letting the pointer start
+over the map and move to the route control in the visible area. Browser
+checks confirmed the pointer and route UI at 625px with no horizontal
+overflow. At 390px the pointer remains hidden and the page still fits.
+Inline scripts, HTML references, and whitespace checks pass again.
+
+**12:27 AM Saturday Oct 10 - Emilio asked for the site's own palette.**
+The interactive demo had warm cream surfaces, green verified markers, and
+orange route lines, numbers, glows, and scan effects. Emilio wanted cool
+grey, navy, and black with only minimal orange. Checked #155 and its
+comments, pulled both review branches, and commented on the design change
+before editing.
+
+**12:36 AM Saturday Oct 10 - The three windows were recolored.**
+The stage, map, app surfaces, and card borders now use cool greys. Navy
+carries the verified train path, selection, evidence, active-window glow,
+and source scan. Orange remains restrained in unverified badges, the
+dashed shuttle segment, and the unsupported claim. The unverified terminal
+walk is now dashed in muted slate, matching its explicit status rather
+than appearing as a solid verified route. The existing cursor walkthrough
+and controls were not changed.
+
+Reviewed the result at 1440px, the default 625px app browser, and 390px.
+The three windows still appear together on desktop; the Mac-style cursor
+appears during replay at 625px. The phone layout and unsupported claim fit
+without horizontal overflow. Manual route and evidence controls still
+respond, and browser logs show no warnings or errors. Seven inline scripts
+parse; 41 IDs are unique; HTML references and local paths resolve;
+`git diff --check` passes. No engine code changed, so no routing benchmark
+ran. Website PR #11 and product journal PR #157 remain the review path;
+issue #155 stays open until publication and a live check.
+
+---
+
 # The Elastic Is Gone - Tuesday Sep 15
 
 *Written 5:06 PM.*

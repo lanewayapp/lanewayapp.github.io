@@ -63,12 +63,15 @@ h1{font-weight:500;font-size:104px;line-height:.98;letter-spacing:-.058em;margin
   function clamp(v){return Math.max(0,Math.min(1,v));}
   window.seek=function(t){
     var RUN=.74,u=ease(clamp(t/RUN)),q=at(len*u);
-    var out=clamp((t-RUN)/.08),back=clamp((t-.9)/.1);
+    /* Nothing may differ between t=1 and t=0, or the loop pops. The traveller
+       grows out of the origin dot and fades at the far end; the nodes ease
+       back to hollow well before the wrap. */
+    var out=clamp((t-RUN)/.08),back=clamp((t-.8)/.16),grow=clamp(t/.07);
     trav.style.display="";
-    trav.setAttribute("transform","translate("+q.x.toFixed(2)+" "+q.y.toFixed(2)+")");
+    trav.setAttribute("transform","translate("+q.x.toFixed(2)+" "+q.y.toFixed(2)+") scale("+(grow*(2-grow)).toFixed(3)+")");
     trav.style.opacity=(1-out).toFixed(3);
     function node(id,f){var on=clamp((u-f)/.03)*(1-back),el=document.getElementById(id);
-      el.setAttribute("fill",on>.5?"#F7F5ED":"#172133");el.setAttribute("r",(10+3*Math.sin(Math.PI*clamp((u-f)/.09))).toFixed(2));}
+      el.setAttribute("fill","rgb("+Math.round(23+224*on)+","+Math.round(33+212*on)+","+Math.round(51+186*on)+")");el.setAttribute("r",(10+3*Math.sin(Math.PI*clamp((u-f)/.09))).toFixed(2));}
     node("n1",f1);node("n2",f2);
     function lab(id,a,b){var on=(u>=a&&u<b&&t<RUN)?1:0;document.getElementById(id).style.fill=on?"#F7F5ED":"";}
     lab("l1",0,f1);lab("l2",f1,f2);lab("l3",f2,1.01);

@@ -2,7 +2,7 @@
 
 ### Baron's Work
 
-*Time worked: 0h 18m (3:22 PM to 3:40 PM)*
+*Time worked: 0h 19m (3:22 PM to 3:41 PM)*
 
 ## Timeline
 
@@ -68,6 +68,20 @@ development for iOS" dot.
 - The GIF grew from 143 KB to 313 KB, because the grid now changes on every
   frame. The palette went from 64 to 128 colours so the in-between dot
   shades do not band.
+
+**3:41 PM - "it doesnt loop cleanly".** It did not. Two things were different
+between the last frame and the first, so the wrap popped.
+
+- The traveller was fully faded out on the last frame and fully present on
+  the first. It now grows out of the origin dot over the first 7 percent of
+  the loop, so frame one has no traveller and matches the frame before it.
+- The two nodes snapped from filled back to hollow in a single frame near
+  the end. They now ease back over 16 percent of the loop, finished before
+  the wrap.
+- Measured on the recorded frames: the wrap changes 164 pixels, all of them
+  the WALK label lighting up, against 706 for an ordinary mid-loop step.
+  The lesson for any seek-driven loop: diff the last frame against the
+  first before calling it a loop.
 
 ## Decisions
 

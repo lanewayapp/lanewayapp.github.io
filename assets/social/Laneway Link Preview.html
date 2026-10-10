@@ -14,13 +14,12 @@ body{background:#172133;color:#F7F5ED;font-family:"Geist",sans-serif;position:re
 h1{font-weight:500;font-size:104px;line-height:.98;letter-spacing:-.058em;margin-bottom:26px}
 .sub{font-size:27px;line-height:1.38;color:rgba(247,245,237,.72);max-width:21.5em;letter-spacing:-.012em}
 .foot{font-family:"Geist Mono",monospace;font-size:17px;letter-spacing:.09em;text-transform:uppercase;color:rgba(247,245,237,.62);display:flex;align-items:center;gap:12px}
-.foot i{width:10px;height:10px;border-radius:50%;background:#E89E2E;display:block}
+.foot i{width:10px;height:10px;border-radius:50%;background:#E89E2E;display:block;margin-left:4px}
 .lab{font-family:"Geist Mono",monospace;font-size:15px;letter-spacing:.14em;fill:rgba(247,245,237,.66)}
 </style></head><body>
 <svg class="grid" viewBox="0 0 1200 630"><defs>
-<pattern id="g" width="30" height="30" patternUnits="userSpaceOnUse"><circle cx="1.2" cy="1.2" r="1.2" fill="#F7F5ED" opacity=".15"/></pattern>
 <linearGradient id="fade" x1="0" x2="1"><stop offset=".42" stop-color="#172133"/><stop offset=".78" stop-color="#172133" stop-opacity="0"/></linearGradient>
-</defs><rect width="1200" height="630" fill="url(#g)"/><rect width="1200" height="630" fill="url(#fade)"/></svg>
+</defs><g id="dots" fill="#F7F5ED"></g><rect width="1200" height="630" fill="url(#fade)"/></svg>
 <svg class="art" viewBox="0 0 1200 630">
   <!-- the mark's own curve, M9 25 Q9 13 16 13 Q23 13 23 7, scaled 30x -->
   <g transform="translate(500 -200) scale(30)">
@@ -46,6 +45,15 @@ h1{font-weight:500;font-size:104px;line-height:.98;letter-spacing:-.058em;margin
    animated card. Every frame is a complete card, because most link previews
    only ever show the first one. */
 (function(){
+  /* The background grid is real circles, not a pattern, so each dot can
+     breathe on its own phase. At rest they sit at the same .15 the pattern had. */
+  var dots=[],dg=document.getElementById("dots"),NS="http://www.w3.org/2000/svg";
+  for(var gy=0;gy<21;gy++)for(var gx=0;gx<40;gx++){
+    var c=document.createElementNS(NS,"circle");
+    c.setAttribute("cx",gx*30+1.2);c.setAttribute("cy",gy*30+1.2);c.setAttribute("r",1.2);c.setAttribute("opacity",.15);
+    dg.appendChild(c);dots.push({el:c,ph:(gx*30+gy*30)/1100});
+  }
+  var statusDot=document.querySelector(".foot i");
   var path=document.querySelector(".art path"),len=path.getTotalLength();
   var trav=document.getElementById("trav");
   function at(l){var q=path.getPointAtLength(l);return {x:500+30*q.x,y:-200+30*q.y};}
@@ -64,6 +72,15 @@ h1{font-weight:500;font-size:104px;line-height:.98;letter-spacing:-.058em;margin
     node("n1",f1);node("n2",f2);
     function lab(id,a,b){var on=(u>=a&&u<b&&t<RUN)?1:0;document.getElementById(id).style.fill=on?"#F7F5ED":"";}
     lab("l1",0,f1);lab("l2",f1,f2);lab("l3",f2,1.01);
+    /* A slow diagonal swell across the grid, one cycle per loop so it joins. */
+    for(var i=0;i<dots.length;i++){
+      var w=.5+.5*Math.sin(2*Math.PI*(t-dots[i].ph)),k=w*w*w;
+      dots[i].el.setAttribute("opacity",(.12+.16*k).toFixed(3));
+      dots[i].el.setAttribute("r",(1.2+.35*k).toFixed(2));
+    }
+    /* The status dot sends out a ring twice per loop. */
+    var ph=(t*2)%1;
+    statusDot.style.boxShadow="0 0 0 "+(13*ph).toFixed(1)+"px rgba(232,158,46,"+(.5*(1-ph)).toFixed(3)+")";
   };
 })();
 </script>

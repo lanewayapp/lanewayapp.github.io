@@ -21,7 +21,7 @@ Files are named in title case with spaces, e.g. `Laneway Mark Dark 512.png`. In 
 - `wordmark/` - horizontal lockups (on ink, on cream, transparent ink, transparent cream) and stacked lockups.
 - `avatar/` - 1024px full-bleed profile pictures, safe for a circle crop.
 - `favicon/` - `Favicon.svg` plus PNG at 16/32/48/180/192/512.
-- `social/` - the 1200x630 card that shared links show. `Laneway Link Preview.gif` is the `og:image` on every page: a 3.6 second loop of a dot riding the route. `Laneway Link Preview.png` is the still, used as `twitter:image`. Both are recorded from `Laneway Link Preview.html`: the still is a plain screenshot at 1200x630, and the loop is 72 screenshots at `seek(i/72)`, joined at 20 fps. Every frame is a complete card, because most apps only show the first one.
+- `social/` - the 1200x630 card that shared links show. `Laneway Link Preview.gif` is the `og:image` on every page: a 3.6 second loop of a dot riding the route, over a grid that slowly breathes, with a pulse on the status dot. `Laneway Link Preview.png` is the still, used as `twitter:image`. Both are recorded from `Laneway Link Preview.html`: the still is a plain screenshot at 1200x630, and the loop is 72 screenshots at `seek(i/72)`, joined at 20 fps. Every frame is a complete card, because most apps only show the first one.
 - `connections/` - three generated, web-sized sample Osaka photos for the illustrative Connections concept. They are not customer photos.
 
 ## Usage

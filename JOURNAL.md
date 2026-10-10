@@ -2,7 +2,7 @@
 
 ### Baron's Work
 
-*Time worked: 0h 15m (3:22 PM to 3:37 PM)*
+*Time worked: 0h 18m (3:22 PM to 3:40 PM)*
 
 ## Timeline
 
@@ -46,7 +46,7 @@ descriptions were already there. No page had an image, and every page set
   logo, looks bad": the first draft put the mark on a cream tile, and it now
   uses the dark lockup, an ink tile with a hairline outline. Then "make it
   animated like a gif": `og:image` points at a 72 frame, 3.6 second GIF of a
-  dot riding the route, 143 KB. The still PNG stays as `twitter:image`.
+  dot riding the route, 143 KB at the time. The still PNG stays as `twitter:image`.
 - The card's source is `Laneway Link Preview.html` beside the images. It
   exposes `seek(t)`, and the GIF is that page screenshotted 72 times. No
   build step is added: the page loads neither file, so nothing has to run
@@ -54,6 +54,20 @@ descriptions were already there. No page had an image, and every page set
 - `CLAUDE.md` said no hard-coded host beyond `og:url`. The image tags are
   now named as the second exception, because a scraper does not resolve a
   relative image path.
+
+**3:40 PM - The card's grid breathes and the status dot pulses.** Asked for the
+background dots to fade and glow, barely noticeable, and a pulse on the "in
+development for iOS" dot.
+
+- The grid was an SVG pattern, which can only change all at once. It is now
+  840 real circles so each can run on its own phase: a slow diagonal swell,
+  opacity .12 to .28 and radius 1.2 to 1.55, one cycle per loop. At rest
+  they sit at the .15 the pattern had, so the still is unchanged.
+- The amber status dot sends out a ring twice per loop, 13px wide at its
+  largest and fading as it grows.
+- The GIF grew from 143 KB to 313 KB, because the grid now changes on every
+  frame. The palette went from 64 to 128 colours so the in-between dot
+  shades do not band.
 
 ## Decisions
 

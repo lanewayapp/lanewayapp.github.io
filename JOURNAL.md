@@ -2,7 +2,7 @@
 
 ### Baron's Work
 
-*Time worked: 0h 19m (3:22 PM to 3:41 PM)*
+*Time worked: 0h 24m (3:22 PM to 3:46 PM)*
 
 ## Timeline
 
@@ -83,6 +83,26 @@ between the last frame and the first, so the wrap popped.
   The lesson for any seek-driven loop: diff the last frame against the
   first before calling it a loop.
 
+**3:46 PM - iMessage crops the card to a portrait slice, so the card was laid
+out again.** Baron sent a screenshot of the link in a real iMessage thread.
+Two things in it corrected this entry. The GIF plays in iMessage, which the
+Open list below had wrong. And iMessage does not show the 1200x630 card: it
+shows a tall slice out of the middle, about 420px of the 1200, so the
+bubble read "ning / ween" with the lockup and the route's origin cut off.
+
+- Everything that has to be read now sits in the centre 400px: the lockup,
+  the headline at 71px, the description on two lines, and the status line,
+  all centred.
+- The route is no longer the mark's curve scaled up. It is a path in the
+  same rounded language that fits both shapes: up from an origin dot in the
+  left flank, flat across the card under the text, and up the right flank
+  off the top. The slice shows the flat run with both nodes, the RAIL label
+  and the traveller passing; the full card shows the whole S.
+- Labels fade now, and all three are at rest across the wrap, so the WALK
+  flick at the loop point is gone.
+- The source page carries a comment at the top saying to check the centre
+  slice as well as the full card.
+
 ## Decisions
 
 - The board is still labelled. The foot under it reads `Simulated route
@@ -93,9 +113,8 @@ between the last frame and the first, so the wrap popped.
 
 ## Open
 
-- Most apps will show the card as a still. iMessage, WhatsApp and X take the
-  first frame of a GIF; Discord plays it. That is why frame one is a whole
-  card.
+- iMessage plays the GIF and crops it to a portrait slice, both seen in a
+  real thread. What WhatsApp, X and Discord do with it is not checked.
 - Apps cache previews. A link pasted somewhere before today can keep its
   old bare look until that app refetches it.
 - `legal.html` still describes itself as "we need to fill this out, before

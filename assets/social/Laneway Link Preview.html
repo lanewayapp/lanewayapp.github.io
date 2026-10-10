@@ -1,4 +1,8 @@
 <!doctype html><html><head><meta charset="utf-8">
+<!-- The link preview card, 1200x630. iMessage shows only a portrait slice out
+     of the middle of it, about 420px wide, so everything that has to be read
+     sits in the centre column (x 400 to 800) and the flanks only carry the
+     route's two vertical legs. Check both the full card and that slice. -->
 <style>
 @font-face{font-family:"Geist";src:url("../../fonts/geist-var.woff2") format("woff2");font-weight:100 900}
 @font-face{font-family:"Geist Mono";src:url("../../fonts/geist-mono-var.woff2") format("woff2");font-weight:100 900}
@@ -7,74 +11,72 @@ html,body{width:1200px;height:630px;overflow:hidden}
 body{background:#172133;color:#F7F5ED;font-family:"Geist",sans-serif;position:relative;-webkit-font-smoothing:antialiased}
 .grid{position:absolute;inset:0}
 .art{position:absolute;inset:0}
-.copy{position:absolute;left:76px;top:0;bottom:0;width:640px;display:flex;flex-direction:column;justify-content:space-between;padding:66px 0 62px}
-.lockup{display:flex;align-items:center;gap:16px}
-.lockup svg{width:52px;height:52px;display:block}
-.lockup b{font-weight:800;font-size:38px;letter-spacing:-.055em}
-h1{font-weight:500;font-size:104px;line-height:.98;letter-spacing:-.058em;margin-bottom:26px}
-.sub{font-size:27px;line-height:1.38;color:rgba(247,245,237,.72);max-width:21.5em;letter-spacing:-.012em}
-.foot{font-family:"Geist Mono",monospace;font-size:17px;letter-spacing:.09em;text-transform:uppercase;color:rgba(247,245,237,.62);display:flex;align-items:center;gap:12px}
-.foot i{width:10px;height:10px;border-radius:50%;background:#E89E2E;display:block;margin-left:4px}
-.lab{font-family:"Geist Mono",monospace;font-size:15px;letter-spacing:.14em;fill:rgba(247,245,237,.66)}
+.copy{position:absolute;left:400px;width:400px;top:0;padding:50px 22px 0;text-align:center}
+.lockup{display:inline-flex;align-items:center;gap:12px;margin-bottom:44px}
+.lockup svg{width:42px;height:42px;display:block}
+.lockup b{font-weight:800;font-size:31px;letter-spacing:-.055em}
+h1{font-weight:500;font-size:71px;line-height:.98;letter-spacing:-.058em;margin-bottom:22px}
+.sub{font-size:21px;line-height:1.4;color:rgba(247,245,237,.72);letter-spacing:-.012em}
+.foot{position:absolute;left:400px;width:400px;bottom:34px;font-family:"Geist Mono",monospace;font-size:14px;letter-spacing:.09em;text-transform:uppercase;color:rgba(247,245,237,.62);display:flex;align-items:center;justify-content:center;gap:12px}
+.foot i{width:9px;height:9px;border-radius:50%;background:#E89E2E;display:block}
+.lab{font-family:"Geist Mono",monospace;font-size:14px;letter-spacing:.14em;fill:rgba(247,245,237,.66)}
 </style></head><body>
-<svg class="grid" viewBox="0 0 1200 630"><defs>
-<linearGradient id="fade" x1="0" x2="1"><stop offset=".42" stop-color="#172133"/><stop offset=".78" stop-color="#172133" stop-opacity="0"/></linearGradient>
-</defs><g id="dots" fill="#F7F5ED"></g><rect width="1200" height="630" fill="url(#fade)"/></svg>
+<svg class="grid" viewBox="0 0 1200 630"><g id="dots" fill="#F7F5ED"></g></svg>
 <svg class="art" viewBox="0 0 1200 630">
-  <!-- the mark's own curve, M9 25 Q9 13 16 13 Q23 13 23 7, scaled 30x -->
-  <g transform="translate(500 -200) scale(30)">
-    <path d="M9 25 Q9 13 16 13 Q23 13 23 7" stroke="#E89E2E" stroke-width=".56" fill="none" stroke-linecap="round"/>
-    <circle cx="9" cy="25" r=".78" fill="#E89E2E"/>
-  </g>
+  <path id="route" d="M104 560 Q104 478 236 478 L964 478 Q1096 478 1096 346 L1096 -30" stroke="#E89E2E" stroke-width="15" fill="none" stroke-linecap="round"/>
+  <circle cx="104" cy="560" r="21" fill="#E89E2E"/>
   <g fill="#172133" stroke="#F7F5ED" stroke-width="4">
-    <circle id="n1" cx="834" cy="263" r="10"/><circle id="n2" cx="1126" cy="154" r="10"/>
+    <circle id="n1" cx="470" cy="478" r="10"/><circle id="n2" cx="730" cy="478" r="10"/>
   </g>
-  <text class="lab" id="l1" x="808" y="428">WALK</text>
-  <text class="lab" id="l2" x="952" y="236">RAIL</text>
-  <text class="lab" id="l3" x="1064" y="78">SHUTTLE</text>
+  <text class="lab" id="l1" x="268" y="516" text-anchor="middle">WALK</text>
+  <text class="lab" id="l2" x="600" y="516" text-anchor="middle">RAIL</text>
+  <text class="lab" id="l3" x="902" y="516" text-anchor="middle">SHUTTLE</text>
   <!-- the traveller only exists in the animated card; the still never calls seek() -->
   <g id="trav" style="display:none"><circle r="19" fill="#F7F5ED" opacity=".16"/><circle r="10.5" fill="#F7F5ED"/></g>
 </svg>
 <div class="copy">
   <div class="lockup"><svg viewBox="0 0 32 32"><rect x=".4" y=".4" width="31.2" height="31.2" rx="6.8" fill="#172133" stroke="#F7F5ED" stroke-opacity=".3" stroke-width=".5"/><path d="M9 25 Q9 13 16 13 Q23 13 23 7" stroke="#E89E2E" stroke-width="3.2" fill="none" stroke-linecap="round"/><circle cx="9" cy="25" r="2.6" fill="#E89E2E"/></svg><b>Laneway</b></div>
-  <div><h1>Everything<br>in between</h1><p class="sub">Trip plans that connect the shuttles, terminal walks, and missing links.</p></div>
-  <div class="foot"><i></i>In development for iOS</div>
+  <h1>Everything<br>in between</h1>
+  <p class="sub">Trip plans that connect the shuttles, terminal walks, and missing links.</p>
 </div>
+<div class="foot"><i></i>In development for iOS</div>
 <script>
 /* seek(t), t from 0 to 1 across one loop. Called frame by frame to record the
-   animated card. Every frame is a complete card, because most link previews
-   only ever show the first one. */
+   animated card. Every frame is a complete card, and nothing may differ
+   between t=1 and t=0, or the loop pops. */
 (function(){
   /* The background grid is real circles, not a pattern, so each dot can
-     breathe on its own phase. At rest they sit at the same .15 the pattern had. */
+     breathe on its own phase. */
   var dots=[],dg=document.getElementById("dots"),NS="http://www.w3.org/2000/svg";
   for(var gy=0;gy<21;gy++)for(var gx=0;gx<40;gx++){
     var c=document.createElementNS(NS,"circle");
-    c.setAttribute("cx",gx*30+1.2);c.setAttribute("cy",gy*30+1.2);c.setAttribute("r",1.2);c.setAttribute("opacity",.15);
+    c.setAttribute("cx",gx*30+15);c.setAttribute("cy",gy*30+15);c.setAttribute("r",1.2);c.setAttribute("opacity",.15);
     dg.appendChild(c);dots.push({el:c,ph:(gx*30+gy*30)/1100});
   }
   var statusDot=document.querySelector(".foot i");
-  var path=document.querySelector(".art path"),len=path.getTotalLength();
+  var path=document.getElementById("route"),len=path.getTotalLength();
   var trav=document.getElementById("trav");
-  function at(l){var q=path.getPointAtLength(l);return {x:500+30*q.x,y:-200+30*q.y};}
-  function nearest(cx,cy){var best=0,bd=1e9;for(var i=0;i<=600;i++){var q=at(len*i/600),d=Math.hypot(q.x-cx,q.y-cy);if(d<bd){bd=d;best=i/600;}}return best;}
-  var f1=nearest(834,263),f2=nearest(1126,154);
+  function at(l){return path.getPointAtLength(l);}
+  function nearest(cx,cy){var best=0,bd=1e9;for(var i=0;i<=1200;i++){var q=at(len*i/1200),d=Math.hypot(q.x-cx,q.y-cy);if(d<bd){bd=d;best=i/1200;}}return best;}
+  var f1=nearest(470,478),f2=nearest(730,478);
   function ease(u){return u<.5?2*u*u:1-Math.pow(-2*u+2,2)/2;}
   function clamp(v){return Math.max(0,Math.min(1,v));}
   window.seek=function(t){
     var RUN=.74,u=ease(clamp(t/RUN)),q=at(len*u);
-    /* Nothing may differ between t=1 and t=0, or the loop pops. The traveller
-       grows out of the origin dot and fades at the far end; the nodes ease
-       back to hollow well before the wrap. */
+    /* The traveller grows out of the origin dot and fades at the far end; the
+       nodes ease back to hollow well before the wrap. */
     var out=clamp((t-RUN)/.08),back=clamp((t-.8)/.16),grow=clamp(t/.07);
     trav.style.display="";
     trav.setAttribute("transform","translate("+q.x.toFixed(2)+" "+q.y.toFixed(2)+") scale("+(grow*(2-grow)).toFixed(3)+")");
     trav.style.opacity=(1-out).toFixed(3);
     function node(id,f){var on=clamp((u-f)/.03)*(1-back),el=document.getElementById(id);
-      el.setAttribute("fill","rgb("+Math.round(23+224*on)+","+Math.round(33+212*on)+","+Math.round(51+186*on)+")");el.setAttribute("r",(10+3*Math.sin(Math.PI*clamp((u-f)/.09))).toFixed(2));}
+      el.setAttribute("fill","rgb("+Math.round(23+224*on)+","+Math.round(33+212*on)+","+Math.round(51+186*on)+")");
+      el.setAttribute("r",(10+3*Math.sin(Math.PI*clamp((u-f)/.09))).toFixed(2));}
     node("n1",f1);node("n2",f2);
-    function lab(id,a,b){var on=(u>=a&&u<b&&t<RUN)?1:0;document.getElementById(id).style.fill=on?"#F7F5ED":"";}
-    lab("l1",0,f1);lab("l2",f1,f2);lab("l3",f2,1.01);
+    /* Labels fade, never snap, and all three are at rest across the wrap. */
+    function lab(id,a,b){var k=clamp((u-a)/.04)*(1-clamp((u-b)/.04))*(1-out);
+      document.getElementById(id).style.fill="rgba(247,245,237,"+(.66+.34*k).toFixed(3)+")";}
+    lab("l1",.02,f1);lab("l2",f1,f2);lab("l3",f2,1.2);
     /* A slow diagonal swell across the grid, one cycle per loop so it joins. */
     for(var i=0;i<dots.length;i++){
       var w=.5+.5*Math.sin(2*Math.PI*(t-dots[i].ph)),k=w*w*w;

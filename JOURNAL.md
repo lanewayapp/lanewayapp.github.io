@@ -1,3 +1,48 @@
+# The Simulated Activity Note Came Out - Saturday Oct 10
+
+### Baron's Work
+
+*Time worked: 0h 4m (3:22 PM to 3:26 PM)*
+
+## Timeline
+
+**3:22 PM - Asked to remove the line beside the In Motion heading.** The
+request, verbatim: remove "Simulated activity. Generated route examples,
+never customer telemetry." from the laneway site.
+
+- The `<p class="activity-note">` in the `#activity` section of `index.html`
+  is gone, along with its four CSS rules, which had no other consumer.
+- The CSS comment above `.activity-head` said the disclosure sits beside the
+  heading. It now says it sits in the foot under the board, which is true.
+- `.activity-head` keeps its two-column grid, so the heading stays in the
+  same column at the same width; the right column is simply empty.
+
+**3:23 PM - "commit to main".** Committed locally and stopped there, which
+was the wrong read. On this repo "commit to main" means ship it, because
+nothing is on the site until Pages has it.
+
+**3:26 PM - Pushed, after redoing it on current main.** The push was rejected:
+the local checkout was 20 commits behind origin, missing all of the
+Connections and app demo work, and the edit had been made against a stale
+`index.html`. The two local commits were dropped, main was moved to
+origin, and the same five replacements were applied to the current file,
+each asserted to match exactly once. Then one commit and a push.
+
+## Decisions
+
+- The board is still labelled. The foot under it reads `Simulated route
+  feed` and the list's aria-label says the rows are generated examples.
+  That foot is now the only visible disclosure, so it should not be cut
+  without replacing it; the house rule about never presenting a fact the
+  page cannot back up depends on it.
+
+## Open
+
+- The page was not opened in a browser after the change. The removal is one
+  paragraph and dead CSS, checked by grep only.
+- Fetch before editing here. Emilio is landing PRs on this repo and a local
+  checkout goes stale within a day.
+
 # Confirm the Website PR for Review - Saturday Oct 10
 
 ### Emilio's Work

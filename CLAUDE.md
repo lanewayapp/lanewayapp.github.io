@@ -250,4 +250,5 @@ This split is temporary by design. When there is something to launch, the site
 folds back in alongside the product, or moves to a real domain. Until then, keep
 the pages free of anything that would make them painful to move: relative links
 between the two pages, no absolute paths, no hard-coded host beyond the canonical
-URL in the `og:url` tags.
+URL in the `og:url` tags and the `og:image` and `twitter:image` tags beside them.
+Link scrapers do not resolve a relative image path, so those have to be absolute.

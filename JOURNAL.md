@@ -1,8 +1,8 @@
-# The Simulated Activity Note Came Out - Saturday Oct 10
+# The Activity Note Came Out and Shared Links Got a Card - Saturday Oct 10
 
 ### Baron's Work
 
-*Time worked: 0h 4m (3:22 PM to 3:26 PM)*
+*Time worked: 0h 15m (3:22 PM to 3:37 PM)*
 
 ## Timeline
 
@@ -28,6 +28,33 @@ Connections and app demo work, and the edit had been made against a stale
 origin, and the same five replacements were applied to the current file,
 each asserted to match exactly once. Then one commit and a push.
 
+**3:37 PM - Shared links now show a preview card.** The ask was to do what the
+last reel filed by Atlas said: a link-preview tip, set a title and an
+`og:image` so a pasted link shows a card and not a bare URL. The titles and
+descriptions were already there. No page had an image, and every page set
+`twitter:card` to `summary`, the small square layout.
+
+- New folder `assets/social/` with a 1200x630 card: ink ground, the dark
+  lockup, the line "Everything in between", the hero's own description, and
+  the mark's curve drawn large as a route with walk, rail and shuttle legs.
+  It claims nothing the hero does not already say.
+- `index.html`, `status.html`, `devlog.html` and `legal.html` gained
+  `og:image` with its type, width, height and alt, `og:site_name`, and
+  `twitter:image`. `twitter:card` is now `summary_large_image`. `404.html`
+  has no Open Graph tags and was left alone.
+- Two corrections from Baron while it was being built. "dont use white
+  logo, looks bad": the first draft put the mark on a cream tile, and it now
+  uses the dark lockup, an ink tile with a hairline outline. Then "make it
+  animated like a gif": `og:image` points at a 72 frame, 3.6 second GIF of a
+  dot riding the route, 143 KB. The still PNG stays as `twitter:image`.
+- The card's source is `Laneway Link Preview.html` beside the images. It
+  exposes `seek(t)`, and the GIF is that page screenshotted 72 times. No
+  build step is added: the page loads neither file, so nothing has to run
+  before a commit unless the card itself is being redesigned.
+- `CLAUDE.md` said no hard-coded host beyond `og:url`. The image tags are
+  now named as the second exception, because a scraper does not resolve a
+  relative image path.
+
 ## Decisions
 
 - The board is still labelled. The foot under it reads `Simulated route
@@ -38,6 +65,13 @@ each asserted to match exactly once. Then one commit and a push.
 
 ## Open
 
+- Most apps will show the card as a still. iMessage, WhatsApp and X take the
+  first frame of a GIF; Discord plays it. That is why frame one is a whole
+  card.
+- Apps cache previews. A link pasted somewhere before today can keep its
+  old bare look until that app refetches it.
+- `legal.html` still describes itself as "we need to fill this out, before
+  launch", and that sentence is now the text under a much bigger card.
 - The page was not opened in a browser after the change. The removal is one
   paragraph and dead CSS, checked by grep only.
 - Fetch before editing here. Emilio is landing PRs on this repo and a local

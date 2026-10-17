@@ -1,3 +1,84 @@
+# Saved to Favourites, the Site Showed an L: A Full Icon Set - Saturday Oct 17
+
+### Baron's Work
+
+*Time worked: 0h 7m (10:20 PM to 10:27 PM)*
+
+## Timeline
+
+**10:20 PM - "it shows an L and not the good favicon."** Baron sent a
+screenshot of Safari Favourites on his iPhone: every other saved site had its
+icon, and Laneway had a navy tile with a white "L". The ask was to fix it and
+then cover everything else a phone or a preview might want: logos, banners,
+"across every phone ever".
+
+- The cause, read off the heads: every page declared one icon, an inline
+  `data:` URI SVG. iOS does not read SVG for Favourites, the Home Screen,
+  bookmarks or the share sheet. It wants a PNG `apple-touch-icon`, from a
+  `<link>` or by probing `/apple-touch-icon.png`, and the site had neither, so
+  Safari drew a monogram from the title.
+- The repo already had `assets/favicon/Favicon 180.png`, and the asset README
+  even suggested it as the touch icon. It would not have worked well: its
+  corners are transparent, and iOS fills transparency with black before
+  rounding the icon itself.
+- Opened lanewayapp/Laneway#165 before the first edit, as the product repo's
+  rule asks; website work is tracked there (#155, #158).
+
+**10:25 PM - The set, rendered from the mark's own geometry.** Each size was
+drawn by Chromium from the same 32 unit SVG the pages already used, so the
+curve anti-aliases the way a browser draws it.
+
+- `apple-touch-icon.png` and `apple-touch-icon-precomposed.png` at the root:
+  180x180, opaque, full bleed. Checked against the product repo's
+  `AppIcon.png` at 1024: 854 of 1,048,576 pixels differ by more than 15
+  levels, all of them on the curve's anti-aliased edge, so the saved site and
+  the app share one icon.
+- `favicon.ico` at the root, 16, 32 and 48 in one file, built from the
+  existing favicon PNGs, for crawlers, older browsers and Google Search, all of
+  which ask for that path by name. `favicon.svg` at the root replaces the
+  inline `data:` URI, because link unfurlers (Slack, Discord, Teams) need a URL
+  they can fetch.
+- `site.webmanifest` for Android Chrome, Samsung Internet and Edge: 192 and 512
+  icons, an SVG, and a maskable 512 with the mark scaled to 78 percent. Its
+  farthest amber pixel sits 171px from the centre against a 205px safe circle,
+  so no launcher mask clips the dot. `display` is `browser`: saving the site
+  makes a shortcut to a web page, never something that opens like an app that
+  is not out yet.
+- `browserconfig.xml` and three Windows tiles for legacy Edge, IE and Windows
+  Phone, which probe that file at the root. `Safari Pinned Tab.svg` for
+  `mask-icon`, the route alone, coloured amber by the tag.
+- Every page's head now carries the same block: `.ico` with `sizes="32x32"`
+  (so Chrome keeps preferring the SVG), the SVG, the touch icon, `mask-icon`,
+  the manifest, and `apple-mobile-web-app-title` and `application-name` set to
+  "Laneway" so a Home Screen label is not the truncated page title.
+  `404.html` uses root paths because Pages serves it at any depth.
+- `twitter:image:alt` added beside `twitter:image` on the four pages that
+  have one. `index.html` gained `WebSite` structured data naming the site
+  "Laneway", which is what Google shows as the site name in results; the
+  `CLAUDE.md` rule about hard-coded hosts now names it as a third exception.
+- Left alone on purpose: no Smart App Banner, because it needs an App Store
+  listing and the site may not imply one; no splash screens, which only apply
+  to a site that opens as a standalone app. The page title, and so the label
+  Safari gives a Favourite, is unchanged.
+
+**10:27 PM - Checked, served.** Under `python3 -m http.server`, Chromium
+loaded all five pages (`404.html` at a deep path) and every icon `<link>`
+returned 200 with the right type, `.ico` as `image/vnd.microsoft.icon` and the
+manifest as `application/manifest+json`. `Page.getAppManifest` reported no
+manifest errors, and every icon the manifest names loads. Opened off disk,
+`index.html` logs exactly the errors it logged before the change (the font
+preload's CORS block) and nothing new.
+
+## Open
+
+- Not seen on a real iPhone yet. Safari caches site icons hard: the old
+  Favourite has to be deleted and added again, and if the "L" survives that,
+  the site's data cleared under Settings, Apps, Safari, Advanced, Website Data.
+- What WhatsApp, Discord and LinkedIn do with the GIF `og:image` is still
+  unchecked, as it was on Oct 10. A PNG fallback `og:image` was not added:
+  which of two tags iMessage picks is not known, and the animated card it
+  shows today was an owner request.
+
 # The Activity Note Came Out and Shared Links Got a Card - Saturday Oct 10
 
 ### Baron's Work

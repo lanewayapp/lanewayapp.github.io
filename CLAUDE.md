@@ -166,6 +166,16 @@ sys.exit(1 if bad else 0)
 - **Dark mode via `prefers-color-scheme`**, both pages, always tested in both.
 - Images, if any are ever added, must be committed to the repo, sized for the web,
   and given real `alt` text. Screenshots must be of the app as it actually is.
+- **Icons live at the root and in `assets/favicon/`, and every page carries the
+  same icon block.** Saved to Safari Favourites, the site once showed a letter
+  "L": the only icon was an inline SVG, and iOS reads neither SVG nor `data:`
+  URIs for Favourites or the Home Screen. It wants a PNG `apple-touch-icon`, and
+  that PNG must be the app icon's square, opaque, full bleed artwork, because
+  iOS rounds the corners itself and turns transparency black. The root files
+  keep their conventional lowercase names because clients probe those exact
+  paths. The full list and the head block are in `assets/README.md`; add a page,
+  add the block. The manifest stays `display: browser` until there is an app to
+  install, and there is no Smart App Banner until there is an App Store listing.
 
 ## Dev log entries
 
@@ -250,5 +260,7 @@ This split is temporary by design. When there is something to launch, the site
 folds back in alongside the product, or moves to a real domain. Until then, keep
 the pages free of anything that would make them painful to move: relative links
 between the two pages, no absolute paths, no hard-coded host beyond the canonical
-URL in the `og:url` tags and the `og:image` and `twitter:image` tags beside them.
-Link scrapers do not resolve a relative image path, so those have to be absolute.
+URL in the `og:url` tags, the `og:image` and `twitter:image` tags beside them,
+and the `WebSite` structured data in `index.html`'s head. Link scrapers do not
+resolve a relative image path, and search engines want the site's own URL in
+full, so those have to be absolute.

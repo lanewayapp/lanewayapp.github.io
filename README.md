@@ -12,6 +12,9 @@ Live at <https://lanewayapp.github.io/>.
 - `devlog.html` - the page that reads `devlog.md` and renders it. Chrome only.
 - `CLAUDE.md` - working context, read it before touching anything
 - `JOURNAL.md` - session log for this repo
+- `favicon.ico`, `favicon.svg`, `apple-touch-icon.png`, `site.webmanifest` and
+  `browserconfig.xml` - the icons browsers and phones ask for by name. See
+  `assets/README.md`.
 
 The product itself lives in a separate private repo. This one holds nothing but
 the site.

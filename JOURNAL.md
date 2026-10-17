@@ -1,8 +1,8 @@
-# Saved to Favourites, the Site Showed an L: Four Tries at the Touch Icon - Saturday Oct 17
+# Saved to Favourites, the Site Showed an L: The Manifest Was Hiding the Touch Icon - Saturday Oct 17
 
 ### Baron's Work
 
-*Time worked: 0h 52m (4:20 PM to 5:12 PM)*
+*Time worked: 1h 6m (4:20 PM to 5:26 PM)*
 
 This session ran in a cloud container whose clock is UTC. The times below are
 its `date` output shifted by six hours, the -0600 offset on Baron's own commits
@@ -208,15 +208,51 @@ fixes, three misses.
   manifest: opaque full bleed icons with a 180 among them, plus the maskable
   one, and still `display: browser`.
 
+**5:26 PM - "Home Screen works."** (First `date` read this round; Baron's
+screenshots are stamped 5:23 PM.) Two screenshots arrived first: the share
+sheet, and Add to Favourites still showing the "L". Then, interrupting:
+"Wait, Home Screen works but that one in that last picture is weirdly
+cropped."
+
+- **The manifest was the cause for the Home Screen, confirmed on the
+  phone.** It was the only thing that changed from the previous failing
+  round. iOS 27.2 took the Home Screen icon from the manifest, rejected its
+  transparent-cornered icons, and drew the letter. It also settles that
+  Safari accepts the `data:` touch icon for the Home Screen. Before the
+  interruption I had been about to argue that WebKit ignores `data:` link
+  icons and to switch back to a linked file. I had not shipped it, and the
+  result shows it would have been wrong for this surface.
+- **The cropped one** is the icon in the share sheet header. It is now a
+  small rounded tile centred on a white plate: `favicon.ico`, 48px at most,
+  with its own transparent corners. At 4:49 PM it filled the plate, when the
+  SVG favicon still existed. So the share sheet's link preview does not read
+  the `data:` touch icon, and since the SVG went, the `.ico` is the biggest
+  icon it can find. The Favourites "L" is most likely the same gap.
+- One change, leaving the working touch icon byte for byte alone: a linked
+  `<link rel="icon" type="image/png" sizes="180x180">` on all five pages,
+  pointing at `assets/favicon/Favicon Square 180.png`. That is a copy of the
+  opaque full bleed touch icon, at a URL never requested before. The diff is
+  five added lines and the new file. Chromium decodes all three icons on
+  every page (touch 180, `.ico` 48, square 180), and the new file returns 200
+  as `image/png`.
+- #165 got the confirmed Home Screen result and this plan before the edit.
+  `CLAUDE.md` and `assets/README.md` record the manifest as the confirmed
+  cause and warn against bringing one back untested. They also explain the
+  new square icon.
+
 ## Open
 
-- The no-manifest test is not yet seen on the phone. Retest: delete the Home
-  Screen icon and the Favourite, close the tab, open the site fresh, add each
-  again. If the mark shows, the manifest was the cause; bring one back with
-  opaque icons as its own tested step. If the "L" survives, the manifest is
-  cleared, guessing from the outside has run out, and the next step is a Mac
-  with Safari's Web Inspector attached to the phone, watching which icon iOS
-  asks for. #165 stays open until the mark shows.
+- Home Screen: fixed and confirmed on the phone.
+- Share sheet and Favourites: the square 180 `rel="icon"` is not yet seen on
+  the phone. Retest: close the tab, open the site fresh, check the share
+  sheet header, then delete the Favourite and add it again. If Favourites
+  still shows the "L", next is either a host-level icon record on the phone
+  (cleared only by Clear History and Website Data) or a Mac with Safari's
+  Web Inspector attached. #165 stays open until Favourites shows the mark.
+- Android has no manifest now, so no maskable icon. Chrome builds a Home
+  Screen shortcut from the page's icons, and the square 180 helps there too.
+  Untested on a device. A manifest can return later with opaque icons, as
+  its own step tested on an iPhone.
 - Android lost its manifest icons in this round. Chrome builds a Home Screen
   shortcut from the page's icons without one. This is untested on a device.
 - What WhatsApp, Discord and LinkedIn do with the GIF `og:image` is still

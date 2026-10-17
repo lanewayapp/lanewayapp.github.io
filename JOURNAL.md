@@ -2,7 +2,7 @@
 
 ### Baron's Work
 
-*Time worked: 1h 6m (4:20 PM to 5:26 PM)*
+*Time worked: 1h 10m (4:20 PM to 5:30 PM)*
 
 This session ran in a cloud container whose clock is UTC. The times below are
 its `date` output shifted by six hours, the -0600 offset on Baron's own commits
@@ -240,15 +240,35 @@ cropped."
   cause and warn against bringing one back untested. They also explain the
   new square icon.
 
+**5:30 PM - "yeah not in favourites but yes in home screen."** The square
+icon deployed at 5:28 PM, before the reply. The Home Screen still shows the
+mark; Add to Favourites still shows the "L".
+
+- Reasoning, not proof: the Favourites sheet shows the "L" the instant it
+  opens, so it reads a stored record rather than the live page. Baron saved
+  Laneway to Favourites before today, when the site had no touch icon, which
+  is when a per-host "no icon" record would have been written. Favourites
+  failed in every round, including the ones the Home Screen accepted, and
+  only a record from before the first fix explains all of them. Community
+  reports describe such a cache and say Clear History and Website Data
+  resets it; Apple documents none of it.
+- No site change this round, deliberately. If the record is per host, no
+  change can be judged on Baron's phone until it is reset. Shipping one would
+  only put the Home Screen fix at risk.
+- The deciding test went to Baron: Add to Favourites on an iPhone that never
+  saved the site, Emilio's. If the mark shows, clear Baron's phone (Clear
+  History and Website Data, All history; it signs him out of websites). If
+  it is still "L", the next single change is a touch icon at a real URL as
+  well as the `data:` one, with the Home Screen re-checked after it.
+- Posted the result and the test on #165.
+
 ## Open
 
 - Home Screen: fixed and confirmed on the phone.
-- Share sheet and Favourites: the square 180 `rel="icon"` is not yet seen on
-  the phone. Retest: close the tab, open the site fresh, check the share
-  sheet header, then delete the Favourite and add it again. If Favourites
-  still shows the "L", next is either a host-level icon record on the phone
-  (cleared only by Clear History and Website Data) or a Mac with Safari's
-  Web Inspector attached. #165 stays open until Favourites shows the mark.
+- Favourites: still "L" on Baron's phone. Waiting on the clean-phone test
+  (Emilio's iPhone). #165 stays open until Favourites shows the mark.
+- Share sheet: whether the square 180 fills the plate again is not yet
+  reported.
 - Android has no manifest now, so no maskable icon. Chrome builds a Home
   Screen shortcut from the page's icons, and the square 180 helps there too.
   Untested on a device. A manifest can return later with opaque icons, as

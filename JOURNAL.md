@@ -2,7 +2,7 @@
 
 ### Baron's Work
 
-*Time worked: 0h 31m (4:20 PM to 4:51 PM)*
+*Time worked: 0h 39m (4:20 PM to 4:59 PM)*
 
 This session ran in a cloud container whose clock is UTC. The times below are
 its `date` output shifted by six hours, the -0600 offset on Baron's own commits
@@ -111,13 +111,44 @@ between". Add to Favourites still shows the "L".
   `assets/README.md` say "most likely", and the rule to bump `?v=N` whenever
   an icon changes is written down in both.
 
+**4:59 PM - "all that didnt fix it."** The `?v=2` deploy finished at 4:54 PM,
+and Favourites still shows the "L". (4:59 PM is the first `date` read after
+the message arrived, not its exact arrival.)
+
+- So the per-URL theory is wrong. The URL Safari was pointed at was new, so
+  a failure cached against the old URL cannot explain it. Re-checked what
+  `main` serves rather than assuming: both touch icons are the same plain
+  180x180 8-bit RGB PNG, every page links it with `sizes="180x180"`, and the
+  Pages run for `8224cf5` succeeded. Live fetches are impossible from the
+  sandbox: the proxy refuses github.io, and WebFetch resolves names locally
+  and fails the same way.
+- What is left points at the phone. Safari keeps a per-site record for
+  Favourites icons (whether a touch icon exists, and a colour pulled from the
+  favicon, which is why the "L" sits on navy rather than grey). That record
+  was written while the site had no touch icon. Removing one site under
+  Website Data does not obviously touch it. Community reports say a full
+  "Clear History and Website Data" is the reset that works, and some say even
+  that is not reliable. None of this is Apple documentation.
+- No third site change shipped. With no device to test on, a third guess
+  would be the same mistake as the second. Instead Baron got two tests that
+  separate "the site is wrong" from "this phone remembers": Add to Home Screen
+  on his phone, which fetches the touch icon fresh, and Add to Favourites on
+  a phone that has never saved the site, such as Emilio's.
+- Corrected `CLAUDE.md` and `assets/README.md`, which had named the per-URL
+  cache as the likely cause. They now say `?v=N` is for caches keyed by URL
+  and did not cure this, and that the stale record is most likely per site
+  and on the device. `?v=2` stays: it is still correct for the next icon
+  change, and it costs nothing.
+
 ## Open
 
-- Add to Favourites after the `?v=2` change is not yet seen on the phone. If
-  the "L" survives it, Safari's cache is keyed by host rather than URL, and
-  the remaining step is on the device: Settings, Apps, Safari, Advanced,
-  Website Data, delete lanewayapp.github.io. #165 stays open until the mark
-  shows in Favourites.
+- Favourites on Baron's phone still shows the "L". Waiting on the two
+  tests: Add to Home Screen on his phone, and Add to Favourites on a phone
+  that never saved the site. If the clean phone shows the mark, the fix on
+  Baron's phone is Settings, Apps, Safari, Clear History and Website Data.
+  If the clean phone also shows the "L", the site is still wrong somewhere
+  and the next step is a Mac with Safari's Web Inspector attached to the
+  phone. #165 stays open until the mark shows in Favourites.
 - What WhatsApp, Discord and LinkedIn do with the GIF `og:image` is still
   unchecked, as it was on Oct 10. A PNG fallback `og:image` was not added:
   which of two tags iMessage picks is not known, and the animated card it

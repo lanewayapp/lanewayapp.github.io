@@ -41,7 +41,8 @@ Every page carries this block. `404.html` uses root paths (`/favicon.ico`) becau
 
 - The touch icon is the app icon's geometry, square and opaque. iOS rounds the corners itself and fills any transparent pixel with black, so `Favicon 180.png`, which has transparent corners, must never be used as the touch icon. iOS does not read SVG for Favourites or the Home Screen; without a PNG touch icon Safari draws a letter from the page title.
 - `sizes="32x32"` on the `.ico` stops Chrome preferring it over the SVG.
-- Every icon URL carries `?v=N`: the head block, the manifest's icons and `browserconfig.xml`. After the icons first shipped, the share sheet showed the mark while Add to Favourites kept the letter. The likely cause is that iOS caches a failed icon fetch per URL, and Safari had already been refused `/apple-touch-icon.png` before the file existed. When any icon changes, bump `N` everywhere at once.
+- Every icon URL carries `?v=N`: the head block, the manifest's icons and `browserconfig.xml`. Caches keyed by URL then pick up a changed icon. When any icon changes, bump `N` everywhere at once.
+- What `?v=N` does not fix: on an iPhone that saved the site to Favourites before the icons existed, the share sheet showed the mark while Add to Favourites kept the letter, before and after `?v=2`. The URL was new, so the stale record is most likely per site and on the device, out of the server's reach.
 - The manifest lists PNGs only. iOS cannot use an SVG manifest icon, and Chrome has a PNG at every size it needs.
 - The manifest says `display: browser`, so saving the site makes a shortcut to a web page, never something that opens like the app, which is not out yet.
 - Safari caches these icons hard. After a change, delete the Favourite or Home Screen icon and add it again; if the old icon persists, clear the site's data under Settings, Apps, Safari, Advanced, Website Data.

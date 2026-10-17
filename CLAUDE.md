@@ -168,23 +168,27 @@ sys.exit(1 if bad else 0)
   and given real `alt` text. Screenshots must be of the app as it actually is.
 - **Icons: an inlined touch icon, two linked icons, and no manifest.** Saved to
   Favourites or the Home Screen on an iPhone, the site showed a letter "L"
-  (lanewayapp/Laneway#165). The Home Screen was fixed on Saturday Oct 17, and
-  the fix was confirmed on the phone, by removing the web manifest and nothing
-  else. iOS 27.2 takes the Home Screen icon from a linked manifest, and this
-  one's icons had transparent corners. Do not add a manifest back without
-  opaque full bleed icons and a test on an iPhone. Every page's head opens,
-  under the viewport meta, with the touch icon as a base64 PNG `data:` URI
-  (what the Home Screen uses), then `favicon.ico`, then
-  `Favicon Square 180.png` as a large `rel="icon"` for the share sheet and
-  Favourites, which do not read the `data:` touch icon. Until #165 closes,
-  change one icon variable at a time and have it tested on the phone. Every
-  large icon must be the app icon's square, opaque, full bleed artwork,
-  because iOS rounds the corners itself and turns transparency black. If the
-  icon changes, regenerate the `data:` URI from `apple-touch-icon.png` and
-  paste it into all five pages. The root files keep their conventional names
-  for clients that probe them. The head block is in `assets/README.md`; add a
-  page, add the block. There is no Smart App Banner until there is an App
-  Store listing.
+  (lanewayapp/Laneway#165, closed Saturday Oct 17). The cause was the web
+  manifest: iOS 27.2 takes the Home Screen icon from a linked manifest, and
+  this one's icons had transparent corners. Removing it, and nothing else,
+  fixed the Home Screen. On an iPhone that had never saved the site,
+  Favourites showed the mark too. Do not add a manifest back without opaque
+  full bleed icons and a test on an iPhone. Every page's head opens, under
+  the viewport meta, with the touch icon as a base64 PNG `data:` URI (what
+  the Home Screen uses), then `favicon.ico`, then `Favicon Square 180.png` as
+  a large `rel="icon"` for the share sheet, which does not read the `data:`
+  touch icon. Test any icon change on an iPhone that has never saved the
+  site. A phone that saved it before the icons existed keeps a per-site "no
+  icon" record for Favourites that no site change reaches; Clear History and
+  Website Data resets it. Change one icon variable per test: four bundled
+  rounds on Oct 17 taught nothing until the manifest was removed alone.
+  Every large icon must be the app icon's square, opaque, full bleed
+  artwork, because iOS rounds the corners itself and turns transparency
+  black. If the icon changes, regenerate the `data:` URI from
+  `apple-touch-icon.png` and paste it into all five pages. The root files
+  keep their conventional names for clients that probe them. The head block
+  is in `assets/README.md`; add a page, add the block. There is no Smart App
+  Banner until there is an App Store listing.
 
 ## Dev log entries
 

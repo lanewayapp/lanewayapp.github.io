@@ -2,7 +2,7 @@
 
 ### Baron's Work
 
-*Time worked: 1h 10m (4:20 PM to 5:30 PM)*
+*Time worked: 1h 15m (4:20 PM to 5:35 PM)*
 
 This session ran in a cloud container whose clock is UTC. The times below are
 its `date` output shifted by six hours, the -0600 offset on Baron's own commits
@@ -262,13 +262,36 @@ mark; Add to Favourites still shows the "L".
   well as the `data:` one, with the Home Screen re-checked after it.
 - Posted the result and the test on #165.
 
+**5:35 PM - "ok it works, on my moms phone, my phone has a stale cache."**
+(First `date` read this round.) The clean-phone test came back: on his
+mom's iPhone, which had never saved the site, Add to Favourites shows the
+mark. The site is right. Baron's own phone keeps a per-site "no icon" record
+from when the site had none; Clear History and Website Data (All history)
+resets it.
+
+- He also re-sent the share sheet screenshot and asked why the icon is
+  cropped. That screenshot is stamped 5:23 PM, five minutes before the
+  square 180 `rel="icon"` deployed at 5:28 PM. So it shows the fallback
+  `favicon.ico`, a 48px rounded tile centred on a white plate, which is the
+  thing that change was made to fix. Whether the share sheet fills its plate
+  now has not been checked on either phone; he was not sure what his mom's
+  showed.
+- #165 closed as completed: the Home Screen is confirmed on Baron's phone,
+  and Favourites on a clean phone. The comment names the stale record on
+  his phone and the unchecked share sheet.
+- `CLAUDE.md` now records the closed issue and the rule that came out of
+  it: test any icon change on an iPhone that has never saved the site, and
+  change one variable per test. `assets/README.md` was corrected. It had
+  credited the inline icon with the fix, when the inline icon fixed nothing
+  alone; the manifest was the cause.
+
 ## Open
 
 - Home Screen: fixed and confirmed on the phone.
-- Favourites: still "L" on Baron's phone. Waiting on the clean-phone test
-  (Emilio's iPhone). #165 stays open until Favourites shows the mark.
+- Baron's phone: Favourites keeps the "L" until he runs Clear History and
+  Website Data. That is his call, since it signs him out of websites.
 - Share sheet: whether the square 180 fills the plate again is not yet
-  reported.
+  checked on a phone after the 5:28 PM deploy.
 - Android has no manifest now, so no maskable icon. Chrome builds a Home
   Screen shortcut from the page's icons, and the square 180 helps there too.
   Untested on a device. A manifest can return later with opaque icons, as

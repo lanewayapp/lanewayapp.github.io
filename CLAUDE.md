@@ -166,22 +166,24 @@ sys.exit(1 if bad else 0)
 - **Dark mode via `prefers-color-scheme`**, both pages, always tested in both.
 - Images, if any are ever added, must be committed to the repo, sized for the web,
   and given real `alt` text. Screenshots must be of the app as it actually is.
-- **Icons: the touch icon is inlined, and no icon link is an SVG.** Saved to
-  Favourites or the Home Screen on an iPhone, the site showed a letter "L". A
-  180x180 PNG `apple-touch-icon` at the root, linked from every page, did not
-  fix it, and neither did a versioned URL (lanewayapp/Laneway#165). The
-  recipe that was confirmed on a device elsewhere is the one in use: the touch
-  icon is a base64 PNG `data:` URI at the top of every page's head, and the
-  tab icon is `favicon.ico` only, with no SVG `rel="icon"` or `mask-icon`.
-  Which of those two changes matters is not known, so keep both. The PNG must
+- **Icons: an inlined touch icon, `favicon.ico`, and no manifest.** Saved to
+  Favourites or the Home Screen on an iPhone, the site showed a letter "L"
+  (lanewayapp/Laneway#165). Three bundled fixes failed: a linked 180x180 PNG
+  touch icon, a versioned URL, then the touch icon inlined as a `data:` URI
+  with the SVG icon links removed. All three shipped alongside a web manifest
+  whose icons had transparent corners. iOS 27.2 is reported to take the Home
+  Screen icon from a linked manifest and to discard transparent icons, so the
+  manifest was removed on its own to test exactly that. Until #165 is closed
+  with a result, change one icon variable at a time and have it tested on the
+  phone. Today every page's head opens, under the viewport meta, with the
+  touch icon as a base64 PNG `data:` URI and then `favicon.ico`. The PNG must
   be the app icon's square, opaque, full bleed artwork, because iOS rounds the
-  corners itself and turns transparency black. If the icon changes, regenerate
-  the `data:` URI from `apple-touch-icon.png` and paste it into all five
-  pages. The root files keep their conventional names for clients that probe
-  them. The full list and the head block are in `assets/README.md`; add a page,
-  add the block. The manifest stays `display: browser` until there is an app
-  to install, and there is no Smart App Banner until there is an App Store
-  listing.
+  corners itself and turns transparency black. If the icon changes,
+  regenerate the `data:` URI from `apple-touch-icon.png` and paste it into all
+  five pages. The root files keep their conventional names for clients that
+  probe them. The head block and the rules for bringing a manifest back are
+  in `assets/README.md`; add a page, add the block. There is no Smart App
+  Banner until there is an App Store listing.
 
 ## Dev log entries
 

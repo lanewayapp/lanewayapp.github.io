@@ -1,8 +1,8 @@
-# Saved to Favourites, the Site Showed an L: A Full Icon Set, Then an Inlined Touch Icon - Saturday Oct 17
+# Saved to Favourites, the Site Showed an L: Four Tries at the Touch Icon - Saturday Oct 17
 
 ### Baron's Work
 
-*Time worked: 0h 47m (4:20 PM to 5:07 PM)*
+*Time worked: 0h 52m (4:20 PM to 5:12 PM)*
 
 This session ran in a cloud container whose clock is UTC. The times below are
 its `date` output shifted by six hours, the -0600 offset on Baron's own commits
@@ -180,13 +180,45 @@ to Home Screen fetches the touch icon fresh, so the device cache theory from
   command to rebuild the URI, and that which half of the fix matters is
   unknown.
 
+**5:12 PM - "still no."** (First `date` read this round.) The inline touch
+icon deployed at 5:08 PM, before the reply, so the test was valid. Three
+fixes, three misses.
+
+- Stopped applying community fixes and looked for what this site has that a
+  working site does not. The answer was the manifest. It arrived in the very
+  first fix, in the same commit as the touch icon. Its `any` icons are
+  `Favicon 192.png` and `Favicon 512.png`, both with transparent rounded
+  corners. October 2026 reports from iOS 27.2 say iOS takes the Home Screen
+  icon from a linked manifest, not from `apple-touch-icon`, and that it
+  discards an icon with transparency for the letter tile. If both hold, iOS
+  never looked at any of the touch icon changes, which matches every result
+  so far. It also means the classic setup, a touch icon with no manifest, has
+  never actually been tried here.
+- The lesson from the last three rounds: each one changed several things at
+  once, so a miss taught nothing about the cause. This round changes one
+  thing. The `<link rel="manifest">` is gone from all five pages and
+  `site.webmanifest` is deleted; the inline touch icon and `favicon.ico` are
+  untouched. #165 got a comment saying so before the edit.
+- Checked in Chromium on all five pages: the head is now the inline touch
+  icon (decodes to 180x180), `favicon.ico`, and the font preload. No manifest
+  is linked, and there are no failed requests.
+- `Favicon Maskable 512.png` stays in `assets/favicon/` for a manifest that
+  comes back. `CLAUDE.md` now says to change one icon variable at a time
+  until #165 closes. `assets/README.md` sets the terms for a returning
+  manifest: opaque full bleed icons with a 180 among them, plus the maskable
+  one, and still `display: browser`.
+
 ## Open
 
-- The inline touch icon is not yet seen on the phone. Retest: delete the
-  Home Screen icon and the Favourite, reload the site, add each again. If
-  the "L" survives this too, guessing from the outside has run out. The next
-  step is a Mac with Safari's Web Inspector attached to the phone, watching
-  which icon iOS asks for. #165 stays open until the mark shows.
+- The no-manifest test is not yet seen on the phone. Retest: delete the Home
+  Screen icon and the Favourite, close the tab, open the site fresh, add each
+  again. If the mark shows, the manifest was the cause; bring one back with
+  opaque icons as its own tested step. If the "L" survives, the manifest is
+  cleared, guessing from the outside has run out, and the next step is a Mac
+  with Safari's Web Inspector attached to the phone, watching which icon iOS
+  asks for. #165 stays open until the mark shows.
+- Android lost its manifest icons in this round. Chrome builds a Home Screen
+  shortcut from the page's icons without one. This is untested on a device.
 - What WhatsApp, Discord and LinkedIn do with the GIF `og:image` is still
   unchecked, as it was on Oct 10. A PNG fallback `og:image` was not added:
   which of two tags iMessage picks is not known, and the animated card it

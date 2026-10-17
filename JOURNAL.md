@@ -2,7 +2,7 @@
 
 ### Baron's Work
 
-*Time worked: 0h 13m (4:20 PM to 4:33 PM)*
+*Time worked: 0h 31m (4:20 PM to 4:51 PM)*
 
 This session ran in a cloud container whose clock is UTC. The times below are
 its `date` output shifted by six hours, the -0600 offset on Baron's own commits
@@ -85,11 +85,39 @@ asked before touching `main`, since `main` is the live site; Baron said push.
   `main`. Safe to delete.
 - lanewayapp/Laneway#165 closed with what landed and what is unverified.
 
+**4:51 PM - "It's here / But not here."** Baron tested on the phone and sent
+two screenshots. The share sheet now shows the real mark beside "Everything in
+between". Add to Favourites still shows the "L".
+
+- That split narrows it down. The share sheet's link preview reads the page
+  fresh, so the live page does advertise the touch icon and iOS can load it.
+  Safari's bookmark icon fetcher keeps its own cache. Reports of this exact
+  symptom on iOS 26 trace it to a cached failed fetch, keyed by URL. Safari
+  will have requested `/apple-touch-icon.png` when the site was first added
+  to Favourites, before the file existed, and been refused.
+- Reopened #165 and commented with the change of approach before editing:
+  the bug as titled still reproduces.
+- Every icon URL now carries `?v=2`: the five pages' head blocks, the
+  manifest's icons and `browserconfig.xml`. The URL Safari is pointed at is
+  one it has never failed on. The root files stay put for clients that probe
+  by name.
+- `favicon.svg` came out of the manifest's icons. iOS cannot use an SVG
+  there, and one report has an SVG manifest icon triggering the monogram.
+  Chrome has a PNG at every size it needs. The touch icon link also gained
+  `sizes="180x180"`.
+- Re-ran the served check: every versioned URL returns 200 with the right
+  type, and the manifest parses with no errors.
+- The cause is the likely one, not a proven one. `CLAUDE.md` and
+  `assets/README.md` say "most likely", and the rule to bump `?v=N` whenever
+  an icon changes is written down in both.
+
 ## Open
 
-- Not seen on a real iPhone yet. Safari caches site icons hard: the old
-  Favourite has to be deleted and added again, and if the "L" survives that,
-  the site's data cleared under Settings, Apps, Safari, Advanced, Website Data.
+- Add to Favourites after the `?v=2` change is not yet seen on the phone. If
+  the "L" survives it, Safari's cache is keyed by host rather than URL, and
+  the remaining step is on the device: Settings, Apps, Safari, Advanced,
+  Website Data, delete lanewayapp.github.io. #165 stays open until the mark
+  shows in Favourites.
 - What WhatsApp, Discord and LinkedIn do with the GIF `og:image` is still
   unchecked, as it was on Oct 10. A PNG fallback `og:image` was not added:
   which of two tags iMessage picks is not known, and the animated card it

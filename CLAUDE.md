@@ -174,8 +174,11 @@ sys.exit(1 if bad else 0)
   iOS rounds the corners itself and turns transparency black. The root files
   keep their conventional lowercase names because clients probe those exact
   paths. The full list and the head block are in `assets/README.md`; add a page,
-  add the block. The manifest stays `display: browser` until there is an app to
-  install, and there is no Smart App Banner until there is an App Store listing.
+  add the block. Every icon URL carries `?v=N`: Favourites kept the "L" after
+  the icons shipped, most likely because iOS caches a failed fetch per URL.
+  When an icon changes, bump `N` everywhere. The manifest stays `display: browser`
+  until there is an app to install, and there is no Smart App Banner until
+  there is an App Store listing.
 
 ## Dev log entries
 

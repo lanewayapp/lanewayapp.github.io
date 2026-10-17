@@ -30,17 +30,19 @@ Files are named in title case with spaces, e.g. `Laneway Mark Dark 512.png`. In 
 Every page carries this block. `404.html` uses root paths (`/favicon.ico`) because Pages serves it at any depth.
 
 ```html
-<link rel="icon" href="favicon.ico" sizes="32x32">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="mask-icon" href="assets/favicon/Safari%20Pinned%20Tab.svg" color="#E89E2E">
-<link rel="manifest" href="site.webmanifest">
+<link rel="icon" href="favicon.ico?v=2" sizes="32x32">
+<link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2" sizes="180x180">
+<link rel="mask-icon" href="assets/favicon/Safari%20Pinned%20Tab.svg?v=2" color="#E89E2E">
+<link rel="manifest" href="site.webmanifest?v=2">
 <meta name="apple-mobile-web-app-title" content="Laneway">
 <meta name="application-name" content="Laneway">
 ```
 
 - The touch icon is the app icon's geometry, square and opaque. iOS rounds the corners itself and fills any transparent pixel with black, so `Favicon 180.png`, which has transparent corners, must never be used as the touch icon. iOS does not read SVG for Favourites or the Home Screen; without a PNG touch icon Safari draws a letter from the page title.
 - `sizes="32x32"` on the `.ico` stops Chrome preferring it over the SVG.
+- Every icon URL carries `?v=N`: the head block, the manifest's icons and `browserconfig.xml`. After the icons first shipped, the share sheet showed the mark while Add to Favourites kept the letter. The likely cause is that iOS caches a failed icon fetch per URL, and Safari had already been refused `/apple-touch-icon.png` before the file existed. When any icon changes, bump `N` everywhere at once.
+- The manifest lists PNGs only. iOS cannot use an SVG manifest icon, and Chrome has a PNG at every size it needs.
 - The manifest says `display: browser`, so saving the site makes a shortcut to a web page, never something that opens like the app, which is not out yet.
 - Safari caches these icons hard. After a change, delete the Favourite or Home Screen icon and add it again; if the old icon persists, clear the site's data under Settings, Apps, Safari, Advanced, Website Data.
 

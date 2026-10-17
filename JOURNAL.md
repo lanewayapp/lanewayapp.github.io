@@ -2,11 +2,15 @@
 
 ### Baron's Work
 
-*Time worked: 0h 7m (10:20 PM to 10:27 PM)*
+*Time worked: 0h 13m (4:20 PM to 4:33 PM)*
+
+This session ran in a cloud container whose clock is UTC. The times below are
+its `date` output shifted by six hours, the -0600 offset on Baron's own commits
+from Oct 10, so they read in the same local time as every other entry.
 
 ## Timeline
 
-**10:20 PM - "it shows an L and not the good favicon."** Baron sent a
+**4:20 PM - "it shows an L and not the good favicon."** Baron sent a
 screenshot of Safari Favourites on his iPhone: every other saved site had its
 icon, and Laneway had a navy tile with a white "L". The ask was to fix it and
 then cover everything else a phone or a preview might want: logos, banners,
@@ -24,7 +28,7 @@ then cover everything else a phone or a preview might want: logos, banners,
 - Opened lanewayapp/Laneway#165 before the first edit, as the product repo's
   rule asks; website work is tracked there (#155, #158).
 
-**10:25 PM - The set, rendered from the mark's own geometry.** Each size was
+**4:25 PM - The set, rendered from the mark's own geometry.** Each size was
 drawn by Chromium from the same 32 unit SVG the pages already used, so the
 curve anti-aliases the way a browser draws it.
 
@@ -61,13 +65,25 @@ curve anti-aliases the way a browser draws it.
   to a site that opens as a standalone app. The page title, and so the label
   Safari gives a Favourite, is unchanged.
 
-**10:27 PM - Checked, served.** Under `python3 -m http.server`, Chromium
+**4:27 PM - Checked, served.** Under `python3 -m http.server`, Chromium
 loaded all five pages (`404.html` at a deep path) and every icon `<link>`
 returned 200 with the right type, `.ico` as `image/vnd.microsoft.icon` and the
 manifest as `application/manifest+json`. `Page.getAppManifest` reported no
 manifest errors, and every icon the manifest names loads. Opened off disk,
 `index.html` logs exactly the errors it logged before the change (the font
 preload's CORS block) and nothing new.
+
+**4:33 PM - Shipped.** Committed as `86894ff` on a branch and pushed it, then
+asked before touching `main`, since `main` is the live site; Baron said push.
+`main` was fast-forwarded to the same commit and Pages started its deploy.
+
+- The sandbox's proxy refuses github.io, so the live files could not be
+  fetched from here. The evidence it went out is the Pages run for `86894ff`,
+  which finished with success at 4:34 PM.
+- The proxy also refused deleting the branch (HTTP 403), so
+  `claude/touch-icons` is still on GitHub, pointing at the same commit as
+  `main`. Safe to delete.
+- lanewayapp/Laneway#165 closed with what landed and what is unverified.
 
 ## Open
 

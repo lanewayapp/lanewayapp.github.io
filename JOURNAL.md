@@ -1,8 +1,8 @@
-# Saved to Favourites, the Site Showed an L: A Full Icon Set - Saturday Oct 17
+# Saved to Favourites, the Site Showed an L: A Full Icon Set, Then an Inlined Touch Icon - Saturday Oct 17
 
 ### Baron's Work
 
-*Time worked: 0h 39m (4:20 PM to 4:59 PM)*
+*Time worked: 0h 47m (4:20 PM to 5:07 PM)*
 
 This session ran in a cloud container whose clock is UTC. The times below are
 its `date` output shifted by six hours, the -0600 offset on Baron's own commits
@@ -140,15 +140,53 @@ the message arrived, not its exact arrival.)
   and on the device. `?v=2` stays: it is still correct for the next icon
   change, and it costs nothing.
 
+**5:07 PM - "add to home screen didnt fix it."** (The first `date` read in
+this round; the message arrived a few minutes earlier.) That was the test
+meant to tell the site apart from the phone, and it came back on the site's
+side. Add
+to Home Screen fetches the touch icon fresh, so the device cache theory from
+4:59 PM was wrong too. iOS is not accepting the touch icon at all.
+
+- A correction to the 4:51 PM reasoning: the share sheet showing the mark
+  proved nothing about the touch icon. Safari 26 renders SVG favicons, and
+  every version of these pages has carried one, so the share sheet will have
+  drawn the SVG.
+- Re-checked the page for anything that could block an icon request: no CSP,
+  no `<base>`, no script that touches the head. Nothing.
+- The search turned up two projects by one author (reloru/Patchbay and
+  reloru/easycloud-oci) that went down this exact path. They served the
+  icon at the root names iOS probes: still a letter. They moved it to a new
+  file name: still a letter. Then they inlined the touch icon as a PNG
+  `data:` URI and made the tab icon a raster instead of an SVG, in one
+  change, and that fixed it on a device. Their root cause was never found,
+  and the two halves were never separated. It is the only recipe with a
+  device result behind it, and our failures match theirs step for step, so
+  it is the one used. #165 got a comment saying so before the edit.
+- Every page now opens its head, directly under the viewport meta, with the
+  touch icon as a base64 PNG `data:` URI. It is the same 180x180 opaque file,
+  3,742 characters per page. The tab icon is `favicon.ico` alone, its
+  `sizes` now listing all three of its sizes. The SVG `rel="icon"` and the
+  SVG `mask-icon` are gone, and so are `favicon.svg` and `Safari Pinned
+  Tab.svg`, since nothing links them any more. The root `apple-touch-icon.png`
+  files stay for clients that probe by name.
+- Checked in Chromium on all five pages: the inline icon decodes to 180x180
+  with the navy corner and the amber dot where the app icon has them; no SVG
+  link remains; the `.ico` and the manifest return 200 with the right types;
+  the manifest has no errors.
+- `CLAUDE.md` claimed at 4:27 PM that iOS reads neither SVG nor `data:` URIs
+  for these icons. The `data:` half was never backed by anything and is
+  contradicted by the recipe now in use, so the rule was rewritten. It and
+  `assets/README.md` now describe the inline icon, why it is inlined, the
+  command to rebuild the URI, and that which half of the fix matters is
+  unknown.
+
 ## Open
 
-- Favourites on Baron's phone still shows the "L". Waiting on the two
-  tests: Add to Home Screen on his phone, and Add to Favourites on a phone
-  that never saved the site. If the clean phone shows the mark, the fix on
-  Baron's phone is Settings, Apps, Safari, Clear History and Website Data.
-  If the clean phone also shows the "L", the site is still wrong somewhere
-  and the next step is a Mac with Safari's Web Inspector attached to the
-  phone. #165 stays open until the mark shows in Favourites.
+- The inline touch icon is not yet seen on the phone. Retest: delete the
+  Home Screen icon and the Favourite, reload the site, add each again. If
+  the "L" survives this too, guessing from the outside has run out. The next
+  step is a Mac with Safari's Web Inspector attached to the phone, watching
+  which icon iOS asks for. #165 stays open until the mark shows.
 - What WhatsApp, Discord and LinkedIn do with the GIF `og:image` is still
   unchecked, as it was on Oct 10. A PNG fallback `og:image` was not added:
   which of two tags iMessage picks is not known, and the animated card it
